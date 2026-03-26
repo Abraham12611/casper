@@ -1,8 +1,9 @@
 import { Agent } from "@convex-dev/agent";
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { createOpenAI } from "@ai-sdk/openai";
 import { components } from "./_generated/api";
 
-const openrouter = createOpenRouter({
+const openrouter = createOpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
   apiKey: process.env.OPENROUTER_API_KEY,
 });
 

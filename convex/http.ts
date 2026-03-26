@@ -1,0 +1,315 @@
+import { httpRouter } from "convex/server";
+// auth import removed
+import { httpAction } from "./_generated/server";
+import { internal } from "./_generated/api";
+
+// Verify Vapi webhook either via shared secret header or HMAC-SHA256 of body
+async function verifyVapiSignature(body: ArrayBuffer, signature: string | null, secretHeader: string | null): Promise<boolean> {
+  try {
+    const secret = process.env.VAPI_WEBHOOK_SECRET ?? "";
+    if (!secret) return false;
+    // Prefer simple shared secret header if provided by Vapi
+    if (secretHeader && secretHeader.trim() === secret) return true;
+    // Fallback to HMAC hex digest verification if header present
+    if (!signature) return false;
+    const key = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"],
+    );
+    const mac = await crypto.subtle.sign("HMAC", key, body);
+    const digestHex = Array.from(new Uint8Array(mac))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    return signature.trim() === digestHex;
+  } catch {
+    return false;
+  }
+}
+
+const vapiWebhook = httpAction(async (ctx, req) => {
+  const bodyBytes = await req.arrayBuffer();
+  const signature = req.headers.get("X-Vapi-Signature");
+  // Vapi may send either X-Vapi-Secret (shared secret) or X-Vapi-Signature (HMAC)
+  const shared = req.headers.get("X-Vapi-Secret");
+  const ok = await verifyVapiSignature(bodyBytes, signature, shared);
+  if (!ok) return new Response("unauthorized", { status: 401 });
+
+  let payload: unknown;
+  try {
+    payload = JSON.parse(new TextDecoder().decode(bodyBytes));
+  } catch {
+    return new Response("bad request", { status: 400 });
+  }
+
+  try {
+    type TranscriptMessage = { role?: string; text?: string };
+    type VapiWebhookPayload = {
+      type?: string;
+      call?: { id?: string };
+      id?: string;
+      callId?: string;
+      status?: string;
+      data?: {
+        status?: string;
+        text?: string;
+        messages?: TranscriptMessage[];
+        summary?: string;
+        recordingUrl?: string;
+        endedReason?: string;
+        billingSeconds?: number;
+        durationSeconds?: number;
+        duration?: number;
+        durationMs?: number;
+      };
+      from?: string;
+      text?: string;
+      messages?: TranscriptMessage[];
+      summary?: string;
+      recordingUrl?: string;
+      endedReason?: string;
+      billingSeconds?: number;
+      durationSeconds?: number;
+      duration?: number;
+      durationMs?: number;
+      artifact?: {
+        durationSeconds?: number;
+        duration?: number;
+        durationMs?: number;
+        messages?: TranscriptMessage[];
+      };
+      // transcript-specific single fragment
+      transcript?: string;
+      transcriptType?: "partial" | "final" | string;
+      role?: string;
+    };
+
+    // Type guard for envelope shape
+    function hasMessageEnvelope(input: unknown): input is { message: unknown } {
+      return typeof input === "object" && input !== null && "message" in (input as Record<string, unknown>);
+    }
+
+    // Unwrap Vapi's message envelope when present
+    const raw: unknown = payload as unknown;
+    const p: VapiWebhookPayload = hasMessageEnvelope(raw)
+      ? ((raw as { message: unknown }).message as VapiWebhookPayload)
+      : ((raw as VapiWebhookPayload));
+
+    const type = p?.type;
+    const headerCallId = req.headers.get("X-Call-Id");
+    const vapiCallId: string | undefined = p?.call?.id ?? p?.id ?? p?.callId ?? headerCallId ?? undefined;
+
+    if (!type || !vapiCallId) {
+      // Guard: missing required identifiers; log once and return fast
+      console.warn("[Vapi Webhook] Missing type or call id", { type, callHeader: headerCallId });
+      return new Response("ok", { status: 200 });
+    }
+
+    try {
+      console.log("[Vapi Webhook] Incoming event type", type);
+    } catch {
+      console.log("[Vapi Webhook] Incoming event type <non-serializable>");
+    }
+
+    const shouldLogPayload =
+      typeof type === "string" &&
+      (type.toLowerCase().includes("transcript") || type === "speech-update" || type === "end-of-call-report");
+
+    if (shouldLogPayload) {
+      try {
+        console.log(
+          "[Vapi Webhook] Debug payload",
+          type,
+          JSON.stringify({
+            headers: {
+              "x-vapi-signature": signature ?? null,
+              "x-vapi-secret": shared ?? null,
+              "x-call-id": headerCallId,
+            },
+            body: p,
+          }),
+        );
+      } catch (logErr) {
+        console.warn("[Vapi Webhook] Failed to stringify payload", logErr);
+      }
+    }
+
+    switch (type) {
+      case "status-update": {
+        const status = p?.status ?? p?.data?.status ?? "unknown";
+        console.log(`[Vapi Webhook] Status update for ${vapiCallId}: ${status}`);
+        await ctx.runMutation(internal.call.calls.updateStatusFromWebhook, { vapiCallId, status });
+        break;
+      }
+      case "speech-update": {
+        const fragment = {
+          role: p?.from ?? "assistant",
+          text: p?.text ?? p?.data?.text ?? "",
+          timestamp: Date.now(),
+          source: "speech",
+        } as { role: string; text: string; timestamp?: number; source?: string };
+        try {
+          console.log(
+            "[Vapi Webhook] Transcript fragment",
+            JSON.stringify({ type, vapiCallId, fragment })
+          );
+        } catch (logErr) {
+          console.warn("[Vapi Webhook] Failed to stringify speech fragment", logErr);
+        }
+        await ctx.runMutation(internal.call.calls.appendTranscriptChunk, { vapiCallId, fragment });
+        break;
+      }
+      case "transcript":
+      case "transcript-final":
+      default: {
+        if (typeof type === "string" && type.toLowerCase().includes("transcript")) {
+          const transcriptType = typeof p?.transcriptType === "string" ? p.transcriptType.toLowerCase() : undefined;
+          const isPartial = transcriptType === "partial" || type.toLowerCase().includes("partial");
+          if (isPartial) {
+            try {
+              console.log(
+                "[Vapi Webhook] Transcript fragment (skipped partial)",
+                JSON.stringify({ type, vapiCallId, transcriptType, role: p?.role })
+              );
+            } catch (logErr) {
+              console.warn("[Vapi Webhook] Failed to stringify transcript partial payload", logErr);
+            }
+            break;
+          }
+          const messages = (p?.messages ?? p?.data?.messages ?? []) as TranscriptMessage[];
+          if (Array.isArray(messages) && messages.length > 0) {
+            for (const m of messages) {
+              const fragment = {
+                role: m.role ?? "assistant",
+                text: m.text ?? "",
+                timestamp: Date.now(),
+                source: type.toLowerCase().includes("transcript") ? "transcript" : type,
+              } as { role: string; text: string; timestamp?: number; source?: string };
+              try {
+                console.log(
+                  "[Vapi Webhook] Transcript fragment",
+                  JSON.stringify({ type, vapiCallId, fragment })
+                );
+              } catch (logErr) {
+                console.warn("[Vapi Webhook] Failed to stringify transcript message fragment", logErr);
+              }
+              await ctx.runMutation(internal.call.calls.appendTranscriptChunk, { vapiCallId, fragment });
+            }
+          } else if (typeof p?.transcript === "string") {
+            const fragment = {
+              role: (p?.role as string | undefined) ?? "assistant",
+              text: p.transcript,
+              timestamp: Date.now(),
+              source: type.toLowerCase().includes("transcript") ? "transcript" : type,
+            } as { role: string; text: string; timestamp?: number; source?: string };
+            try {
+              console.log(
+                "[Vapi Webhook] Transcript fragment",
+                JSON.stringify({ type, vapiCallId, fragment })
+              );
+            } catch (logErr) {
+              console.warn("[Vapi Webhook] Failed to stringify transcript single fragment", logErr);
+            }
+            await ctx.runMutation(internal.call.calls.appendTranscriptChunk, { vapiCallId, fragment });
+          }
+        } else {
+          // Log any unhandled event types that might contain monitor data
+          if (type && !["status-update", "speech-update", "end-of-call-report"].includes(type as string)) {
+            console.log(`[Vapi Webhook] Unhandled event type: ${type}`);
+            try {
+              console.log(`[Vapi Webhook] Unhandled payload:`, JSON.stringify(p));
+            } catch (logErr) {
+              console.warn(`[Vapi Webhook] Could not stringify unhandled payload for type: ${type}, error: ${logErr}`);
+            }
+          }
+        }
+        break;
+      }
+      case "end-of-call-report": {
+        console.log(`[Vapi Webhook] End-of-call-report for ${vapiCallId}`);
+        const summary = (p?.summary as string | undefined) ?? p?.data?.summary;
+        const recordingUrl = (p?.recordingUrl as string | undefined) ?? p?.data?.recordingUrl;
+        const endedReason = (p?.endedReason as string | undefined) ?? p?.data?.endedReason;
+        const asFiniteNumber = (value: unknown): number | undefined => {
+          if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+            return undefined;
+          }
+          return value;
+        };
+
+        const toSeconds = (value: unknown, unit: "seconds" | "milliseconds" = "seconds"): number | undefined => {
+          const num = asFiniteNumber(value);
+          if (num === undefined) return undefined;
+          return unit === "seconds" ? num : num / 1000;
+        };
+
+        const rawBillingSeconds =
+          toSeconds(p?.billingSeconds) ??
+          toSeconds(p?.data?.billingSeconds) ??
+          toSeconds(p?.durationSeconds) ??
+          toSeconds(p?.data?.durationSeconds) ??
+          toSeconds(p?.duration) ??
+          toSeconds(p?.data?.duration) ??
+          toSeconds(p?.artifact?.durationSeconds) ??
+          toSeconds(p?.artifact?.duration) ??
+          toSeconds(p?.durationMs, "milliseconds") ??
+          toSeconds(p?.data?.durationMs, "milliseconds") ??
+          toSeconds(p?.artifact?.durationMs, "milliseconds");
+
+        const billingSeconds =
+          rawBillingSeconds !== undefined ? Math.round(Number(rawBillingSeconds)) : undefined;
+
+        try {
+          console.log(
+            "[Vapi Webhook] Billing seconds extracted",
+            JSON.stringify({ vapiCallId, rawBillingSeconds, billingSeconds }),
+          );
+        } catch (logErr) {
+          console.warn("[Vapi Webhook] Failed to stringify billing seconds payload", logErr);
+        }
+
+        await ctx.runMutation(internal.call.calls.finalizeReport, {
+          vapiCallId,
+          summary,
+          recordingUrl,
+          endedReason,
+          billingSeconds,
+          messages: (p?.messages ?? p?.data?.messages ?? []) as unknown[],
+        });
+
+        // Phase 3: Trigger transcript analysis after finalizing the call
+        try {
+          // Look up the call record to get the callId
+          const callRecord = await ctx.runQuery(internal.call.calls.getCallByVapiId, { vapiCallId });
+          if (callRecord) {
+            console.log(`[Vapi Webhook] Scheduling transcript analysis for call ${callRecord._id}`);
+            await ctx.scheduler.runAfter(5000, internal.call.ai.processCallTranscript, {
+              callId: callRecord._id,
+            });
+          } else {
+            console.warn(`[Vapi Webhook] Call record not found for vapiCallId: ${vapiCallId}`);
+          }
+        } catch (analysisError) {
+          console.error("[Vapi Webhook] Failed to schedule transcript analysis:", analysisError);
+        }
+        break;
+      }
+    }
+  } catch (err) {
+    console.error("[Vapi Webhook] Error:", err);
+  }
+
+  return new Response("ok", { status: 200 });
+});
+
+const http = httpRouter();
+
+// authComponent.registerRoutes removed for Clerk
+
+http.route({ path: "/api/vapi-webhook", method: "POST", handler: vapiWebhook });
+
+export default http;
+
+

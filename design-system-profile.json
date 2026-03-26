@@ -1,0 +1,989 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "source": "UI screenshots — dark theme (support inbox) + light theme (AI notetaker)",
+    "purpose": "Cursor AI replication guide — maps every visual effect to its exact element context",
+    "themes": ["dark", "light"]
+  },
+
+  "DO_NOT_RULES": {
+    "gradients": [
+      "DO NOT apply status-badge colors (green/orange/blue) to card backgrounds",
+      "DO NOT apply chat bubble colors to sidebar backgrounds",
+      "DO NOT use light-theme surface colors in dark-theme components",
+      "DO NOT apply primary action blue (#2563eb) to body text — only to active nav items and links",
+      "DO NOT use timestamp gray (#6b7280) for primary content text",
+      "DO NOT apply incoming-bubble dark bg to outgoing-bubble elements — they are inverted",
+      "DO NOT use the full-white (#ffffff) card background in the dark theme — use layered darks only",
+      "DO NOT place shadows on text elements — only on container/card/panel surfaces"
+    ],
+    "colors": [
+      "DO NOT confuse border color with background color — borders are always 1–2 stops lighter than their container bg",
+      "DO NOT use status green (#22c55e) for anything other than resolved/online indicators",
+      "DO NOT use status orange (#f97316) for anything other than 'in progress' or 'pending' indicators",
+      "DO NOT apply active-sidebar blue background (#dbeafe) to the main content area — sidebar only"
+    ],
+    "layout": [
+      "DO NOT apply panel-level border-radius to inner list items — only to cards and container panels",
+      "DO NOT add box-shadows to sidebar list items — shadows belong on floating panels and message bubbles only"
+    ]
+  },
+
+  "colorTokens": {
+    "dark": {
+      "backgrounds": {
+        "navStrip":       "#0d0d13",
+        "sidebar":        "#161621",
+        "conversationList": "#1a1a26",
+        "chatPanel":      "#1e1e2c",
+        "inputArea":      "#1a1a26",
+        "hoverListItem":  "#22222e",
+        "activeListItem": "#26263a"
+      },
+      "surfaces": {
+        "incomingBubble": "#252535",
+        "outgoingBubble": "#f0f0f3",
+        "activityRow":    "#1e1e2c",
+        "divider":        "#2a2a3c"
+      },
+      "text": {
+        "primary":    "#f0f0f5",
+        "secondary":  "#9ca3b4",
+        "muted":      "#6b7280",
+        "timestamp":  "#52525e",
+        "incomingBubbleText":  "#f0f0f5",
+        "outgoingBubbleText":  "#1a1a26",
+        "activityLabel": "#9ca3b4"
+      },
+      "borders": {
+        "panelDivider":  "#2a2a3c",
+        "inputBorder":   "#2e2e40",
+        "bubbleBorder":  "none"
+      },
+      "status": {
+        "resolved": {
+          "dot":  "#22c55e",
+          "text": "#22c55e"
+        },
+        "inProgress": {
+          "badgeBg":   "#f97316",
+          "badgeText": "#ffffff",
+          "dot":       "#f97316"
+        },
+        "open": {
+          "dotStroke": "#6b7280",
+          "dotFill":   "transparent"
+        },
+        "escalated": {
+          "dot": "#ef4444"
+        },
+        "online": {
+          "dot": "#3b82f6"
+        }
+      },
+      "actions": {
+        "iconDefault":  "#6b7280",
+        "iconHover":    "#9ca3af",
+        "iconActive":   "#f0f0f5",
+        "attachIcon":   "#6b7280",
+        "sendButton":   "#3b82f6"
+      }
+    },
+
+    "light": {
+      "backgrounds": {
+        "navStrip":        "#ffffff",
+        "sidebar":         "#f9fafb",
+        "sidebarSelected": "#eff6ff",
+        "contentArea":     "#ffffff",
+        "sectionLabel":    "transparent"
+      },
+      "surfaces": {
+        "emailBlock":      "#ffffff",
+        "emailBlockBorder":"#e5e7eb",
+        "summaryBulletRow":"transparent"
+      },
+      "text": {
+        "primary":         "#111827",
+        "secondary":       "#374151",
+        "muted":           "#9ca3af",
+        "sectionLabel":    "#6b7280",
+        "activeNavItem":   "#2563eb",
+        "bodyContent":     "#374151",
+        "subheading":      "#6b7280",
+        "emailBodyText":   "#374151"
+      },
+      "borders": {
+        "panelDivider":  "#e5e7eb",
+        "emailBlock":    "#e5e7eb",
+        "sidebarItem":   "none"
+      },
+      "status": {
+        "activeNavBg":   "#eff6ff",
+        "activeNavText": "#2563eb",
+        "activeNavIcon": "#2563eb",
+        "chevron":       "#2563eb"
+      },
+      "actions": {
+        "iconDefault":   "#6b7280",
+        "iconActive":    "#2563eb",
+        "iconHover":     "#374151",
+        "emailActionIcon": "#6b7280"
+      }
+    }
+  },
+
+  "typography": {
+    "dark": {
+      "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "scales": {
+        "panelHeader": {
+          "fontSize": "16px",
+          "fontWeight": "600",
+          "color": "#f0f0f5",
+          "letterSpacing": "0"
+        },
+        "senderName": {
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#f0f0f5"
+        },
+        "messagePreview": {
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "color": "#9ca3b4",
+          "overflow": "ellipsis"
+        },
+        "timestamp": {
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "color": "#52525e"
+        },
+        "chatMessage": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "1.5"
+        },
+        "sectionLabel": {
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "color": "#6b7280",
+          "textTransform": "uppercase",
+          "letterSpacing": "0.06em"
+        },
+        "activityText": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "#9ca3b4"
+        },
+        "statusBadge": {
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "textTransform": "uppercase",
+          "letterSpacing": "0.05em"
+        }
+      }
+    },
+
+    "light": {
+      "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "scales": {
+        "pageTitle": {
+          "fontSize": "24px",
+          "fontWeight": "700",
+          "color": "#111827",
+          "marginBottom": "8px"
+        },
+        "summary": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#374151",
+          "lineHeight": "1.6"
+        },
+        "sectionLabel": {
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "color": "#6b7280",
+          "textTransform": "uppercase",
+          "letterSpacing": "0.06em",
+          "marginBottom": "4px"
+        },
+        "sidebarItem": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#374151"
+        },
+        "sidebarItemActive": {
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#2563eb"
+        },
+        "sidebarGroupHeader": {
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "color": "#9ca3af"
+        },
+        "bulletText": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#374151",
+          "lineHeight": "1.6"
+        },
+        "emailSubject": {
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "color": "#111827"
+        },
+        "emailBody": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#374151",
+          "lineHeight": "1.6"
+        }
+      }
+    }
+  },
+
+  "components": {
+
+    "layout": {
+      "dark": {
+        "threeColumnLayout": {
+          "description": "navStrip | sidebar | conversationList | chatPanel",
+          "columns": {
+            "navStrip": {
+              "width": "56px",
+              "background": "#0d0d13",
+              "borderRight": "none",
+              "padding": "12px 0"
+            },
+            "sidebar": {
+              "width": "200px",
+              "background": "#161621",
+              "borderRight": "1px solid #2a2a3c",
+              "padding": "12px 0"
+            },
+            "conversationList": {
+              "width": "260px",
+              "background": "#1a1a26",
+              "borderRight": "1px solid #2a2a3c"
+            },
+            "chatPanel": {
+              "flex": 1,
+              "background": "#1e1e2c"
+            }
+          }
+        }
+      },
+      "light": {
+        "twoColumnLayout": {
+          "description": "iconStrip | sidebar | contentArea",
+          "columns": {
+            "iconStrip": {
+              "width": "52px",
+              "background": "#f9fafb",
+              "borderRight": "1px solid #e5e7eb"
+            },
+            "sidebar": {
+              "width": "260px",
+              "background": "#f9fafb",
+              "borderRight": "1px solid #e5e7eb",
+              "padding": "12px 0"
+            },
+            "contentArea": {
+              "flex": 1,
+              "background": "#ffffff",
+              "padding": "32px 40px"
+            }
+          }
+        }
+      }
+    },
+
+    "navigationIcons": {
+      "dark": {
+        "container": {
+          "width": "32px",
+          "height": "32px",
+          "borderRadius": "8px",
+          "margin": "4px auto",
+          "display": "flex",
+          "alignItems": "center",
+          "justifyContent": "center"
+        },
+        "default": {
+          "iconColor": "#6b7280",
+          "iconSize": "18px",
+          "background": "transparent"
+        },
+        "hover": {
+          "background": "#22222e",
+          "iconColor": "#9ca3af",
+          "transition": "background 150ms ease, color 150ms ease"
+        },
+        "active": {
+          "background": "#26263a",
+          "iconColor": "#f0f0f5"
+        },
+        "notification": {
+          "dot": {
+            "width": "8px",
+            "height": "8px",
+            "borderRadius": "50%",
+            "background": "#3b82f6",
+            "position": "absolute",
+            "top": "4px",
+            "right": "4px",
+            "border": "2px solid #0d0d13"
+          }
+        }
+      },
+      "light": {
+        "default": {
+          "iconColor": "#6b7280",
+          "iconSize": "18px",
+          "background": "transparent"
+        },
+        "active": {
+          "iconColor": "#2563eb",
+          "background": "transparent"
+        },
+        "hover": {
+          "iconColor": "#374151"
+        }
+      }
+    },
+
+    "sidebarNavItem": {
+      "dark": {
+        "container": {
+          "height": "32px",
+          "borderRadius": "6px",
+          "padding": "0 10px",
+          "display": "flex",
+          "alignItems": "center",
+          "gap": "8px",
+          "margin": "1px 8px"
+        },
+        "default": {
+          "background": "transparent",
+          "color": "#9ca3b4",
+          "fontSize": "13px",
+          "fontWeight": "400"
+        },
+        "hover": {
+          "background": "#22222e",
+          "color": "#f0f0f5",
+          "transition": "background 120ms ease"
+        },
+        "active": {
+          "background": "#26263a",
+          "color": "#f0f0f5",
+          "fontWeight": "500"
+        },
+        "icon": {
+          "size": "14px",
+          "color": "inherit",
+          "marginRight": "6px"
+        },
+        "badge": {
+          "background": "transparent",
+          "color": "#6b7280",
+          "fontSize": "12px",
+          "marginLeft": "auto"
+        }
+      },
+      "light": {
+        "container": {
+          "height": "32px",
+          "borderRadius": "6px",
+          "padding": "0 10px",
+          "margin": "1px 8px"
+        },
+        "default": {
+          "background": "transparent",
+          "color": "#374151",
+          "fontSize": "14px",
+          "fontWeight": "400"
+        },
+        "hover": {
+          "background": "#f3f4f6",
+          "transition": "background 120ms ease"
+        },
+        "active": {
+          "background": "#eff6ff",
+          "color": "#2563eb",
+          "fontWeight": "500"
+        },
+        "activeChevron": {
+          "color": "#2563eb",
+          "size": "12px",
+          "marginLeft": "auto"
+        }
+      }
+    },
+
+    "conversationListItem": {
+      "dark": {
+        "container": {
+          "padding": "10px 14px",
+          "borderBottom": "1px solid #22222e",
+          "cursor": "pointer",
+          "position": "relative"
+        },
+        "default": {
+          "background": "transparent"
+        },
+        "hover": {
+          "background": "#22222e"
+        },
+        "active": {
+          "background": "#26263a"
+        },
+        "avatar": {
+          "width": "34px",
+          "height": "34px",
+          "borderRadius": "50%",
+          "background": "#2e2e40",
+          "overflow": "hidden",
+          "position": "relative"
+        },
+        "statusDot": {
+          "width": "9px",
+          "height": "9px",
+          "borderRadius": "50%",
+          "border": "2px solid #1a1a26",
+          "position": "absolute",
+          "bottom": "0",
+          "right": "0",
+          "states": {
+            "open":       { "background": "transparent", "borderColor": "#6b7280" },
+            "resolved":   { "background": "#22c55e",     "borderColor": "#1a1a26" },
+            "inProgress": { "background": "#f97316",     "borderColor": "#1a1a26" },
+            "online":     { "background": "#3b82f6",     "borderColor": "#1a1a26" }
+          }
+        },
+        "senderName": {
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "color": "#f0f0f5"
+        },
+        "preview": {
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "color": "#9ca3b4",
+          "maxLines": 1,
+          "overflow": "ellipsis"
+        },
+        "timestamp": {
+          "fontSize": "11px",
+          "color": "#52525e",
+          "position": "absolute",
+          "top": "12px",
+          "right": "14px"
+        }
+      }
+    },
+
+    "chatBubble": {
+      "dark": {
+        "incoming": {
+          "background": "#252535",
+          "color": "#f0f0f5",
+          "borderRadius": "4px 16px 16px 16px",
+          "padding": "10px 14px",
+          "maxWidth": "65%",
+          "fontSize": "14px",
+          "lineHeight": "1.5",
+          "alignSelf": "flex-start",
+          "boxShadow": "none"
+        },
+        "outgoing": {
+          "background": "#f0f0f3",
+          "color": "#1a1a26",
+          "borderRadius": "16px 4px 16px 16px",
+          "padding": "10px 14px",
+          "maxWidth": "65%",
+          "fontSize": "14px",
+          "lineHeight": "1.5",
+          "alignSelf": "flex-end",
+          "boxShadow": "none"
+        },
+        "timestamp": {
+          "fontSize": "11px",
+          "color": "#52525e",
+          "display": "block",
+          "marginTop": "4px",
+          "textAlign": "right"
+        },
+        "agentAvatar": {
+          "width": "28px",
+          "height": "28px",
+          "borderRadius": "50%",
+          "background": "#2563eb",
+          "position": "absolute",
+          "bottom": "0",
+          "right": "-36px"
+        }
+      }
+    },
+
+    "chatInput": {
+      "dark": {
+        "container": {
+          "background": "#1a1a26",
+          "borderTop": "1px solid #2a2a3c",
+          "padding": "10px 14px 14px"
+        },
+        "inputField": {
+          "background": "transparent",
+          "border": "none",
+          "outline": "none",
+          "color": "#f0f0f5",
+          "fontSize": "14px",
+          "placeholder": { "color": "#52525e" }
+        },
+        "toolbar": {
+          "marginTop": "8px",
+          "display": "flex",
+          "alignItems": "center",
+          "gap": "8px"
+        },
+        "attachIcon": {
+          "color": "#6b7280",
+          "size": "18px",
+          "hover": { "color": "#9ca3af" }
+        },
+        "sendButton": {
+          "width": "32px",
+          "height": "32px",
+          "borderRadius": "50%",
+          "background": "#3b82f6",
+          "color": "#ffffff",
+          "iconSize": "16px",
+          "marginLeft": "auto",
+          "hover": { "background": "#2563eb" },
+          "disabled": { "background": "#2a2a3c", "color": "#6b7280" }
+        }
+      }
+    },
+
+    "statusBadge": {
+      "dark": {
+        "inProgress": {
+          "background": "#f97316",
+          "color": "#ffffff",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "padding": "2px 8px",
+          "borderRadius": "4px",
+          "textTransform": "uppercase",
+          "letterSpacing": "0.05em",
+          "iconColor": "#ffffff",
+          "iconSize": "12px",
+          "gap": "4px"
+        },
+        "open": {
+          "background": "transparent",
+          "color": "#9ca3b4",
+          "border": "1px solid #6b7280",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "padding": "2px 8px",
+          "borderRadius": "4px",
+          "textTransform": "uppercase"
+        },
+        "resolved": {
+          "background": "transparent",
+          "color": "#22c55e",
+          "border": "1px solid #22c55e",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "padding": "2px 8px",
+          "borderRadius": "4px",
+          "textTransform": "uppercase"
+        }
+      }
+    },
+
+    "activityFeed": {
+      "dark": {
+        "container": {
+          "padding": "12px 16px",
+          "borderBottom": "1px solid #2a2a3c"
+        },
+        "row": {
+          "fontSize": "12px",
+          "color": "#9ca3b4",
+          "lineHeight": "1.5",
+          "display": "flex",
+          "alignItems": "center",
+          "gap": "6px",
+          "padding": "4px 0"
+        },
+        "agentName": {
+          "fontWeight": "500",
+          "color": "#f0f0f5"
+        },
+        "statusArrow": {
+          "color": "#6b7280",
+          "fontSize": "12px"
+        },
+        "timestamp": {
+          "marginLeft": "auto",
+          "fontSize": "11px",
+          "color": "#52525e"
+        }
+      }
+    },
+
+    "avatarInitial": {
+      "dark": {
+        "sizes": {
+          "sm": { "width": "28px", "height": "28px", "fontSize": "11px" },
+          "md": { "width": "34px", "height": "34px", "fontSize": "13px" },
+          "lg": { "width": "40px", "height": "40px", "fontSize": "15px" }
+        },
+        "shape": "border-radius: 50%",
+        "background": "#2e2e40",
+        "color": "#9ca3b4",
+        "fontWeight": "500"
+      },
+      "light": {
+        "sizes": {
+          "sm": { "width": "24px", "height": "24px", "fontSize": "10px" },
+          "md": { "width": "32px", "height": "32px", "fontSize": "12px" }
+        },
+        "shape": "border-radius: 50%",
+        "background": "#dbeafe",
+        "color": "#2563eb",
+        "fontWeight": "500"
+      }
+    },
+
+    "sidebarSection": {
+      "dark": {
+        "header": {
+          "padding": "16px 12px 4px",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "color": "#6b7280",
+          "textTransform": "uppercase",
+          "letterSpacing": "0.06em",
+          "display": "flex",
+          "alignItems": "center",
+          "justifyContent": "space-between"
+        },
+        "addButton": {
+          "color": "#6b7280",
+          "size": "14px",
+          "hover": { "color": "#9ca3af" }
+        }
+      },
+      "light": {
+        "header": {
+          "padding": "16px 12px 6px",
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "color": "#9ca3af",
+          "display": "block"
+        }
+      }
+    },
+
+    "notesContent": {
+      "light": {
+        "pageTitle": {
+          "fontSize": "26px",
+          "fontWeight": "700",
+          "color": "#111827",
+          "marginBottom": "8px"
+        },
+        "leadParagraph": {
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#374151",
+          "lineHeight": "1.65",
+          "marginBottom": "24px"
+        },
+        "sectionLabel": {
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "color": "#9ca3af",
+          "marginBottom": "12px",
+          "textTransform": "capitalize"
+        },
+        "bulletItem": {
+          "display": "flex",
+          "alignItems": "flex-start",
+          "gap": "10px",
+          "padding": "4px 0",
+          "fontSize": "14px",
+          "color": "#374151",
+          "lineHeight": "1.5"
+        },
+        "bulletDot": {
+          "width": "6px",
+          "height": "6px",
+          "borderRadius": "50%",
+          "background": "#d1d5db",
+          "marginTop": "7px",
+          "flexShrink": 0
+        }
+      }
+    },
+
+    "emailBlock": {
+      "light": {
+        "container": {
+          "background": "#ffffff",
+          "border": "1px solid #e5e7eb",
+          "borderRadius": "8px",
+          "overflow": "hidden",
+          "marginTop": "12px"
+        },
+        "header": {
+          "background": "#f9fafb",
+          "padding": "10px 14px",
+          "borderBottom": "1px solid #e5e7eb",
+          "display": "flex",
+          "alignItems": "center",
+          "gap": "8px"
+        },
+        "headerIcon": {
+          "width": "28px",
+          "height": "28px",
+          "borderRadius": "6px",
+          "background": "#3b82f6",
+          "color": "#ffffff",
+          "iconSize": "14px"
+        },
+        "headerLabel": {
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#111827"
+        },
+        "actionIcons": {
+          "color": "#6b7280",
+          "size": "16px",
+          "marginLeft": "auto",
+          "gap": "10px",
+          "hover": { "color": "#374151" }
+        },
+        "field": {
+          "padding": "8px 14px",
+          "borderBottom": "1px solid #f3f4f6",
+          "display": "flex",
+          "gap": "12px"
+        },
+        "fieldLabel": {
+          "fontSize": "13px",
+          "color": "#9ca3af",
+          "fontWeight": "400",
+          "minWidth": "60px"
+        },
+        "fieldValue": {
+          "fontSize": "13px",
+          "color": "#374151",
+          "fontWeight": "400"
+        },
+        "body": {
+          "padding": "14px",
+          "fontSize": "14px",
+          "color": "#374151",
+          "lineHeight": "1.6"
+        },
+        "bodyHeading": {
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "color": "#111827",
+          "marginBottom": "8px"
+        }
+      }
+    },
+
+    "searchBar": {
+      "dark": {
+        "container": {
+          "margin": "8px 10px 12px",
+          "background": "#22222e",
+          "border": "1px solid #2a2a3c",
+          "borderRadius": "8px",
+          "padding": "6px 10px",
+          "display": "flex",
+          "alignItems": "center",
+          "gap": "8px"
+        },
+        "icon": {
+          "color": "#6b7280",
+          "size": "14px"
+        },
+        "input": {
+          "background": "transparent",
+          "border": "none",
+          "color": "#f0f0f5",
+          "fontSize": "13px",
+          "placeholder": { "color": "#52525e" }
+        },
+        "focus": {
+          "borderColor": "#3b82f6",
+          "outline": "none"
+        }
+      }
+    },
+
+    "panelHeader": {
+      "dark": {
+        "container": {
+          "padding": "12px 14px",
+          "borderBottom": "1px solid #2a2a3c",
+          "display": "flex",
+          "alignItems": "center",
+          "gap": "8px"
+        },
+        "title": {
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "color": "#f0f0f5"
+        },
+        "actionIcons": {
+          "color": "#6b7280",
+          "size": "16px",
+          "gap": "8px",
+          "marginLeft": "auto"
+        },
+        "statusBadge": {
+          "position": "right",
+          "marginLeft": "auto"
+        }
+      }
+    },
+
+    "filterBar": {
+      "dark": {
+        "container": {
+          "padding": "8px 14px",
+          "borderBottom": "1px solid #2a2a3c",
+          "display": "flex",
+          "alignItems": "center",
+          "gap": "10px"
+        },
+        "title": {
+          "fontSize": "13px",
+          "fontWeight": "500",
+          "color": "#f0f0f5"
+        },
+        "iconButton": {
+          "color": "#6b7280",
+          "size": "15px",
+          "hover": { "color": "#9ca3af" }
+        }
+      }
+    }
+  },
+
+  "spacing": {
+    "containerPadding": {
+      "navStrip":          "8px 0",
+      "sidebar":           "8px 0",
+      "conversationList":  "0",
+      "chatPanel":         "0",
+      "contentArea":       "32px 40px"
+    },
+    "listItemPadding": {
+      "sidebarNavItem":         "0 10px",
+      "conversationListItem":   "10px 14px",
+      "sectionHeader":          "16px 12px 4px"
+    },
+    "gaps": {
+      "avatarToContent":   "10px",
+      "iconToLabel":       "8px",
+      "itemGap":           "1px",
+      "sectionGap":        "8px"
+    }
+  },
+
+  "borderRadius": {
+    "navIcon":         "8px",
+    "sidebarItem":     "6px",
+    "chatBubble": {
+      "incoming":      "4px 16px 16px 16px",
+      "outgoing":      "16px 4px 16px 16px"
+    },
+    "statusBadge":     "4px",
+    "statusDot":       "50%",
+    "avatar":          "50%",
+    "searchBar":       "8px",
+    "emailBlock":      "8px",
+    "emailHeaderIcon": "6px",
+    "panel":           "0",
+    "floatingPanel":   "12px"
+  },
+
+  "shadows": {
+    "dark": {
+      "floatingPanel":   "0 8px 24px rgba(0, 0, 0, 0.5)",
+      "chatBubble":      "none",
+      "dropdown":        "0 4px 16px rgba(0, 0, 0, 0.4)",
+      "DO_NOT_APPLY_TO": ["list items", "sidebar items", "text elements", "icons"]
+    },
+    "light": {
+      "floatingPanel":   "0 4px 16px rgba(0, 0, 0, 0.08)",
+      "emailBlock":      "0 1px 4px rgba(0, 0, 0, 0.04)",
+      "dropdown":        "0 4px 12px rgba(0, 0, 0, 0.1)",
+      "DO_NOT_APPLY_TO": ["sidebar list items", "content text", "bullet lists"]
+    }
+  },
+
+  "transitions": {
+    "default":        "all 150ms ease",
+    "background":     "background 120ms ease",
+    "color":          "color 120ms ease",
+    "iconHover":      "color 150ms ease, opacity 150ms ease",
+    "DO_NOT_ANIMATE": ["layout shifts", "font-size", "border-radius on hover"]
+  },
+
+  "iconography": {
+    "sizes": {
+      "navStrip":     "18px",
+      "sidebarItem":  "14px",
+      "listItemMeta": "13px",
+      "actionButton": "16px",
+      "badge":        "12px"
+    },
+    "colorContext": {
+      "navStrip_inactive":   "inherit from container — #6b7280",
+      "navStrip_active":     "#f0f0f5 (dark) / #2563eb (light)",
+      "sidebarItem_inactive":"#6b7280 (both themes)",
+      "sidebarItem_active":  "#f0f0f5 (dark) / #2563eb (light)",
+      "actionIcons":         "#6b7280 (both themes)",
+      "statusIcons":         "match status color token exactly"
+    }
+  },
+
+  "implementationNotes": {
+    "darkTheme": [
+      "Use a CSS class `.dark` on the root `<html>` or `<body>` element to scope all dark tokens",
+      "Background depth increases left-to-right: navStrip (#0d0d13) → sidebar (#161621) → list (#1a1a26) → chat (#1e1e2c)",
+      "Never use pure black (#000000) — all backgrounds use very dark blue-gray, not neutral black",
+      "Outgoing chat bubbles use near-white (#f0f0f3) with dark text (#1a1a26) — invert of the panel bg",
+      "Status dots always have a 2px solid border matching their immediate container background (prevents halo on dark bg)",
+      "Font rendering: use `font-smoothing: antialiased` throughout dark theme for crisp text on dark bg"
+    ],
+    "lightTheme": [
+      "Use CSS class `.light` or default (no class) to scope light tokens",
+      "The active sidebar item uses a dedicated blue-tinted background (#eff6ff) — not just bold text",
+      "Section group labels ('Today', 'Yesterday') are lighter gray (#9ca3af), smaller, and spaced above their items",
+      "Main content has generous horizontal padding (40px) — not flush to the panel edge",
+      "Email compose block is contained with a border + subtle border-radius — it reads as an embedded card, not a raw form",
+      "Bullet dots (#d1d5db) are intentionally muted — they are structural, not decorative"
+    ],
+    "shared": [
+      "Avatar fallbacks use initials with theme-appropriate bg/text contrast",
+      "Timestamps are always the most muted color in both themes — they should recede visually",
+      "ALL-CAPS labels (section headers, status badges) use letter-spacing: 0.05–0.06em",
+      "List item hover states must be subtle — never match the active state color",
+      "Dividers use a single `border-bottom` line, never a full `<hr>` with margin on both sides"
+    ]
+  }
+}

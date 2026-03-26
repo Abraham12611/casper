@@ -1,0 +1,52 @@
+﻿
+C:\Users\DELL\11-labs\modern-hack-main\app\dashboard\layout.tsx
+  55:11  error  'user' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  56:11  error  'signOut' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\DELL\11-labs\modern-hack-main\app\layout.tsx
+  37:9  warning  Custom fonts not added in `pages/_document.js` will only load for a single page. This is discouraged. See: https://nextjs.org/docs/messages/no-page-custom-font  @next/next/no-page-custom-font
+
+C:\Users\DELL\11-labs\modern-hack-main\app\page.tsx
+   64:28   error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+  262:83   error  Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+  435:103  error  Unexpected any. Specify a different type                                @typescript-eslint/no-explicit-any
+
+C:\Users\DELL\11-labs\modern-hack-main\components\AutumnWrapper.tsx
+  15:71  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\DELL\11-labs\modern-hack-main\convex\_generated\api.js
+  1:1  warning  Unused eslint-disable directive (no problems were reported)
+
+C:\Users\DELL\11-labs\modern-hack-main\convex\_generated\dataModel.d.ts
+  1:1  warning  Unused eslint-disable directive (no problems were reported)
+
+C:\Users\DELL\11-labs\modern-hack-main\convex\_generated\server.d.ts
+  1:1  warning  Unused eslint-disable directive (no problems were reported)
+
+C:\Users\DELL\11-labs\modern-hack-main\convex\_generated\server.js
+  1:1  warning  Unused eslint-disable directive (no problems were reported)
+
+C:\Users\DELL\11-labs\modern-hack-main\convex\agent.ts
+  12:62  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:76  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\DELL\11-labs\modern-hack-main\convex\auth.config.ts
+  1:1  warning  Assign object to a variable before exporting as module default  import/no-anonymous-default-export
+
+C:\Users\DELL\11-labs\modern-hack-main\convex\auth.ts
+  4:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  4:70  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  4:94  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\DELL\11-labs\modern-hack-main\convex\autumn.ts
+  6:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\DELL\11-labs\modern-hack-main\convex\leadGen\auditInit.ts
+  6:26  error  'internalMutation' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\DELL\11-labs\modern-hack-main\next-env.d.ts
+  3:1  error  Do not use a triple slash reference for ./.next/types/routes.d.ts, use `import` style instead  @typescript-eslint/triple-slash-reference
+
+Γ£û 20 problems (14 errors, 6 warnings)
+  0 errors and 4 warnings potentially fixable with the `--fix` option.
+

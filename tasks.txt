@@ -1,0 +1,149 @@
+//set up autumn
+//onboarding wizard
+
+//ricing table refresh fix
+//how to get plan name? check log
+//test credit spend
+
+//groq and workflow install init
+//set up firecrawl in onboarding
+//full onboarding flow
+
+//ontinue refining onboarding workflow
+//prompt with firecrawl docs to check and ai agent + workflow docs
+//test it 
+
+//pages not updated from queued
+//claims only getting urls as context so they suck
+//claims and guardrails need their own step
+//onboarding only uses fast agent?
+//claims and summary need to happen in parallel
+//also return 'core offer' 
+//dashboard and onboarding redirecting
+//update seller brain and final step form
+
+//update schema and onboarding form
+//give manual or automated option
+
+//update prompts in workflow for agency
+
+//remove loading at bottom
+//page not switching to fetching
+
+------
+
+
+//set up lead gen firecrawl / google api
+//figure out pagination for 20+ and field mask
+//clean up onboarding docs and use for reference for leadGen workflow
+//add more signals and lead qual criteria to constants
+//set up real google api file and workflow
+//should we move marketing fields out of agency into lead gen flow?
+//workflow and scraping func
+//build dossier and fit reason
+//review full flow
+//split audit.ts 
+
+//research + dossier firecrawl + talking points
+
+//city not recorded in co
+//scrape_content phase not tracked correctly
+//need to test w actual agency w all leadqual
+
+//integrate atlas credits
+
+//test credit integration
+//test resume flow - //uncaught err, //blank preview, //workflow status still went to complete
+//need to manually add fields needed to preview, and render upgrade button. or just render pricing table?
+//styling broken?
+
+//resume statuses in ui werent perfect and it refetches
+//enough credits for first scrape then run out works. but idk about starting with 1 credit
+//redirect url and success state for dialog
+
+//percentage jumps when audit starts
+//when resuming workflow, fetch, filter etc happens again. duplicates are skipped.
+
+//deploy and update keys
+//test all flows
+
+
+//vapi integration to call with dossier
+//create phone number
+//create plan from google docs and double check it
+
+//timer not stopping on complete and render summary 
+//dont show/accept partial transcript
+//listen not working
+
+//twilio phone number
+//test billingSeconds
+//deploy
+
+//calendar plan?
+//create table, check availability before call, book meeting func
+
+//test booking
+
+//timer not working still - booked status
+//rejected status?
+
+//update system prompts and model
+
+
+//get email in leadgen
+//test email log
+
+
+resend emails with ics and recap
+//add emails to db
+//test emails
+
+//add credit metering to calls
+//test crediting
+
+//create sidebar and routes
+
+//email, meetings, combine settings/sub
+
+//ui / ux
+
+//edit agency
+//go through each page for ui and ux
+//call linking
+//add color in few places
+//update layout for tab stuff and twitter card
+
+//add use demo button on onboarding, and crawl should show loading right away
+//onboarding ui / ux
+
+
+//create dummy agency site
+//add test call functionality with phone number and email override -- biggest change
+// id pages ui / ux
+
+//lead gen workflow ui / ux
+//test pause / resume
+
+//paywall dialog return url and remove lower tiers, manage sub, dialogpay from dialog, opacity
+//percentage on resume
+//ai call prompt - if we have email aware, hang up faster   scheduling vs have chat, eaarlier vs later, email or no
+//live call ui / ux? listen live modal
+
+
+//test full flow for demo x3
+
+landing page ui
+
+finalize demo plan with gemini plan
+
+demo video
+
+SUBMIT
+
+post about chef site
+
+
+
+
+cancel firecrawl, cancel twilio, cancel cursor ultra

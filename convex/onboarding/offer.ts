@@ -70,13 +70,21 @@ ${contextContent}
 
 Return the core offer text only (no quotes or preface).`;
     
-    const result = await casperAgentFast.generateText(
-      ctx,
-      { threadId: coreOfferThread },
-      { prompt }
-    );
-    
-    const coreOffer = (result.text ?? "").trim();
+    // Wrap the AI call — if generateText fails (e.g. Responses API not supported by
+    // the free tier provider), return a placeholder the user can edit in Step 3.
+    let coreOffer = "";
+    try {
+      const result = await casperAgentFast.generateText(
+        ctx,
+        { threadId: coreOfferThread },
+        { prompt }
+      );
+      coreOffer = (result.text ?? "").trim();
+    } catch (e) {
+      console.warn("[generateCoreOffer] AI call failed, using placeholder:", String(e));
+      // Placeholder — user will edit this in Step 3 (Review & Edit Generated Content)
+      coreOffer = `${companyName} helps businesses achieve their goals through professional services delivered via ${sourceUrl}. Edit this core offer description in the next step to accurately reflect your agency's value proposition.`;
+    }
     return { coreOffer };
   },
 });

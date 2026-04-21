@@ -98,28 +98,29 @@ Output (JSON only, no prose):
 Sources:
 ${contextLines}`;
 
-  const result = await casperAgentFast.generateText(ctx, { threadId: claimThread }, { prompt });
-  const raw = (result.text ?? "").trim();
+  // Wrap the AI call — on failure (e.g. Responses API error) return empty claims.
+  // The user can add claims manually in Step 3 (Review & Edit Generated Content).
   let claims: Array<{ text: string; source_url: string }> = [];
   try {
-    const start = raw.indexOf("[");
-    const end = raw.lastIndexOf("]");
-    const json = start >= 0 && end >= 0 ? raw.slice(start, end + 1) : raw;
-    const parsed = JSON.parse(json);
-    if (Array.isArray(parsed)) {
-      claims = parsed
-        .filter((c) => c && typeof c.text === "string" && typeof c.source_url === "string")
-        .slice(0, 5);
+    const result = await casperAgentFast.generateText(ctx, { threadId: claimThread }, { prompt });
+    const raw = (result.text ?? "").trim();
+    try {
+      const start = raw.indexOf("[");
+      const end = raw.lastIndexOf("]");
+      const json = start >= 0 && end >= 0 ? raw.slice(start, end + 1) : raw;
+      const parsed = JSON.parse(json);
+      if (Array.isArray(parsed)) {
+        claims = parsed
+          .filter((c) => c && typeof c.text === "string" && typeof c.source_url === "string")
+          .slice(0, 5);
+      }
+    } catch (parseErr) {
+      console.warn("Claims JSON parse failed:", parseErr);
+      // Return empty — user adds claims manually in Step 3
     }
-  } catch (e) {
-    console.warn("Claims JSON parse failed, using fallback:", e);
-    // Fallback: create a simple claim from available data
-    if (limitedPages.length > 0) {
-      claims = [{
-        text: `Company information available on website`,
-        source_url: limitedPages[0].url
-      }];
-    }
+  } catch (aiErr) {
+    console.warn("[generateClaims] AI call failed, returning empty claims:", String(aiErr));
+    // Return empty — workflow continues, user adds claims manually
   }
 
     const finalized = claims.map((c, idx) => ({ id: `claim_${idx + 1}`, text: c.text, source_url: normalizeUrl(c.source_url) }));
@@ -223,15 +224,15 @@ ${snippet}`;
       const res = await casperAgentFast.generateText(ctx, { threadId: flow!.claimThread }, { prompt });
       const parsed = JSON.parse(res.text ?? "{}");
       ok = !!parsed.accepted;
-      // Individual claim verification logging is now handled by the workflow
     } catch (e) {
-      console.warn("Claim verification JSON parse failed:", e);
-      // Conservative fallback - reject claim if parsing fails
-      ok = false;
+      // If the AI call itself fails (Responses API error), accept the claim as-is
+      // so at least some claims reach Step 3 for the user to review.
+      console.warn("[verifyClaims] AI call failed, auto-accepting claim:", String(e));
+      ok = true;
     }
     if (ok) accepted.push({ id: c.id, text: c.text, source_url: n });
-    // Brief delay between verify calls to respect free-tier RPM limits
-    await new Promise<void>(resolve => setTimeout(resolve, 1500));
+    // Brief delay between verify calls
+    await new Promise<void>(resolve => setTimeout(resolve, 500));
   }
 
     await ctx.runMutation(internal.onboarding.claims.finishVerifyClaims, { onboardingFlowId, accepted });

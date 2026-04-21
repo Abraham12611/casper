@@ -38,15 +38,21 @@ Output (JSON only, no prose): {"urls": [string, ...]}
 URLs:
 ${top.map((p, i) => `[${i + 1}] ${p.title ? `${p.title} — ` : ""}${p.url}`).join("\n")}`;
 
-    const res = await casperAgentFast.generateText(ctx, { threadId: flow.coreOfferThread }, { prompt });
+    // Wrap the AI call — on failure fall back to heuristic URL selection so
+    // the filter phase never crashes and downstream phases still run.
     let urls: Array<string> = [];
     try {
-      const parsed = JSON.parse(res.text ?? "{}");
-      urls = Array.isArray(parsed.urls) ? parsed.urls.slice(0, 20) : [];
-    } catch (e) {
-      console.warn("Filter JSON parse failed, using fallback:", e);
+      const res = await casperAgentFast.generateText(ctx, { threadId: flow.coreOfferThread }, { prompt });
+      try {
+        const parsed = JSON.parse(res.text ?? "{}");
+        urls = Array.isArray(parsed.urls) ? parsed.urls.slice(0, 20) : [];
+      } catch (parseErr) {
+        console.warn("Filter JSON parse failed, using heuristic fallback:", parseErr);
+      }
+    } catch (aiErr) {
+      console.warn("[filterRelevantPages] AI call failed, using heuristic fallback:", String(aiErr));
     }
-    
+
     if (urls.length === 0) {
       // Fallback: use top pages prioritizing common important pages
       urls = top

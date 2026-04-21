@@ -22,7 +22,7 @@ export const streamSummary = internalAction({
     
     // Load actual content from storage instead of just URLs
     const contentLines: Array<string> = [];
-    const limitedUrls = contextUrls.slice(0, 8); // Limit to prevent memory issues
+    const limitedUrls = contextUrls.slice(0, 4); // Limit to 4 URLs to stay within free-tier token budget
     
     for (let i = 0; i < limitedUrls.length; i++) {
       const url = limitedUrls[i];
@@ -38,7 +38,7 @@ export const streamSummary = internalAction({
           const blob = await ctx.storage.get(page.contentRef);
           if (blob) {
             const text = await blob.text();
-            const truncated = truncateContent(text, 3000);
+            const truncated = truncateContent(text, 2000); // Cap at 2K chars per page to avoid rate-limit token errors
             contentLines.push(`Source [${i + 1}]: ${url}\n${truncated}`);
             console.log(`Successfully loaded summary content for ${url}: ${text.length} chars`);
           } else {

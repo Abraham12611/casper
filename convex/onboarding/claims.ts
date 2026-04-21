@@ -19,7 +19,7 @@ export const loadClaimsContext = internalQuery({
     const flow = await ctx.db.get(onboardingFlowId);
     if (!flow || !flow.claimThread) throw new Error("Flow not found");
     const relevant: Array<string> = (flow.relevantPages ?? []) as Array<string>;
-    const top = relevant.slice(0, 8);
+    const top = relevant.slice(0, 5); // Limit to 5 pages to stay within free-tier token budget
     const pages: Array<{ url: string; contentRef?: Id<"_storage"> }> = [];
     for (const u of top) {
       const n = normalizeUrl(u);
@@ -44,8 +44,8 @@ export const generateClaims = internalAction({
     const { claimThread, pages } = await ctx.runQuery(internal.onboarding.claims.loadClaimsContext, { onboardingFlowId });
     const lines: Array<string> = [];
 
-    // Limit pages to prevent memory issues during hackathon demo
-    const limitedPages = pages.slice(0, 10);
+    // Limit pages to 5 to stay within free-tier token budgets
+    const limitedPages = pages.slice(0, 5);
   const concurrency = 2;
   let index = 0;
   const results: Array<{ i: number; line: string }> = [];
@@ -62,7 +62,7 @@ export const generateClaims = internalAction({
           const blob = await ctx.storage.get(p.contentRef);
           if (blob) {
             const text = await blob.text();
-            snippet = truncateContent(text, 4000);
+            snippet = truncateContent(text, 2000); // Cap per page to avoid rate-limit token errors
             console.log(`Successfully loaded content for ${p.url}: ${text.length} chars`);
           } else {
             console.warn(`No blob found for contentRef ${p.contentRef} at URL ${p.url}`);
@@ -179,7 +179,7 @@ export const verifyClaims = internalAction({
           const blob = await ctx.storage.get(page.contentRef);
           if (blob) {
             const text = await blob.text();
-            snippets[n] = truncateContent(text, 6000);
+            snippets[n] = truncateContent(text, 3000); // Cap verification content
             console.log(`Successfully loaded verification content for ${n}: ${text.length} chars`);
           } else {
             console.warn(`No blob found for contentRef ${page.contentRef} at URL ${n}`);
@@ -230,6 +230,8 @@ ${snippet}`;
       ok = false;
     }
     if (ok) accepted.push({ id: c.id, text: c.text, source_url: n });
+    // Brief delay between verify calls to respect free-tier RPM limits
+    await new Promise<void>(resolve => setTimeout(resolve, 1500));
   }
 
     await ctx.runMutation(internal.onboarding.claims.finishVerifyClaims, { onboardingFlowId, accepted });

@@ -204,32 +204,38 @@ export const onboardingWorkflow = workflow.define({
         })
       ]);
 
-      // Run all three generations in parallel
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [summaryResult, coreOfferResult, claimsResult] = await Promise.all([
-        step.runAction(internal.onboarding.summary.streamSummary, { 
-          onboardingFlowId, 
-          summaryThread: threads.summaryThread, 
-          companyName: args.companyName, 
-          sourceUrl: args.sourceUrl, 
-          contextUrls: relevant 
-        }, { retry: true }),
-        step.runAction(internal.onboarding.offer.generateCoreOffer, { 
-          onboardingFlowId, 
-          coreOfferThread: threads.coreOfferThread, 
-          companyName: args.companyName, 
-          sourceUrl: args.sourceUrl, 
-          contextUrls: relevant 
-        }, { retry: true }),
-        step.runAction(internal.onboarding.claims.generateClaims, { onboardingFlowId }, { retry: true })
-      ]);
+      // Run all three generations SEQUENTIALLY to avoid rate-limiting on free-tier models.
+      // Each call fires to the same OpenRouter free endpoint; parallel requests reliably
+      // trigger 429s. A 2-second gap is enough to stay within RPM limits.
+      const summaryResult = await step.runAction(internal.onboarding.summary.streamSummary, { 
+        onboardingFlowId, 
+        summaryThread: threads.summaryThread, 
+        companyName: args.companyName, 
+        sourceUrl: args.sourceUrl, 
+        contextUrls: relevant 
+      }, { retry: { maxAttempts: 3, initialBackoffMs: 3000, base: 2 } });
+
+      // Short cooldown between AI requests
+      await new Promise<void>(resolve => setTimeout(resolve, 2000));
+
+      const coreOfferResult = await step.runAction(internal.onboarding.offer.generateCoreOffer, { 
+        onboardingFlowId, 
+        coreOfferThread: threads.coreOfferThread, 
+        companyName: args.companyName, 
+        sourceUrl: args.sourceUrl, 
+        contextUrls: relevant 
+      }, { retry: { maxAttempts: 3, initialBackoffMs: 3000, base: 2 } });
+
+      await new Promise<void>(resolve => setTimeout(resolve, 2000));
+
+      const claimsResult = await step.runAction(internal.onboarding.claims.generateClaims, { onboardingFlowId }, { retry: { maxAttempts: 3, initialBackoffMs: 3000, base: 2 } });
 
       // Finalization group - run in parallel where safe
       const [finalizedSummary] = await Promise.all([
         // Summary finalization
         step.runAction(internal.onboarding.summary.finalizeSummary, { 
           summaryThread: threads.summaryThread 
-        }, { retry: true }),
+        }, { retry: { maxAttempts: 3, initialBackoffMs: 2000, base: 2 } }),
         // Core offer is already finalized from generation
         Promise.resolve(coreOfferResult)
       ]);
@@ -287,7 +293,7 @@ export const onboardingWorkflow = workflow.define({
         subPhaseProgress: 0.2,
         eventMessage: "Verifying claims"
       });
-      await step.runAction(internal.onboarding.claims.verifyClaims, { onboardingFlowId, candidates }, { retry: true });
+      await step.runAction(internal.onboarding.claims.verifyClaims, { onboardingFlowId, candidates }, { retry: { maxAttempts: 3, initialBackoffMs: 3000, base: 2 } });
       await step.runMutation(internal.onboarding.statusUtils.updatePhaseStatusWithProgress, {
         onboardingFlowId,
         phaseName: "verify",

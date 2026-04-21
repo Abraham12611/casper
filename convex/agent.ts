@@ -5,6 +5,11 @@ import { components } from "./_generated/api";
 const openrouter = createOpenAI({
   baseURL: "https://openrouter.ai/api/v1",
   apiKey: process.env.OPENROUTER_API_KEY,
+  // CRITICAL: force Chat Completions API (/chat/completions).
+  // AI SDK v5 defaults to the new OpenAI Responses API (/responses) for generateText,
+  // but OpenRouter only supports Chat Completions. streamText worked (different endpoint)
+  // which is why NEURAL_SYNTHESIS streamed fine but generateText calls crashed after.
+  compatibility: "compatible",
 });
 
 // Primary model: google/gemma-3-4b-it:free — higher free-tier RPM limits

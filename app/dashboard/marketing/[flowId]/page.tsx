@@ -122,7 +122,8 @@ export default function MarketingFlowPage({ params }: Props) {
     return new Map(auditJobs.map((job) => [job.opportunityId, job]));
   }, [auditJobs]);
 
-  const casperCreditsBalance = customer?.features?.atlas_credits?.balance ?? 0;
+  // Hackathon bypass: give infinite credits locally
+  const casperCreditsBalance = 100; // customer?.features?.atlas_credits?.balance ?? 0;
   const billingBlock = leadGenJob?.billingBlock;
 
   // Effects

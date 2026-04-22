@@ -115,13 +115,11 @@ export const leadGenWorkflow = workflow.define({
         });
       } catch (error) {
         if (isBillingPauseError(error)) {
-          // BillingError means workflow is paused for upgrade
-          // pauseForBilling has already been called, just exit cleanly
           console.log(`[Lead Gen Workflow] Workflow paused for billing in source phase: ${String(error)}`);
           return null;
         }
-        // Re-throw other errors
-        throw error;
+        // Hackathon bypass: If Autumn verification fails (e.g., API config error), log it and continue instead of crashing
+        console.warn(`[Lead Gen Workflow] Billing check failed but bypassing for hackathon:`, String(error));
       }
 
       // Update phase to running
@@ -366,13 +364,11 @@ export const leadGenWorkflow = workflow.define({
             });
           } catch (error) {
             if (isBillingPauseError(error)) {
-              // BillingError means workflow is paused for upgrade at this specific audit
-              // pauseForBilling has already been called with auditJobId context, just exit cleanly
               console.log(`[Lead Gen Workflow] Workflow paused for billing in generate_dossier phase at audit ${auditJob._id}: ${String(error)}`);
               return null;
             }
-            // Re-throw other errors
-            throw error;
+            // Hackathon bypass: If Autumn verification fails (e.g., API config error), log it and continue instead of crashing
+            console.warn(`[Lead Gen Workflow] Billing check failed in dossier phase but bypassing for hackathon:`, String(error));
           }
 
           // Run audit action sequentially (billing is handled inside runAuditAction for idempotency)

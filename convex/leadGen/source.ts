@@ -2,21 +2,11 @@
 
 import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
-import { PlacesClient } from "@googlemaps/places";
-
-const FIELD_MASK = [
-  "places.id",
-  "places.displayName",
-  "places.websiteUri",
-  "places.internationalPhoneNumber",
-  "places.rating",
-  "places.userRatingCount",
-  "places.formattedAddress",
-];
+import FirecrawlApp from "@mendable/firecrawl-js";
 
 /**
- * Internal action to source leads from Google Places API
- * Reuses the existing Places implementation with enhanced error handling and retries
+ * Internal action to source leads using Firecrawl Agent Research
+ * Replaces previous Google Places API
  */
 export const sourcePlaces = internalAction({
   args: {
@@ -39,67 +29,74 @@ export const sourcePlaces = internalAction({
     numFetched: v.number(),
   }),
   handler: async (ctx, args) => {
-    if (!process.env.GOOGLE_PLACES_API_KEY) {
-      throw new Error("Google Places API key not configured");
+    const apiKey = process.env.FIRECRAWL_API_KEY;
+    if (!apiKey) {
+      throw new Error("Firecrawl API key not configured. Missing FIRECRAWL_API_KEY env var.");
     }
 
-    const placesClient = new PlacesClient({
-      apiKey: process.env.GOOGLE_PLACES_API_KEY,
-    });
+    const firecrawl = new FirecrawlApp({ apiKey });
 
-    const request = {
-      textQuery: args.textQuery,
-      maxResultCount: Math.min(args.maxResultCount, 20), // Clamp to max 20
-    };
-
-    const options = {
-      otherArgs: {
-        headers: {
-          "X-Goog-FieldMask": FIELD_MASK.join(","),
-        },
-      },
-    };
-
-    console.log(`[Lead Gen] Sourcing places for query: "${args.textQuery}"`);
+    // Ensure we don't ask for too many and blow through credits unexpectedly
+    const requestCount = Math.min(args.maxResultCount, 20);
+    console.log(`[Lead Gen] Sourcing ${requestCount} places using Firecrawl Agent for query: "${args.textQuery}"`);
 
     try {
-      const rawResponse = await placesClient.searchText(request, options);
-      const [searchResponse] = rawResponse;
-      
-      console.log(`[Lead Gen] Received ${searchResponse.places?.length || 0} places from Google Places API`);
+      // Use the autonomous Agent to perform deep research
+      const result = await firecrawl.agent({
+        prompt: `Find ${requestCount} businesses matching: "${args.textQuery}". Focus on precise, real businesses. If you cannot find ${requestCount}, return as many real matches as you can find. Provide their exact name, website, phone number, physical address, and any rating/review counts if available.`,
+        schema: {
+          type: "object",
+          properties: {
+            places: {
+              type: "array",
+              description: "List of localized businesses discovered during research",
+              items: {
+                type: "object",
+                properties: {
+                  id: { type: "string", description: "Unique identifier. E.g., the root domain name, place ID, or formatted unique name" },
+                  name: { type: "string", description: "Full business name" },
+                  website: { type: "string", description: "Business website URL, e.g. https://example.com" },
+                  phone: { type: "string", description: "Contact phone number" },
+                  rating: { type: "number", description: "Overall rating score if applicable" },
+                  reviews: { type: "number", description: "Total number of reviews if applicable" },
+                  address: { type: "string", description: "Full physical address of the business" }
+                },
+                required: ["name", "id"]
+              }
+            }
+          },
+          required: ["places"]
+        },
+        model: "spark-1-mini", // Cost-effective model for straightforward data extraction
+      });
 
-      type ApiPlace = {
-        id?: string;
-        displayName?: { text?: string; languageCode?: string };
-        websiteUri?: string;
-        internationalPhoneNumber?: string;
-        rating?: number;
-        userRatingCount?: number;
-        formattedAddress?: string;
-      };
+      if (!result.success) {
+        throw new Error(result.error || "Agent search returned non-success without specific error.");
+      }
 
-      const response: unknown = Array.isArray(rawResponse) ? rawResponse[0] : rawResponse;
-      const respObj = (response as { places?: Array<ApiPlace> }) ?? {};
-      const rawPlaces = respObj.places ?? [];
+      console.log(`[Lead Gen] Received data from Firecrawl Agent. Credits used: ${result.creditsUsed}`);
+
+      const rawPlaces = (result.data as { places?: Array<any> })?.places || [];
+      console.log(`[Lead Gen] Extracted ${rawPlaces.length} raw places from Agent response.`);
 
       // Transform and normalize the places data
-      const places = rawPlaces.map((p: ApiPlace) => {
-        const name = p?.displayName?.text ?? "";
-        const website = p?.websiteUri ? normalizeWebsite(p.websiteUri) : undefined;
-        const phone = p?.internationalPhoneNumber ? normalizePhone(p.internationalPhoneNumber) : undefined;
+      const places = rawPlaces.map((p) => {
+        const name = p?.name ?? "";
+        const website = p?.website ? normalizeWebsite(p.website) : undefined;
+        const phone = p?.phone ? normalizePhone(p.phone) : undefined;
         
         return {
-          id: p?.id ?? "",
+          id: p?.id ?? name.replace(/\s+/g, '-').toLowerCase(), // Fallback unique ID
           name,
           website,
           phone,
           rating: p?.rating ?? undefined,
-          reviews: p?.userRatingCount ?? undefined,
-          address: p?.formattedAddress ?? undefined,
+          reviews: p?.reviews ?? undefined,
+          address: p?.address ?? undefined,
         };
       });
 
-      // Deduplication by Google ID and canonical website domain
+      // Deduplication by canonical website domain & generated IDs
       const deduplicatedPlaces = deduplicatePlaces(places);
       
       console.log(`[Lead Gen] After deduplication: ${deduplicatedPlaces.length} unique places`);
@@ -109,8 +106,8 @@ export const sourcePlaces = internalAction({
         numFetched: deduplicatedPlaces.length,
       };
     } catch (error) {
-      console.error("[Lead Gen] Google Places API error:", error);
-      throw new Error(`Google Places API failed: ${String(error)}`);
+      console.error("[Lead Gen] Firecrawl Agent API error:", error);
+      throw new Error(`Firecrawl Agent API failed: ${String(error)}`);
     }
   },
 });

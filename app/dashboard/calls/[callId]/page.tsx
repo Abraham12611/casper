@@ -29,7 +29,8 @@ import {
     MapPin,
     ArrowUpRight,
     CircleDashed,
-    Mic2
+    Mic2,
+    Target
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";

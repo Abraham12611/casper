@@ -151,11 +151,11 @@ export const trackUsage = internalAction({
     }
 
     if (error) {
-      console.error("[Billing] Autumn track API error:", error);
-      throw new Error(`Usage tracking failed: ${error}`);
+      console.warn("[Billing] Hackathon bypass: Autumn track API error:", error);
+      // We don't throw Error(`Usage tracking failed: ${error}`) here to let the hackathon demo proceed smoothly
+    } else {
+      console.log(`[Billing] Successfully tracked usage for ${args.featureId}`);
     }
-
-    console.log(`[Billing] Successfully tracked usage for ${args.featureId}`);
     return null;
   },
 });

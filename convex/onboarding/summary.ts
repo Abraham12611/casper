@@ -121,11 +121,15 @@ export const listSummaryMessages = query({
       }
     };
 
+    const streamsResult = args.streamArgs?.kind === "list" 
+      ? { kind: "list", messages: [] } 
+      : { kind: "deltas", deltas: [] };
+
     return { 
       page: [fakeMessage],
       isDone: true,
       continueCursor: "",
-      streams: { kind: "deltas", deltas: [] } 
+      streams: streamsResult 
     };
   },
 });

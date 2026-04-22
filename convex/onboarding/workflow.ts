@@ -215,9 +215,6 @@ export const onboardingWorkflow = workflow.define({
         contextUrls: relevant 
       }, { retry: { maxAttempts: 3, initialBackoffMs: 3000, base: 2 } });
 
-      // Short cooldown between AI requests
-      await new Promise<void>(resolve => setTimeout(resolve, 2000));
-
       const coreOfferResult = await step.runAction(internal.onboarding.offer.generateCoreOffer, { 
         onboardingFlowId, 
         coreOfferThread: threads.coreOfferThread, 
@@ -225,8 +222,6 @@ export const onboardingWorkflow = workflow.define({
         sourceUrl: args.sourceUrl, 
         contextUrls: relevant 
       }, { retry: { maxAttempts: 3, initialBackoffMs: 3000, base: 2 } });
-
-      await new Promise<void>(resolve => setTimeout(resolve, 2000));
 
       const claimsResult = await step.runAction(internal.onboarding.claims.generateClaims, { onboardingFlowId }, { retry: { maxAttempts: 3, initialBackoffMs: 3000, base: 2 } });
 

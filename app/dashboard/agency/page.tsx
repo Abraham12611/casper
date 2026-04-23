@@ -5,32 +5,32 @@ import { api } from "@/convex/_generated/api";
 import Link from "next/link";
 import { useState } from "react";
 import { 
-  Building2, 
-  Target, 
-  Shield, 
-  CheckCircle2, 
-  ExternalLink,
+  Buildings, 
+  Crosshair, 
+  ShieldCheck, 
+  CheckCircle, 
+  ArrowSquareOut,
   FileText,
   Clock,
   Palette,
-  Edit,
-  Save,
+  PencilSimple,
+  FloppyDisk,
   X,
   Plus,
-  Trash2,
-  AlertTriangle,
-  Loader2,
-  Settings,
+  Trash,
+  Warning,
+  SpinnerGap,
+  GearSix,
   Briefcase,
-  Search,
-  Zap,
+  MagnifyingGlass,
+  Lightning,
   Fingerprint,
   Cpu,
   Database,
   Terminal,
   ArrowUpRight,
   MapPin
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -146,9 +146,9 @@ export default function AgencyPage() {
         availability: editAvailability,
       });
       setEditingSection(null);
-      toast.success("Intelligence Baseline Updated.");
+      toast.success("Agency Profile Updated.");
     } catch (err: any) {
-      const errorMsg = err.message || "Target acquisition rejected.";
+      const errorMsg = err.message || "Failed to save changes.";
       setError(errorMsg);
       toast.error(errorMsg);
     } finally {
@@ -161,7 +161,7 @@ export default function AgencyPage() {
     setEditClaims([...editClaims, { id: `claim_${Date.now()}`, text: newClaimText.trim(), source_url: newClaimSourceUrl.trim() }]);
     setNewClaimText("");
     setNewClaimSourceUrl("");
-    toast.success("Claim Cached");
+    toast.success("Claim Added");
   };
 
   const handleRemoveClaim = (index: number) => {
@@ -183,7 +183,7 @@ export default function AgencyPage() {
     }
     setEditGuardrails([...editGuardrails, newGuardrailText.trim()]);
     setNewGuardrailText("");
-    toast.success("Protocol Active");
+    toast.success("Guardrail Added");
   };
 
   const handleRemoveGuardrail = (guardrail: string) => {
@@ -196,7 +196,7 @@ export default function AgencyPage() {
     const slot = `${availabilityDay} ${availabilityStart}-${availabilityEnd}`;
     if (!editAvailability.includes(slot)) {
       setEditAvailability([...editAvailability, slot]);
-      toast.success("Sync Node Enabled");
+      toast.success("Availability Slot Added");
     }
   };
 
@@ -220,50 +220,42 @@ export default function AgencyPage() {
             className="flex flex-col md:flex-row md:items-end justify-between gap-6"
         >
             <div className="space-y-2">
-                <div className="flex items-center gap-3 mb-1">
-                    <Fingerprint size={20} className="text-[#f97316]" />
-                    <span className="text-[12px] font-mono font-bold text-[#f97316] uppercase tracking-[0.2em]">Entity Signature</span>
-                </div>
-                <h1 className="text-[32px] font-bold text-[#f0f0f5] tracking-tight">
-                    Intelligence Baseline
+                <h1 className="text-[32px] font-bold text-[#1A1A1A] tracking-tight">
+                    Agency Profile
                 </h1>
-                <p className="text-[#9ca3b4] text-[15px]">
-                    Autonomous configuration for <span className="text-[#f0f0f5] font-medium">{agencyProfile.companyName}</span>.
+                <p className="text-[#6B6B6B] text-[15px]">
+                    Configuration for <span className="text-[#1A1A1A] font-medium">{agencyProfile.companyName}</span>.
                 </p>
             </div>
             
             <div className="flex items-center gap-3">
-                <div className="px-4 py-2 bg-[#1e1e2c] border border-[#2a2a3c] rounded-xl flex items-center gap-3 h-12 shadow-sm">
-                    <Database size={14} className="text-[#3b82f6]" />
-                    <span className="text-[12px] font-mono font-bold text-[#f0f0f5] uppercase tracking-wider">SECURE SYNC ACTIVE</span>
+                <div className="px-4 py-2 bg-white border border-[#E8E8E8] rounded-xl flex items-center gap-3 h-12">
+                    <div className="w-2 h-2 rounded-full bg-[#2E7D32] animate-pulse" />
+                    <span className="text-[12px] font-semibold text-[#1A1A1A]">Synced</span>
                 </div>
             </div>
         </motion.div>
 
         {error && (
-            <Alert variant="destructive" className="bg-[#ef4444]/10 border-[#ef4444]/30 rounded-2xl mb-6">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription className="text-[13px] font-mono">{error}</AlertDescription>
+            <Alert variant="destructive" className="bg-[#FDECEA] border-[#F5C6CB] rounded-xl mb-6">
+                <Warning className="h-4 w-4" />
+                <AlertDescription className="text-[13px]">{error}</AlertDescription>
             </Alert>
         )}
 
         <Tabs defaultValue="overview" className="space-y-8">
-            <TabsList className="p-1 bg-[#1e1e2c] border border-[#2a2a3c] rounded-2xl w-full max-w-2xl h-14">
-                <TabsTrigger value="overview" className="flex-1 h-12 rounded-xl text-[12px] font-bold uppercase tracking-widest cursor-pointer data-[state=active]:bg-[#26263a] data-[state=active]:text-[#f97316] gap-2 transition-all">
-                    <Cpu size={14} />
+            <TabsList className="p-1 bg-white border border-[#E8E8E8] rounded-xl w-full max-w-2xl h-14">
+                <TabsTrigger value="overview" className="flex-1 h-12 rounded-xl text-[13px] font-semibold cursor-pointer data-[state=active]:bg-[#F5F5F5] data-[state=active]:text-[#1A1A1A] text-[#9A9A9A] gap-2 transition-all">
                     Overview
                 </TabsTrigger>
-                <TabsTrigger value="content" className="flex-1 h-12 rounded-xl text-[12px] font-bold uppercase tracking-widest cursor-pointer data-[state=active]:bg-[#26263a] data-[state=active]:text-[#f97316] gap-2 transition-all">
-                    <Terminal size={14} />
-                    Security
+                <TabsTrigger value="content" className="flex-1 h-12 rounded-xl text-[13px] font-semibold cursor-pointer data-[state=active]:bg-[#F5F5F5] data-[state=active]:text-[#1A1A1A] text-[#9A9A9A] gap-2 transition-all">
+                    Guardrails
                 </TabsTrigger>
-                <TabsTrigger value="targeting" className="flex-1 h-12 rounded-xl text-[12px] font-bold uppercase tracking-widest cursor-pointer data-[state=active]:bg-[#26263a] data-[state=active]:text-[#f97316] gap-2 transition-all">
-                    <Target size={14} />
+                <TabsTrigger value="targeting" className="flex-1 h-12 rounded-xl text-[13px] font-semibold cursor-pointer data-[state=active]:bg-[#F5F5F5] data-[state=active]:text-[#1A1A1A] text-[#9A9A9A] gap-2 transition-all">
                     Targeting
                 </TabsTrigger>
-                <TabsTrigger value="settings" className="flex-1 h-12 rounded-xl text-[12px] font-bold uppercase tracking-widest cursor-pointer data-[state=active]:bg-[#26263a] data-[state=active]:text-[#f97316] gap-2 transition-all">
-                    <Settings size={14} />
-                    Config
+                <TabsTrigger value="settings" className="flex-1 h-12 rounded-xl text-[13px] font-semibold cursor-pointer data-[state=active]:bg-[#F5F5F5] data-[state=active]:text-[#1A1A1A] text-[#9A9A9A] gap-2 transition-all">
+                    Settings
                 </TabsTrigger>
             </TabsList>
 
@@ -275,22 +267,22 @@ export default function AgencyPage() {
                         <motion.div 
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-3xl p-8 space-y-6 ring-1 ring-white/5"
+                            className="bg-white border border-[#E8E8E8] rounded-xl p-8 space-y-6 "
                         >
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <FileText size={18} className="text-[#f97316]" />
-                                    <h3 className="text-[18px] font-bold text-[#f0f0f5]">Business Intelligence Summary</h3>
+                                    <FileText size={18} className="text-[#1A1A1A]" />
+                                    <h3 className="text-[18px] font-bold text-[#1A1A1A]">Agency Summary</h3>
                                 </div>
                                 {editingSection !== 'summary' ? (
-                                    <Button onClick={() => handleStartEdit('summary')} variant="ghost" size="sm" className="h-9 w-9 p-0 hover:bg-[#26263a] text-[#52525e] hover:text-[#f0f0f5]">
-                                        <Edit size={16} />
+                                    <Button onClick={() => handleStartEdit('summary')} variant="ghost" size="sm" className="h-9 w-9 p-0 hover:bg-[#F5F5F5] text-[#9A9A9A] hover:text-[#1A1A1A]">
+                                        <PencilSimple size={16} />
                                     </Button>
                                 ) : (
                                     <div className="flex gap-2">
-                                        <Button onClick={handleCancelEdit} variant="ghost" size="sm" className="h-9 w-9 p-0 text-[#ef4444] hover:bg-[#ef4444]/10"><X size={16} /></Button>
-                                        <Button onClick={handleSave} variant="ghost" size="sm" className="h-9 w-9 p-0 text-[#22c55e] hover:bg-[#22c55e]/10" disabled={isSaving}>
-                                            {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
+                                        <Button onClick={handleCancelEdit} variant="ghost" size="sm" className="h-9 w-9 p-0 text-[#C62828] hover:bg-[#C62828]/10"><X size={16} /></Button>
+                                        <Button onClick={handleSave} variant="ghost" size="sm" className="h-9 w-9 p-0 text-[#2E7D32] hover:bg-[#2E7D32]/10" disabled={isSaving}>
+                                            {isSaving ? <SpinnerGap size={16} className="animate-spin" /> : <FloppyDisk size={16} />}
                                         </Button>
                                     </div>
                                 )}
@@ -301,11 +293,11 @@ export default function AgencyPage() {
                                     value={editSummary} 
                                     onChange={(e) => setEditSummary(e.target.value)} 
                                     rows={8} 
-                                    className="w-full bg-[#161621] border-[#2e2e40] rounded-2xl p-4 text-[14px] text-[#f0f0f5] focus:ring-1 focus:ring-[#f97316]/40 transition-all outline-none" 
+                                    className="w-full bg-[#F5F5F5] border-[#E2E2E2] rounded-2xl p-4 text-[14px] text-[#1A1A1A] focus:border-[#1A1A1A] transition-all outline-none" 
                                 />
                             ) : (
-                                <p className="text-[14px] leading-relaxed text-[#9ca3b4] whitespace-pre-wrap">
-                                    {agencyProfile.summary || "No data provided. Baseline is empty."}
+                                <p className="text-[14px] leading-relaxed text-[#6B6B6B] whitespace-pre-wrap">
+                                    {agencyProfile.summary || "No summary provided yet."}
                                 </p>
                             )}
                         </motion.div>
@@ -314,22 +306,22 @@ export default function AgencyPage() {
                         <motion.div 
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-3xl p-8 space-y-6 ring-1 ring-white/5"
+                            className="bg-white border border-[#E8E8E8] rounded-xl p-8 space-y-6 "
                         >
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <Target size={18} className="text-[#3b82f6]" />
-                                    <h3 className="text-[18px] font-bold text-[#f0f0f5]">Value Proposition Baseline</h3>
+                                    <Crosshair size={18} className="text-[#1A1A1A]" />
+                                    <h3 className="text-[18px] font-bold text-[#1A1A1A]">Core Offer</h3>
                                 </div>
                                 {editingSection !== 'offer' ? (
-                                    <Button onClick={() => handleStartEdit('offer')} variant="ghost" size="sm" className="h-9 w-9 p-0 hover:bg-[#26263a] text-[#52525e] hover:text-[#f0f0f5]">
-                                        <Edit size={16} />
+                                    <Button onClick={() => handleStartEdit('offer')} variant="ghost" size="sm" className="h-9 w-9 p-0 hover:bg-[#F5F5F5] text-[#9A9A9A] hover:text-[#1A1A1A]">
+                                        <PencilSimple size={16} />
                                     </Button>
                                 ) : (
                                     <div className="flex gap-2">
-                                        <Button onClick={handleCancelEdit} variant="ghost" size="sm" className="h-9 w-9 p-0 text-[#ef4444] hover:bg-[#ef4444]/10"><X size={16} /></Button>
-                                        <Button onClick={handleSave} variant="ghost" size="sm" className="h-9 w-9 p-0 text-[#22c55e] hover:bg-[#22c55e]/10" disabled={isSaving}>
-                                            {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
+                                        <Button onClick={handleCancelEdit} variant="ghost" size="sm" className="h-9 w-9 p-0 text-[#C62828] hover:bg-[#C62828]/10"><X size={16} /></Button>
+                                        <Button onClick={handleSave} variant="ghost" size="sm" className="h-9 w-9 p-0 text-[#2E7D32] hover:bg-[#2E7D32]/10" disabled={isSaving}>
+                                            {isSaving ? <SpinnerGap size={16} className="animate-spin" /> : <FloppyDisk size={16} />}
                                         </Button>
                                     </div>
                                 )}
@@ -340,11 +332,11 @@ export default function AgencyPage() {
                                     value={editCoreOffer} 
                                     onChange={(e) => setEditCoreOffer(e.target.value)} 
                                     rows={8} 
-                                    className="w-full bg-[#161621] border-[#2e2e40] rounded-2xl p-4 text-[14px] text-[#f0f0f5] focus:ring-1 focus:ring-[#3b82f6]/40 transition-all outline-none" 
+                                    className="w-full bg-[#F5F5F5] border-[#E2E2E2] rounded-2xl p-4 text-[14px] text-[#1A1A1A] focus:border-[#1A1A1A] transition-all outline-none" 
                                 />
                             ) : (
-                                <p className="text-[14px] leading-relaxed text-[#9ca3b4] whitespace-pre-wrap">
-                                    {agencyProfile.coreOffer || "No value prop defined. Mapping pending."}
+                                <p className="text-[14px] leading-relaxed text-[#6B6B6B] whitespace-pre-wrap">
+                                    {agencyProfile.coreOffer || "No core offer defined yet."}
                                 </p>
                             )}
                         </motion.div>
@@ -355,22 +347,22 @@ export default function AgencyPage() {
                 <TabsContent value="content" className="space-y-8">
                     <div className="grid grid-cols-1 gap-8">
                         {/* Guardrails */}
-                        <div className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-3xl p-8 space-y-6 ring-1 ring-white/5">
+                        <div className="bg-white border border-[#E8E8E8] rounded-xl p-8 space-y-6 ">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <Shield size={18} className="text-[#ea580c]" />
-                                    <h3 className="text-[18px] font-bold text-[#f0f0f5]">Operation Guardrails</h3>
+                                    <ShieldCheck size={18} className="text-[#333333]" />
+                                    <h3 className="text-[18px] font-bold text-[#1A1A1A]">Guardrails</h3>
                                 </div>
                                 {editingSection !== 'guardrails' ? (
-                                    <Button onClick={() => handleStartEdit('guardrails')} variant="ghost" size="sm" className="h-9 rounded-xl border border-[#2e2e40] px-4 text-[12px] font-bold uppercase tracking-widest hover:text-[#f97316]">
-                                        Modify Registry
+                                    <Button onClick={() => handleStartEdit('guardrails')} variant="ghost" size="sm" className="h-9 rounded-xl border border-[#E2E2E2] px-4 text-[12px] font-bold  hover:text-[#1A1A1A]">
+                                        Edit
                                     </Button>
                                 ) : (
                                     <div className="flex gap-2">
-                                        <Button onClick={handleSave} variant="ghost" className="h-9 rounded-xl px-4 text-[#22c55e] hover:bg-[#22c55e]/10 uppercase text-[12px] font-bold tracking-widest" disabled={isSaving}>
-                                            Commit Protocols
+                                        <Button onClick={handleSave} variant="ghost" className="h-9 rounded-xl px-4 text-[#2E7D32] hover:bg-[#2E7D32]/10 uppercase text-[12px] font-bold tracking-widest" disabled={isSaving}>
+                                            Save Changes
                                         </Button>
-                                        <Button onClick={handleCancelEdit} variant="ghost" className="h-9 rounded-xl px-4 text-[#ef4444] hover:bg-[#ef4444]/10 uppercase text-[12px] font-bold tracking-widest">Abort</Button>
+                                        <Button onClick={handleCancelEdit} variant="ghost" className="h-9 rounded-xl px-4 text-[#C62828] hover:bg-[#C62828]/10 uppercase text-[12px] font-bold tracking-widest">Cancel</Button>
                                     </div>
                                 )}
                             </div>
@@ -379,21 +371,21 @@ export default function AgencyPage() {
                                 {(editingSection === 'guardrails' ? editGuardrails : (agencyProfile.guardrails || [])).map((g, i) => (
                                     <motion.div 
                                         key={i}
-                                        className="p-4 bg-[#161621] border border-[#2e2e40] rounded-2xl flex items-center justify-between group transition-all hover:border-[#ea580c]/50"
+                                        className="p-4 bg-[#F5F5F5] border border-[#E2E2E2] rounded-2xl flex items-center justify-between group transition-all hover:border-[#CCCCCC]"
                                     >
                                         <div className="flex items-center gap-4">
-                                            <div className="w-8 h-8 rounded-lg bg-[#26263a] flex items-center justify-center text-[#ea580c]">
-                                                <Shield size={14} />
+                                            <div className="w-8 h-8 rounded-lg bg-[#F5F5F5] flex items-center justify-center text-[#333333]">
+                                                <ShieldCheck size={14} />
                                             </div>
-                                            <span className="text-[13px] text-[#f0f0f5] font-medium leading-relaxed">{g}</span>
+                                            <span className="text-[13px] text-[#1A1A1A] font-medium leading-relaxed">{g}</span>
                                         </div>
                                         {editingSection === 'guardrails' && (
                                             <Button 
                                                 onClick={() => handleRemoveGuardrail(g)} 
                                                 variant="ghost" 
-                                                className="h-8 w-8 p-0 text-[#52525e] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg"
+                                                className="h-8 w-8 p-0 text-[#9A9A9A] hover:text-[#C62828] hover:bg-[#C62828]/10 rounded-lg"
                                             >
-                                                <Trash2 size={14} />
+                                                <Trash size={14} />
                                             </Button>
                                         )}
                                     </motion.div>
@@ -404,11 +396,11 @@ export default function AgencyPage() {
                                             value={newGuardrailText} 
                                             onChange={(e) => setNewGuardrailText(e.target.value)}
                                             placeholder="Enter new operation guardrail..."
-                                            className="h-12 bg-[#161621] border-[#2e2e40] rounded-xl text-[13px] focus:ring-1 focus:ring-[#ea580c]/40 outline-none flex-1"
+                                            className="h-12 bg-[#F5F5F5] border-[#E2E2E2] rounded-xl text-[13px] focus:ring-1 focus:ring-[#333333]/40 outline-none flex-1"
                                         />
-                                        <Button onClick={handleAddGuardrail} variant="outline" className="h-12 px-6 rounded-xl border-[#2e2e40] bg-[#22222e] text-[#f0f0f5] hover:bg-[#26263a]">
+                                        <Button onClick={handleAddGuardrail} variant="outline" className="h-12 px-6 rounded-xl border-[#E2E2E2] bg-[#F5F5F5] text-[#1A1A1A] hover:bg-[#F5F5F5]">
                                             <Plus size={16} className="mr-2" />
-                                            Add Protocol
+                                            Add Guardrail
                                         </Button>
                                     </div>
                                 )}
@@ -416,41 +408,41 @@ export default function AgencyPage() {
                         </div>
 
                         {/* Claims */}
-                        <div className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-3xl p-8 space-y-6 ring-1 ring-white/5">
+                        <div className="bg-white border border-[#E8E8E8] rounded-xl p-8 space-y-6 ">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <CheckCircle2 size={18} className="text-[#22c55e]" />
-                                    <h3 className="text-[18px] font-bold text-[#f0f0f5]">Approved Verification Claims</h3>
+                                    <CheckCircle size={18} className="text-[#2E7D32]" />
+                                    <h3 className="text-[18px] font-bold text-[#1A1A1A]">Verified Claims</h3>
                                 </div>
                                 {editingSection !== 'claims' ? (
-                                    <Button onClick={() => handleStartEdit('claims')} variant="ghost" size="sm" className="h-9 rounded-xl border border-[#2e2e40] px-4 text-[12px] font-bold uppercase tracking-widest hover:text-[#22c55e]">
-                                        Update Evidence
+                                    <Button onClick={() => handleStartEdit('claims')} variant="ghost" size="sm" className="h-9 rounded-xl border border-[#E2E2E2] px-4 text-[12px] font-bold  hover:text-[#2E7D32]">
+                                        Edit
                                     </Button>
                                 ) : (
                                     <div className="flex gap-2">
-                                        <Button onClick={handleSave} variant="ghost" className="h-9 rounded-xl px-4 text-[#22c55e] hover:bg-[#22c55e]/10 uppercase text-[12px] font-bold tracking-widest" disabled={isSaving}>
-                                            Save Evidence
+                                        <Button onClick={handleSave} variant="ghost" className="h-9 rounded-xl px-4 text-[#2E7D32] hover:bg-[#2E7D32]/10 uppercase text-[12px] font-bold tracking-widest" disabled={isSaving}>
+                                            Save Changes
                                         </Button>
-                                        <Button onClick={handleCancelEdit} variant="ghost" className="h-9 rounded-xl px-4 text-[#ef4444] hover:bg-[#ef4444]/10 uppercase text-[12px] font-bold tracking-widest">Abort</Button>
+                                        <Button onClick={handleCancelEdit} variant="ghost" className="h-9 rounded-xl px-4 text-[#C62828] hover:bg-[#C62828]/10 uppercase text-[12px] font-bold tracking-widest">Cancel</Button>
                                     </div>
                                 )}
                             </div>
 
                             <div className="space-y-4">
                                 {(editingSection === 'claims' ? editClaims : (agencyProfile.approvedClaims || [])).map((claim: any, i: number) => (
-                                    <div key={claim.id || i} className="p-5 bg-[#161621] border border-[#2e2e40] rounded-2xl space-y-3 group hover:border-[#22c55e]/40 transition-all">
+                                    <div key={claim.id || i} className="p-5 bg-[#F5F5F5] border border-[#E2E2E2] rounded-2xl space-y-3 group hover:border-[#2E7D32]/40 transition-all">
                                         <div className="flex items-start justify-between">
                                             <div className="flex items-center gap-3">
-                                                <Badge className="bg-[#22c55e]/10 text-[#22c55e] border-[#22c55e]/20 text-[10px] uppercase font-mono tracking-widest">ID #{String(i + 1).padStart(2, '0')}</Badge>
+                                                <Badge className="bg-[#2E7D32]/10 text-[#2E7D32] border-[#2E7D32]/20 text-[10px] uppercase tracking-widest">ID #{String(i + 1).padStart(2, '0')}</Badge>
                                                 {claim.source_url && (
-                                                    <a href={claim.source_url} target="_blank" className="text-[10px] text-[#52525e] hover:text-[#3b82f6] flex items-center gap-1 font-mono uppercase tracking-widest">
-                                                        <ExternalLink size={10} /> Link Verified
+                                                    <a href={claim.source_url} target="_blank" className="text-[10px] text-[#9A9A9A] hover:text-[#1A1A1A] flex items-center gap-1 ">
+                                                        <ArrowSquareOut size={10} /> Source Link
                                                     </a>
                                                 )}
                                             </div>
                                             {editingSection === 'claims' && (
-                                                <Button onClick={() => handleRemoveClaim(i)} variant="ghost" className="h-8 w-8 p-0 text-[#52525e] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg">
-                                                    <Trash2 size={14} />
+                                                <Button onClick={() => handleRemoveClaim(i)} variant="ghost" className="h-8 w-8 p-0 text-[#9A9A9A] hover:text-[#C62828] hover:bg-[#C62828]/10 rounded-lg">
+                                                    <Trash size={14} />
                                                 </Button>
                                             )}
                                         </div>
@@ -459,29 +451,29 @@ export default function AgencyPage() {
                                                 <Textarea 
                                                     value={claim.text} 
                                                     onChange={(e) => handleEditClaim(i, "text", e.target.value)}
-                                                    className="w-full bg-[#0d0d13] border-[#2e2e40] rounded-xl p-3 text-[13px] text-[#f0f0f5] outline-none"
+                                                    className="w-full bg-white border-[#E2E2E2] rounded-xl p-3 text-[13px] text-[#1A1A1A] outline-none"
                                                     rows={2}
                                                 />
                                                 <Input 
                                                     value={claim.source_url || ""} 
                                                     onChange={(e) => handleEditClaim(i, "source_url", e.target.value)}
-                                                    placeholder="Source Verification URL"
-                                                    className="h-10 bg-[#0d0d13] border-[#2e2e40] rounded-xl text-[12px]"
+                                                    placeholder="Source URL (optional)"
+                                                    className="h-10 bg-white border-[#E2E2E2] rounded-xl text-[12px]"
                                                 />
                                             </div>
                                         ) : (
-                                            <p className="text-[14px] leading-relaxed text-[#f0f0f5]">{claim.text}</p>
+                                            <p className="text-[14px] leading-relaxed text-[#1A1A1A]">{claim.text}</p>
                                         )}
                                     </div>
                                 ))}
                                 {editingSection === 'claims' && (
-                                    <div className="p-6 bg-[#22222e] border border-dashed border-[#22c55e]/30 rounded-3xl space-y-4">
-                                        <h4 className="text-[14px] font-bold text-[#f0f0f5] mb-2 flex items-center gap-2"><Plus size={16} /> New Evidence Chain</h4>
+                                    <div className="p-6 bg-[#F5F5F5] border border-dashed border-[#2E7D32]/30 rounded-xl space-y-4">
+                                        <h4 className="text-[14px] font-bold text-[#1A1A1A] mb-2 flex items-center gap-2"><Plus size={16} /> Add New Claim</h4>
                                         <Textarea 
                                             value={newClaimText} 
                                             onChange={(e) => setNewClaimText(e.target.value)}
                                             placeholder="Enter business claim text..."
-                                            className="w-full bg-[#161621] border-[#2e2e40] rounded-xl p-4 text-[13px] outline-none"
+                                            className="w-full bg-[#F5F5F5] border-[#E2E2E2] rounded-xl p-4 text-[13px] outline-none"
                                             rows={3}
                                         />
                                         <div className="flex gap-4">
@@ -489,10 +481,10 @@ export default function AgencyPage() {
                                                 value={newClaimSourceUrl} 
                                                 onChange={(e) => setNewClaimSourceUrl(e.target.value)}
                                                 placeholder="Verification URL (optional)"
-                                                className="h-11 bg-[#161621] border-[#2e2e40] rounded-xl text-[13px] flex-1"
+                                                className="h-11 bg-[#F5F5F5] border-[#E2E2E2] rounded-xl text-[13px] flex-1"
                                             />
-                                            <Button onClick={handleAddClaim} disabled={!newClaimText.trim()} className="h-11 px-6 bg-[#22c55e] text-[#0d0d13] hover:bg-[#22c55e]/90 rounded-xl font-bold">
-                                                Append Claim
+                                            <Button onClick={handleAddClaim} disabled={!newClaimText.trim()} className="h-11 px-6 bg-[#2E7D32] text-[#0d0d13] hover:bg-[#2E7D32]/90 rounded-xl font-bold">
+                                                Add Claim
                                             </Button>
                                         </div>
                                     </div>
@@ -507,23 +499,23 @@ export default function AgencyPage() {
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-3xl p-8 space-y-8 ring-1 ring-white/5"
+                        className="bg-white border border-[#E8E8E8] rounded-xl p-8 space-y-8 "
                     >
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <Target size={18} className="text-[#3b82f6]" />
-                                <h3 className="text-[18px] font-bold text-[#f0f0f5]">Mapping Protocols</h3>
+                                <Crosshair size={18} className="text-[#1A1A1A]" />
+                                <h3 className="text-[18px] font-bold text-[#1A1A1A]">Target Settings</h3>
                             </div>
                             {editingSection !== 'targeting' ? (
-                                <Button onClick={() => handleStartEdit('targeting')} variant="ghost" size="sm" className="h-9 rounded-xl border border-[#2e2e40] px-4 text-[12px] font-bold uppercase tracking-widest hover:text-[#3b82f6]">
-                                    Modify Targets
+                                <Button onClick={() => handleStartEdit('targeting')} variant="ghost" size="sm" className="h-9 rounded-xl border border-[#E2E2E2] px-4 text-[12px] font-bold  hover:text-[#1A1A1A]">
+                                    Edit
                                 </Button>
                             ) : (
                                 <div className="flex gap-2">
-                                    <Button onClick={handleSave} variant="ghost" className="h-9 rounded-xl px-4 text-[#22c55e] hover:bg-[#22c55e]/10 uppercase text-[12px] font-bold tracking-widest" disabled={isSaving}>
-                                        Commit Target
+                                    <Button onClick={handleSave} variant="ghost" className="h-9 rounded-xl px-4 text-[#2E7D32] hover:bg-[#2E7D32]/10 uppercase text-[12px] font-bold tracking-widest" disabled={isSaving}>
+                                        Save Changes
                                     </Button>
-                                    <Button onClick={handleCancelEdit} variant="ghost" className="h-9 rounded-xl px-4 text-[#ef4444] hover:bg-[#ef4444]/10 uppercase text-[12px] font-bold tracking-widest">Abort</Button>
+                                    <Button onClick={handleCancelEdit} variant="ghost" className="h-9 rounded-xl px-4 text-[#C62828] hover:bg-[#C62828]/10 uppercase text-[12px] font-bold tracking-widest">Cancel</Button>
                                 </div>
                             )}
                         </div>
@@ -531,44 +523,44 @@ export default function AgencyPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-6">
                                 <div>
-                                    <label className="text-[11px] font-bold text-[#6b7280] uppercase tracking-widest block mb-4">Focus Vertical</label>
+                                    <label className="text-[11px] font-bold text-[#6B6B6B]  block mb-4">Industry Vertical</label>
                                     {editingSection === 'targeting' ? (
                                         <Select value={editTargetVertical} onValueChange={setEditTargetVertical}>
-                                            <SelectTrigger className="h-12 bg-[#161621] border-[#2e2e40] rounded-xl text-[#f0f0f5]">
+                                            <SelectTrigger className="h-12 bg-[#F5F5F5] border-[#E2E2E2] rounded-xl text-[#1A1A1A]">
                                                 <SelectValue />
                                             </SelectTrigger>
-                                            <SelectContent className="bg-[#1e1e2c] border-[#2a2a3c] text-[#f0f0f5]">
+                                            <SelectContent className="bg-white border-[#E8E8E8] text-[#1A1A1A]">
                                                 {TARGET_VERTICALS.map(v => <SelectItem key={v} value={v}>{v}</SelectItem>)}
                                             </SelectContent>
                                         </Select>
                                     ) : (
-                                        <div className="p-4 bg-[#161621] border border-[#2e2e40] rounded-2xl flex items-center justify-between">
-                                            <span className="text-[14px] font-bold text-[#f0f0f5]">{agencyProfile.targetVertical || "General"}</span>
-                                            <ArrowUpRight size={14} className="text-[#3b82f6]" />
+                                        <div className="p-4 bg-[#F5F5F5] border border-[#E2E2E2] rounded-2xl flex items-center justify-between">
+                                            <span className="text-[14px] font-bold text-[#1A1A1A]">{agencyProfile.targetVertical || "General"}</span>
+                                            <ArrowUpRight size={14} className="text-[#1A1A1A]" />
                                         </div>
                                     )}
                                 </div>
 
                                 <div>
-                                    <label className="text-[11px] font-bold text-[#6b7280] uppercase tracking-widest block mb-4">Tactical Geography</label>
+                                    <label className="text-[11px] font-bold text-[#6B6B6B]  block mb-4">Target Geography</label>
                                     {editingSection === 'targeting' ? (
                                         <Input 
                                             value={editTargetGeography} 
                                             onChange={(e) => setEditTargetGeography(e.target.value)}
                                             placeholder="e.g. Dallas, TX" 
-                                            className="h-12 bg-[#161621] border-[#2e2e40] rounded-xl"
+                                            className="h-12 bg-[#F5F5F5] border-[#E2E2E2] rounded-xl"
                                         />
                                     ) : (
-                                        <div className="p-4 bg-[#161621] border border-[#2e2e40] rounded-2xl flex items-center justify-between">
-                                            <span className="text-[14px] font-bold text-[#f0f0f5]">{agencyProfile.targetGeography || "Global Operations"}</span>
-                                            <MapPin size={14} className="text-[#f97316]" />
+                                        <div className="p-4 bg-[#F5F5F5] border border-[#E2E2E2] rounded-2xl flex items-center justify-between">
+                                            <span className="text-[14px] font-bold text-[#1A1A1A]">{agencyProfile.targetGeography || "Not specified"}</span>
+                                            <MapPin size={14} className="text-[#1A1A1A]" />
                                         </div>
                                     )}
                                 </div>
                             </div>
 
                             <div>
-                                <label className="text-[11px] font-bold text-[#6b7280] uppercase tracking-widest block mb-4">Inclusion Criteria</label>
+                                <label className="text-[11px] font-bold text-[#6B6B6B]  block mb-4">Lead Qualification Criteria</label>
                                 <div className="space-y-3">
                                     {LEAD_QUALIFICATION_OPTIONS.map(opt => (
                                         <label 
@@ -576,15 +568,15 @@ export default function AgencyPage() {
                                             className={cn(
                                                 "flex items-center gap-4 p-4 rounded-2xl border transition-all",
                                                 (editingSection === 'targeting' ? editLeadQualificationCriteria.includes(opt.value) : agencyProfile.leadQualificationCriteria?.includes(opt.value))
-                                                    ? "bg-[#3b82f6]/5 border-[#3b82f6]/40 text-[#f0f0f5]" 
-                                                    : "bg-[#161621] border-[#2e2e40] text-[#6b7280] opacity-60"
+                                                    ? "bg-[#F5F5F5] border-[#CCCCCC] text-[#1A1A1A]" 
+                                                    : "bg-[#F5F5F5] border-[#E2E2E2] text-[#6B6B6B] opacity-60"
                                             )}
                                         >
                                             <Checkbox 
                                                 checked={editingSection === 'targeting' ? editLeadQualificationCriteria.includes(opt.value) : agencyProfile.leadQualificationCriteria?.includes(opt.value)} 
                                                 onCheckedChange={() => editingSection === 'targeting' && handleQualificationCriteriaToggle(opt.value)}
                                                 disabled={editingSection !== 'targeting'}
-                                                className="border-[#2a2a3c] data-[state=checked]:bg-[#3b82f6]"
+                                                className="border-[#E8E8E8] data-[state=checked]:bg-[#1A1A1A]"
                                             />
                                             <span className="text-[13px] font-medium tracking-tight">{opt.label}</span>
                                         </label>
@@ -600,23 +592,23 @@ export default function AgencyPage() {
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-3xl p-8 space-y-8 ring-1 ring-white/5"
+                        className="bg-white border border-[#E8E8E8] rounded-xl p-8 space-y-8 "
                     >
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <Palette size={18} className="text-[#f97316]" />
-                                <h3 className="text-[18px] font-bold text-[#f0f0f5]">Signal Configuration</h3>
+                                <Palette size={18} className="text-[#1A1A1A]" />
+                                <h3 className="text-[18px] font-bold text-[#1A1A1A]">Communication Settings</h3>
                             </div>
                             {editingSection !== 'settings' ? (
-                                <Button onClick={() => handleStartEdit('settings')} variant="ghost" size="sm" className="h-9 rounded-xl border border-[#2e2e40] px-4 text-[12px] font-bold uppercase tracking-widest hover:text-[#f97316]">
-                                    Modify Tuning
+                                <Button onClick={() => handleStartEdit('settings')} variant="ghost" size="sm" className="h-9 rounded-xl border border-[#E2E2E2] px-4 text-[12px] font-bold  hover:text-[#1A1A1A]">
+                                    Edit
                                 </Button>
                             ) : (
                                 <div className="flex gap-2">
-                                    <Button onClick={handleSave} variant="ghost" className="h-9 rounded-xl px-4 text-[#22c55e] hover:bg-[#22c55e]/10 uppercase text-[12px] font-bold tracking-widest" disabled={isSaving}>
-                                        Commit Tuning
+                                    <Button onClick={handleSave} variant="ghost" className="h-9 rounded-xl px-4 text-[#2E7D32] hover:bg-[#2E7D32]/10 uppercase text-[12px] font-bold tracking-widest" disabled={isSaving}>
+                                        Save Changes
                                     </Button>
-                                    <Button onClick={handleCancelEdit} variant="ghost" className="h-9 rounded-xl px-4 text-[#ef4444] hover:bg-[#ef4444]/10 uppercase text-[12px] font-bold tracking-widest">Abort</Button>
+                                    <Button onClick={handleCancelEdit} variant="ghost" className="h-9 rounded-xl px-4 text-[#C62828] hover:bg-[#C62828]/10 uppercase text-[12px] font-bold tracking-widest">Cancel</Button>
                                 </div>
                             )}
                         </div>
@@ -624,16 +616,16 @@ export default function AgencyPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-6">
                                 <div>
-                                    <label className="text-[11px] font-bold text-[#6b7280] uppercase tracking-widest block mb-4">Voice Tone Architecture</label>
+                                    <label className="text-[11px] font-bold text-[#6B6B6B]  block mb-4">Call Tone</label>
                                     {editingSection === 'settings' ? (
                                         <Select value={editTone} onValueChange={setEditTone}>
-                                            <SelectTrigger className="h-12 bg-[#161621] border-[#2e2e40] rounded-xl"><SelectValue /></SelectTrigger>
+                                            <SelectTrigger className="h-12 bg-[#F5F5F5] border-[#E2E2E2] rounded-xl"><SelectValue /></SelectTrigger>
                                             <SelectContent>{TONE_OPTIONS.map(t => <SelectItem key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</SelectItem>)}</SelectContent>
                                         </Select>
                                     ) : (
-                                        <div className="p-4 bg-[#161621] border border-[#2e2e40] rounded-2xl flex items-center justify-between">
-                                            <span className="text-[14px] font-bold text-[#f0f0f5] capitalize">{agencyProfile.tone || "Professional"}</span>
-                                            <Zap size={14} className="text-[#f97316]" />
+                                        <div className="p-4 bg-[#F5F5F5] border border-[#E2E2E2] rounded-2xl flex items-center justify-between">
+                                            <span className="text-[14px] font-bold text-[#1A1A1A] capitalize">{agencyProfile.tone || "Professional"}</span>
+                                            <Lightning size={14} className="text-[#1A1A1A]" />
                                         </div>
                                     )}
                                 </div>
@@ -641,52 +633,52 @@ export default function AgencyPage() {
 
                             <div className="space-y-6">
                                 <div>
-                                    <label className="text-[11px] font-bold text-[#6b7280] uppercase tracking-widest block mb-4">Operational Temporal Zone</label>
+                                    <label className="text-[11px] font-bold text-[#6B6B6B]  block mb-4">Time Zone</label>
                                     {editingSection === 'settings' ? (
                                         <Select value={editTimeZone} onValueChange={setEditTimeZone}>
-                                            <SelectTrigger className="h-12 bg-[#161621] border-[#2e2e40] rounded-xl"><SelectValue /></SelectTrigger>
+                                            <SelectTrigger className="h-12 bg-[#F5F5F5] border-[#E2E2E2] rounded-xl"><SelectValue /></SelectTrigger>
                                             <SelectContent>{NA_TIMEZONES.map(tz => <SelectItem key={tz} value={tz}>{tz}</SelectItem>)}</SelectContent>
                                         </Select>
                                     ) : (
-                                        <div className="p-4 bg-[#161621] border border-[#2e2e40] rounded-2xl flex items-center justify-between">
-                                            <span className="text-[14px] font-bold text-[#f0f0f5]">{agencyProfile.timeZone || "UTC-8"}</span>
-                                            <Clock size={14} className="text-[#3b82f6]" />
+                                        <div className="p-4 bg-[#F5F5F5] border border-[#E2E2E2] rounded-2xl flex items-center justify-between">
+                                            <span className="text-[14px] font-bold text-[#1A1A1A]">{agencyProfile.timeZone || "UTC-8"}</span>
+                                            <Clock size={14} className="text-[#1A1A1A]" />
                                         </div>
                                     )}
                                 </div>
                             </div>
 
                             <div className="md:col-span-2">
-                                <label className="text-[11px] font-bold text-[#6b7280] uppercase tracking-widest block mb-4">Sync Capacity Nodes</label>
+                                <label className="text-[11px] font-bold text-[#6B6B6B]  block mb-4">Availability Slots</label>
                                 <div className="grid grid-cols-1 gap-6">
                                     {editingSection === 'settings' && (
-                                        <div className="p-6 bg-[#161621] border border-dashed border-[#2e2e40] rounded-3xl grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
+                                        <div className="p-6 bg-[#F5F5F5] border border-dashed border-[#E2E2E2] rounded-xl grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
                                             <div className="space-y-2">
-                                                <label className="text-[10px] text-[#52525e] font-bold uppercase">Target Day</label>
+                                                <label className="text-[10px] text-[#9A9A9A] font-bold uppercase">Day</label>
                                                 <Select value={availabilityDay} onValueChange={setAvailabilityDay}>
-                                                    <SelectTrigger className="h-10 bg-[#0d0d13] border-[#2e2e40] rounded-xl"><SelectValue /></SelectTrigger>
+                                                    <SelectTrigger className="h-10 bg-white border-[#E2E2E2] rounded-xl"><SelectValue /></SelectTrigger>
                                                     <SelectContent>{DAYS.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}</SelectContent>
                                                 </Select>
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-[10px] text-[#52525e] font-bold uppercase">Initiate</label>
-                                                <Input type="time" value={availabilityStart} onChange={(e) => setAvailabilityStart(e.target.value)} className="h-10 bg-[#0d0d13] border-[#2e2e40] rounded-xl" />
+                                                <label className="text-[10px] text-[#9A9A9A] font-bold uppercase">Start Time</label>
+                                                <Input type="time" value={availabilityStart} onChange={(e) => setAvailabilityStart(e.target.value)} className="h-10 bg-white border-[#E2E2E2] rounded-xl" />
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-[10px] text-[#52525e] font-bold uppercase">Terminate</label>
-                                                <Input type="time" value={availabilityEnd} onChange={(e) => setAvailabilityEnd(e.target.value)} className="h-10 bg-[#0d0d13] border-[#2e2e40] rounded-xl" />
+                                                <label className="text-[10px] text-[#9A9A9A] font-bold uppercase">End Time</label>
+                                                <Input type="time" value={availabilityEnd} onChange={(e) => setAvailabilityEnd(e.target.value)} className="h-10 bg-white border-[#E2E2E2] rounded-xl" />
                                             </div>
-                                            <Button onClick={handleAddAvailabilitySlot} variant="outline" className="h-10 rounded-xl border-[#2e2e40] bg-[#1a1a26] text-[#f0f0f5] font-bold">Add Node</Button>
+                                            <Button onClick={handleAddAvailabilitySlot} variant="outline" className="h-10 rounded-xl border-[#E2E2E2] bg-white text-[#1A1A1A] font-bold">Add Slot</Button>
                                         </div>
                                     )}
                                     <div className="flex flex-wrap gap-2">
                                         {(editingSection === 'settings' ? editAvailability : (agencyProfile.availability || [])).map((slot, i) => (
-                                            <div key={i} className="px-4 py-2 bg-[#161621] border border-[#2e2e40] rounded-xl flex items-center gap-3 transition-all hover:border-[#f97316]/50">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-[#22c55e] shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-                                                <span className="text-[13px] font-mono text-[#f0f0f5] font-medium">{slot}</span>
+                                            <div key={i} className="px-4 py-2 bg-[#F5F5F5] border border-[#E2E2E2] rounded-xl flex items-center gap-3 transition-all hover:border-[#CCCCCC]">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-[#2E7D32] " />
+                                                <span className="text-[13px] text-[#1A1A1A] font-medium">{slot}</span>
                                                 {editingSection === 'settings' && (
-                                                    <Button onClick={() => handleRemoveAvailabilitySlot(slot)} variant="ghost" className="h-6 w-6 p-0 text-[#ef4444] hover:bg-[#ef4444]/10 rounded">
-                                                        <Trash2 size={12} />
+                                                    <Button onClick={() => handleRemoveAvailabilitySlot(slot)} variant="ghost" className="h-6 w-6 p-0 text-[#C62828] hover:bg-[#C62828]/10 rounded">
+                                                        <Trash size={12} />
                                                     </Button>
                                                 )}
                                             </div>
@@ -707,11 +699,11 @@ export default function AgencyPage() {
 function AgencyProfileSkeleton() {
   return (
     <div className="max-w-[1400px] mx-auto w-full px-6 py-10 space-y-12 animate-pulse">
-        <div className="h-24 w-1/3 bg-[#1e1e2c] border border-[#2a2a3c] rounded-[24px]" />
-        <div className="h-14 w-full max-w-2xl bg-[#1e1e2c] border border-[#2a2a3c] rounded-2xl" />
+        <div className="h-24 w-1/3 bg-white border border-[#E8E8E8] rounded-xl" />
+        <div className="h-14 w-full max-w-2xl bg-white border border-[#E8E8E8] rounded-2xl" />
         <div className="grid grid-cols-2 gap-8">
-            <div className="h-[400px] bg-[#1e1e2c] border border-[#2a2a3c] rounded-3xl" />
-            <div className="h-[400px] bg-[#1e1e2c] border border-[#2a2a3c] rounded-3xl" />
+            <div className="h-[400px] bg-white border border-[#E8E8E8] rounded-xl" />
+            <div className="h-[400px] bg-white border border-[#E8E8E8] rounded-xl" />
         </div>
     </div>
   );
@@ -723,20 +715,20 @@ function EmptyAgencyProfile() {
         <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center space-y-8 bg-[#1e1e2c] border border-[#2a2a3c] p-16 rounded-[48px] ring-1 ring-white/5 shadow-2xl"
+            className="text-center space-y-8 bg-white border border-[#E8E8E8] p-16 rounded-xl  shadow-lg"
         >
-            <div className="w-24 h-24 bg-[#26263a] rounded-[32px] flex items-center justify-center mx-auto text-[#f97316] relative">
-                <div className="absolute inset-0 bg-[#f97316]/20 blur-2xl rounded-full" />
-                <Building2 size={48} className="relative z-10" />
+            <div className="w-24 h-24 bg-[#F5F5F5] rounded-xl flex items-center justify-center mx-auto text-[#1A1A1A] relative">
+                <div className="absolute inset-0 bg-[#F0F0F0]  rounded-full" />
+                <Buildings size={48} className="relative z-10" />
             </div>
             <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-[#f0f0f5]">Signature Not Detected</h2>
-                <p className="text-[#9ca3b4] max-w-md mx-auto leading-relaxed">
-                    Your agency profile has not been initialized. Establish your operational baseline via the onboarding protocol.
+                <h2 className="text-3xl font-bold text-[#1A1A1A]">No Profile Found</h2>
+                <p className="text-[#6B6B6B] max-w-md mx-auto leading-relaxed">
+                    Your agency profile has not been initialized. Establish your profile through the onboarding process.
                 </p>
             </div>
-            <Button asChild className="h-14 px-8 bg-[#f97316] text-[#1a1a26] hover:bg-[#fb923c] rounded-2xl font-bold text-[16px] shadow-xl shadow-[#f97316]/10">
-                <Link href="/dashboard/onboarding">Initiate Onboarding</Link>
+            <Button asChild className="h-14 px-8 bg-[#1A1A1A] text-white hover:bg-[#000000] rounded-xl font-semibold text-[16px]">
+                <Link href="/dashboard/onboarding">Start Onboarding</Link>
             </Button>
         </motion.div>
     </div>

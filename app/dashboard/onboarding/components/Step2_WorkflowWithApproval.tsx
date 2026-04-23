@@ -71,13 +71,13 @@ export function WorkflowWithApproval({ onWorkflowComplete }: WorkflowWithApprova
   if (!onboardingFlowId || !flow) {
     return (
       <div className="max-w-6xl mx-auto w-full space-y-8 animate-pulse">
-        <div className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px] p-10 text-center">
-          <div className="h-10 w-64 bg-[#161621] rounded-xl mx-auto mb-4" />
-          <div className="h-4 w-96 bg-[#161621] rounded-lg mx-auto" />
+        <div className="bg-white border border-[#E8E8E8] rounded-xl p-10 text-center">
+          <div className="h-10 w-64 bg-[#F5F5F5] rounded-xl mx-auto mb-4" />
+          <div className="h-4 w-96 bg-[#F5F5F5] rounded-lg mx-auto" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="h-[400px] bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px]" />
-            <div className="h-[400px] bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px]" />
+            <div className="h-[400px] bg-white border border-[#E8E8E8] rounded-xl" />
+            <div className="h-[400px] bg-white border border-[#E8E8E8] rounded-xl" />
         </div>
       </div>
     );
@@ -89,35 +89,35 @@ export function WorkflowWithApproval({ onWorkflowComplete }: WorkflowWithApprova
         <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[40px] p-10 shadow-2xl ring-1 ring-white/5 relative overflow-hidden"
+            className="bg-white border border-[#E8E8E8] rounded-[40px] p-10 shadow-2xl  relative overflow-hidden"
         >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3b82f6] via-[#7b61ff] to-transparent opacity-50" />
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#1A1A1A] via-[#6B6B6B] to-transparent opacity-50" />
             
             <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-10">
                 <div className="space-y-3">
                     <div className="flex items-center gap-3">
-                        <Search size={18} className="text-[#3b82f6]" />
-                        <span className="text-[12px] font-mono font-bold text-[#3b82f6] uppercase tracking-[0.2em]">Market Research in Progress</span>
+                        <Search size={18} className="text-[#1A1A1A]" />
+                        <span className="text-[12px] font-mono font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">Market Research in Progress</span>
                     </div>
-                    <h1 className="text-[36px] font-bold text-[#f0f0f5] tracking-tight">
+                    <h1 className="text-[36px] font-bold text-[#1A1A1A] tracking-tight">
                         Crawling Target Domain
                     </h1>
-                    <p className="text-[#9ca3b4] text-[16px] max-w-xl">
+                    <p className="text-[#6B6B6B] text-[16px] max-w-xl">
                         Casper is analyzing your website to find your core selling points and proof of success.
                     </p>
                 </div>
                 
-                <div className="w-full md:w-[320px] bg-[#161621] border border-[#2e2e40] rounded-3xl p-6">
+                <div className="w-full md:w-[320px] bg-[#F5F5F5] border border-[#E2E2E2] rounded-xl p-6">
                     <OverallProgress onboardingFlowId={onboardingFlowId} />
                 </div>
             </div>
 
-            <Separator className="bg-[#2a2a3c] mb-10" />
+            <Separator className="bg-[#E8E8E8] mb-10" />
 
             <div className="space-y-4">
                 <div className="flex items-center gap-2 mb-2 px-2">
-                    <Terminal size={14} className="text-[#52525e]" />
-                    <span className="text-[10px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em]">Live Kernel Activity</span>
+                    <Terminal size={14} className="text-[#9A9A9A]" />
+                    <span className="text-[10px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em]">Live Kernel Activity</span>
                 </div>
                 <EventLog lastEvent={flow.lastEvent} />
             </div>
@@ -130,11 +130,11 @@ export function WorkflowWithApproval({ onWorkflowComplete }: WorkflowWithApprova
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px] p-8 shadow-xl ring-1 ring-white/5"
+                className="bg-white border border-[#E8E8E8] rounded-xl p-8 shadow-xl "
             >
                 <div className="flex items-center gap-3 mb-8 px-2">
-                    <Activity size={16} className="text-[#3b82f6]" />
-                    <h2 className="text-[14px] font-mono font-bold text-[#f0f0f5] uppercase tracking-[0.2em]">Signal Chain</h2>
+                    <Activity size={16} className="text-[#1A1A1A]" />
+                    <h2 className="text-[14px] font-mono font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">Signal Chain</h2>
                 </div>
                 <PhaseTimeline phases={flow.phases} />
             </motion.div>
@@ -144,7 +144,7 @@ export function WorkflowWithApproval({ onWorkflowComplete }: WorkflowWithApprova
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
-                className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px] p-8 shadow-xl ring-1 ring-white/5"
+                className="bg-white border border-[#E8E8E8] rounded-xl p-8 shadow-xl "
             >
                 <PageDiscoveryGrid onboardingFlowId={onboardingFlowId} />
             </motion.div>
@@ -156,7 +156,7 @@ export function WorkflowWithApproval({ onWorkflowComplete }: WorkflowWithApprova
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px] p-8 shadow-2xl ring-1 ring-white/5"
+            className="bg-white border border-[#E8E8E8] rounded-xl p-8 shadow-2xl "
         >
             <StreamingSummary 
                 onboardingFlowId={onboardingFlowId}
@@ -169,7 +169,7 @@ export function WorkflowWithApproval({ onWorkflowComplete }: WorkflowWithApprova
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-8 bg-red-400/5 border border-red-400/20 rounded-[32px] mt-10"
+                className="p-8 bg-red-400/5 border border-red-400/20 rounded-xl mt-10"
             >
                 <div className="flex items-start gap-6">
                     <div className="p-3 bg-red-400/10 rounded-2xl">

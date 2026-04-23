@@ -18,29 +18,28 @@ import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { 
-  Loader2, 
-  ChevronDown, 
-  ChevronUp, 
+  SpinnerGap, 
+  CaretDown, 
+  CaretUp, 
   Phone, 
-  Sparkles, 
+  Sparkle, 
   FileText, 
-  ExternalLink,
+  ArrowUpRight,
   Globe,
-  AlertCircle,
+  WarningCircle,
   CheckCircle,
   Clock,
-  Target,
-  Zap,
+  Crosshair,
+  Lightning,
   PlayCircle,
-  Activity,
+  TrendUp,
   ArrowRight,
-  Search,
-  FileSearch,
+  MagnifyingGlass,
+  FileMagnifyingGlass,
   Database,
-  Workflow,
-  Pause,
-  CircleAlert
-} from "lucide-react";
+  TreeStructure,
+  Pause
+} from "@phosphor-icons/react";
 
 type Props = {
   params: Promise<{ flowId: string }>;
@@ -52,8 +51,8 @@ const PHASE_LABELS = {
 } as const;
 
 const PHASE_ICONS = {
-  scrape_content: Search,
-  generate_dossier: FileSearch,
+  scrape_content: MagnifyingGlass,
+  generate_dossier: FileMagnifyingGlass,
 } as const;
 
 // Audit job phase labels for individual opportunities
@@ -178,16 +177,16 @@ export default function MarketingFlowPage({ params }: Props) {
     return (
       <main className="min-h-full p-6 md:p-8 flex flex-col gap-6">
         <div className="max-w-6xl mx-auto w-full">
-          <div className="card-warm-static p-8 md:p-12 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--destructive))]/5 via-transparent to-[hsl(var(--destructive))]/5 -z-10" />
-            <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[hsl(var(--destructive))]/20 to-[hsl(var(--destructive))]/10 flex items-center justify-center mx-auto mb-6 shadow-lg border-2 border-[hsl(var(--destructive))]/30">
-              <CircleAlert className="h-12 w-12 text-destructive" />
+          <div className="bg-white border border-[#E8E8E8] rounded-xl shadow-sm p-8 md:p-12 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A]/5 via-transparent to-[#1A1A1A]/5 -z-10" />
+            <div className="w-24 h-24 rounded-2xl bg-[#F5F5F5] flex items-center justify-center mx-auto mb-6 shadow-lg border-2 border-[#C62828]/20">
+              <WarningCircle className="h-12 w-12 text-[#C62828]" />
             </div>
-            <h1 className="text-3xl font-bold text-foreground mb-3">Campaign Not Found</h1>
-            <p className="text-muted-foreground mb-6 text-lg">
+            <h1 className="text-3xl font-bold text-[#1A1A1A] mb-3">Campaign Not Found</h1>
+            <p className="text-[#6B6B6B] mb-6 text-lg">
               The campaign you&apos;re looking for doesn&apos;t exist or you don&apos;t have access to it.
             </p>
-            <Button asChild className="btn-primary">
+            <Button asChild className="bg-[#1A1A1A] text-white hover:bg-[#333333]">
               <Link href="/dashboard/marketing" className="inline-flex items-center gap-2">
                 ← Back to Marketing
               </Link>
@@ -202,25 +201,25 @@ export default function MarketingFlowPage({ params }: Props) {
     <main className="min-h-full p-6 md:p-8 flex flex-col gap-6">
       <div className="max-w-6xl mx-auto w-full space-y-6">
         {/* Campaign Header */}
-        <div className="card-warm-static p-6 md:p-8">
+        <div className="bg-white border border-[#E8E8E8] rounded-xl shadow-sm p-6 md:p-8">
           <Link
             href="/dashboard/marketing"
-            className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1 mb-6"
+            className="text-sm font-semibold text-[#1A1A1A] hover:text-[#1A1A1A]/80 transition-colors inline-flex items-center gap-1 mb-6"
           >
             ← Back to Campaigns
           </Link>
           <div className="flex flex-col sm:flex-row items-start justify-between gap-4 mb-8">
             <div className="flex-1 w-full">
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--radial-2))] flex items-center justify-center shadow-lg shadow-[hsl(var(--primary))]/30 flex-shrink-0">
-                  <Workflow className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#1A1A1A] flex items-center justify-center shadow-sm flex-shrink-0">
+                  <TreeStructure className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight break-words">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1A1A1A] tracking-tight break-words">
                     {leadGenJob.campaign.targetVertical}
                   </h1>
-                  <p className="text-sm md:text-base text-muted-foreground flex items-center gap-2 mt-1 flex-wrap">
-                    <Target className="h-4 w-4 flex-shrink-0" />
+                  <p className="text-sm md:text-base text-[#6B6B6B] flex items-center gap-2 mt-1 flex-wrap">
+                    <Crosshair className="h-4 w-4 flex-shrink-0" />
                     <span className="break-words">{leadGenJob.campaign.targetGeography}</span>
                   </p>
                 </div>
@@ -234,37 +233,37 @@ export default function MarketingFlowPage({ params }: Props) {
           {/* Key Stats Grid */}
           {leadGenCounts ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-              <div className="stat-card-primary p-5">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+              <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl p-5">
+                <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">
                   Total Leads
                 </p>
-                <p className="text-3xl font-bold text-foreground">{leadGenCounts.totalOpportunities}</p>
-                <p className="text-sm text-muted-foreground mt-2">Found</p>
+                <p className="text-3xl font-bold text-[#1A1A1A]">{leadGenCounts.totalOpportunities}</p>
+                <p className="text-sm text-[#6B6B6B] mt-2">Found</p>
               </div>
-              <div className="stat-card-primary p-5">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+              <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl p-5">
+                <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">
                   Ready to Call
                 </p>
-                <p className="text-3xl font-bold text-foreground">{leadGenCounts.readyOpportunities}</p>
-                <p className="text-sm text-muted-foreground mt-2">Researched</p>
+                <p className="text-3xl font-bold text-[#1A1A1A]">{leadGenCounts.readyOpportunities}</p>
+                <p className="text-sm text-[#6B6B6B] mt-2">Researched</p>
               </div>
-              <div className="stat-card-accent p-5">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+              <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl p-5">
+                <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">
                   Progress
                 </p>
-                <p className="text-3xl font-bold text-foreground">
+                <p className="text-3xl font-bold text-[#1A1A1A]">
                   {leadGenJob.numLeadsFetched}/{leadGenJob.numLeadsRequested}
                 </p>
-                <p className="text-sm text-muted-foreground mt-2">Leads found</p>
+                <p className="text-sm text-[#6B6B6B] mt-2">Leads found</p>
               </div>
-              <div className="stat-card-accent p-5">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+              <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl p-5">
+                <p className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide mb-2">
                   Completion
                 </p>
-                <p className="text-3xl font-bold text-foreground">
+                <p className="text-3xl font-bold text-[#1A1A1A]">
                   {typeof leadGenProgress === "number" ? Math.round(leadGenProgress * 100) : 0}%
                 </p>
-                <p className="text-sm text-muted-foreground mt-2">Overall</p>
+                <p className="text-sm text-[#6B6B6B] mt-2">Overall</p>
               </div>
             </div>
           ) : (
@@ -278,8 +277,8 @@ export default function MarketingFlowPage({ params }: Props) {
 
         {/* Paused Status Banner */}
         {leadGenJob.status === "paused_for_upgrade" && billingBlock && (
-          <Alert variant="default" className="border-2 border-[hsl(var(--primary))]/50 bg-gradient-to-r from-[hsl(var(--primary))]/10 to-[hsl(var(--primary))]/5">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--radial-2))] flex items-center justify-center shadow-lg shadow-[hsl(var(--primary))]/30">
+          <Alert variant="default" className="border-2 border-[#E8E8E8] bg-[#F5F5F5]">
+            <div className="w-10 h-10 rounded-lg bg-[#1A1A1A] flex items-center justify-center shadow-sm">
               <Pause className="h-5 w-5 text-white" />
             </div>
             <AlertTitle className="text-lg font-bold">
@@ -291,7 +290,7 @@ export default function MarketingFlowPage({ params }: Props) {
                   <p className="text-sm mb-1">
                     Insufficient credits for <span className="font-semibold">{billingBlock.featureId === "atlas_credits" ? "Casper credits" : billingBlock.featureId.replace("_", " ")}</span>
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[#6B6B6B]">
                     Phase: {billingBlock.phase.replace("_", " ")}
                   </p>
                 </div>
@@ -300,10 +299,10 @@ export default function MarketingFlowPage({ params }: Props) {
                     setPaywallDismissed(false);
                     setPaywallOpen(true);
                   }}
-                  className="btn-primary whitespace-nowrap"
+                  className="bg-[#1A1A1A] text-white hover:bg-[#333333] whitespace-nowrap"
                   aria-label="Upgrade to resume research"
                 >
-                  <Zap className="mr-2 h-4 w-4" />
+                  <Lightning className="mr-2 h-4 w-4" />
                   Upgrade Now
                 </Button>
               </div>
@@ -312,7 +311,7 @@ export default function MarketingFlowPage({ params }: Props) {
         )}
 
         {/* Campaign Progress - Collapsible */}
-        <div className="card-warm-static overflow-hidden relative">
+        <div className="bg-white border border-[#E8E8E8] rounded-xl shadow-sm overflow-hidden relative">
           {/* Background accent gradient */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[hsl(var(--primary))]/10 to-transparent rounded-full blur-3xl -z-10" />
           
@@ -327,12 +326,12 @@ export default function MarketingFlowPage({ params }: Props) {
             <div className="w-full space-y-4 md:space-y-6">
               <div className="flex items-start sm:items-center justify-between gap-3">
                 <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--radial-2))] flex items-center justify-center shadow-lg shadow-[hsl(var(--primary))]/30 flex-shrink-0">
-                    <Activity className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#1A1A1A] flex items-center justify-center shadow-sm flex-shrink-0">
+                    <TrendUp className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground break-words">Research Progress</h2>
-                    <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Real-time campaign execution status</p>
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#1A1A1A] break-words">Research Progress</h2>
+                    <p className="text-xs sm:text-sm text-[#6B6B6B] hidden sm:block">Real-time campaign execution status</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
@@ -341,10 +340,10 @@ export default function MarketingFlowPage({ params }: Props) {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div className="text-right cursor-help">
-                            <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--radial-2))] bg-clip-text text-transparent tabular-nums">
+                            <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#1A1A1A] tabular-nums">
                               {Math.round(leadGenProgress * 100)}%
                             </div>
-                            <div className="text-xs text-muted-foreground mt-0.5 sm:mt-1 hidden sm:block">Complete</div>
+                            <div className="text-xs text-[#6B6B6B] mt-0.5 sm:mt-1 hidden sm:block">Complete</div>
                           </div>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -354,8 +353,8 @@ export default function MarketingFlowPage({ params }: Props) {
                     </TooltipProvider>
                   )}
                   {workflowExpanded ? 
-                    <ChevronUp className="h-5 w-5 text-muted-foreground flex-shrink-0" /> : 
-                    <ChevronDown className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                    <CaretUp className="h-5 w-5 text-[#6B6B6B] flex-shrink-0" /> : 
+                    <CaretDown className="h-5 w-5 text-[#6B6B6B] flex-shrink-0" />
                   }
                 </div>
               </div>
@@ -364,32 +363,32 @@ export default function MarketingFlowPage({ params }: Props) {
               {typeof leadGenProgress === "number" && (
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Overall Progress</span>
-                    <span className="text-xs font-bold text-primary tabular-nums">{Math.round(leadGenProgress * 100)}%</span>
+                    <span className="text-xs font-semibold text-[#6B6B6B] uppercase tracking-wide">Overall Progress</span>
+                    <span className="text-xs font-bold text-[#1A1A1A] tabular-nums">{Math.round(leadGenProgress * 100)}%</span>
                   </div>
                   <Progress 
                     value={Math.round(leadGenProgress * 100)} 
-                    className="h-4 [&>div]:bg-gradient-to-r [&>div]:from-[hsl(var(--primary))] [&>div]:to-[hsl(var(--radial-2))] [&>div]:shadow-lg [&>div]:shadow-[hsl(var(--primary))]/30" 
+                    className="h-4 [&>div]:bg-gradient-to-r [&>div]:from-[#1A1A1A] [&>div]:to-[#333333] [&>div]:shadow-sm " 
                   />
                 </div>
               )}
 
               {/* Latest Activity - Always visible when collapsed */}
               {!workflowExpanded && leadGenJob.lastEvent && (
-                <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))]/10 via-[hsl(var(--primary))]/5 to-transparent border-2 border-[hsl(var(--primary))]/30 overflow-hidden">
+                <div className="p-4 sm:p-5 rounded-xl bg-[#F5F5F5] border-2 border-[#E8E8E8] overflow-hidden">
                   <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--radial-2))] flex items-center justify-center shadow-lg shadow-[hsl(var(--primary))]/30 flex-shrink-0">
-                      <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#1A1A1A] flex items-center justify-center shadow-sm flex-shrink-0">
+                      <Lightning className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                     </div>
                     <div className="flex-1 min-w-0 overflow-hidden">
-                      <p className="text-xs sm:text-sm font-bold text-foreground mb-2 flex items-center gap-2 flex-wrap">
+                      <p className="text-xs sm:text-sm font-bold text-[#1A1A1A] mb-2 flex items-center gap-2 flex-wrap">
                         Latest Activity
-                        <ArrowRight className="h-3 w-3 text-primary flex-shrink-0" />
+                        <ArrowRight className="h-3 w-3 text-[#1A1A1A] flex-shrink-0" />
                       </p>
-                      <p className="text-xs sm:text-sm text-foreground/90 mb-2 leading-relaxed break-all overflow-wrap-anywhere">
+                      <p className="text-xs sm:text-sm text-[#1A1A1A]/90 mb-2 leading-relaxed break-all overflow-wrap-anywhere">
                         {leadGenJob.lastEvent.message}
                       </p>
-                      <p className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+                      <p className="text-xs text-[#6B6B6B] flex items-center gap-2 flex-wrap">
                         <Clock className="h-3 w-3 flex-shrink-0" />
                         <span className="break-all">{new Date(leadGenJob.lastEvent.timestamp).toLocaleString()}</span>
                       </p>
@@ -402,7 +401,7 @@ export default function MarketingFlowPage({ params }: Props) {
 
           {/* Expandable Content - Workflow Phases */}
           {workflowExpanded && (
-            <div className="border-t-2 border-border/40 p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
+            <div className="border-t-2 border-[#E8E8E8] p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
               <div className="space-y-3 sm:space-y-4">
             {leadGenJob.phases.map((phase, index) => {
               const PhaseIcon = PHASE_ICONS[phase.name as keyof typeof PHASE_ICONS] ?? Database;
@@ -429,24 +428,24 @@ export default function MarketingFlowPage({ params }: Props) {
                   {/* Phase Card */}
                   <div className={`rounded-xl border-2 transition-all duration-300 overflow-hidden ${
                     isActive 
-                      ? "bg-gradient-to-br from-[hsl(var(--primary))]/8 via-[hsl(var(--primary))]/4 to-transparent border-[hsl(var(--primary))]/50 shadow-lg shadow-[hsl(var(--primary))]/20" 
+                      ? "bg-white border-[#E8E8E8] shadow-sm" 
                       : isComplete
-                      ? "bg-gradient-to-br from-[hsl(var(--success))]/8 via-[hsl(var(--success))]/4 to-transparent border-[hsl(var(--success))]/40"
+                      ? "bg-white border-[#2E7D32]/20"
                       : isError
-                      ? "bg-gradient-to-br from-[hsl(var(--destructive))]/8 to-transparent border-[hsl(var(--destructive))]/40"
-                      : "bg-surface-overlay/50 border-border/40"
+                      ? "bg-[#C62828]/5 border-[#C62828]/20"
+                      : "bg-[#F5F5F5] border-[#E8E8E8]"
                   }`}>
                     <div className="p-4 sm:p-5">
                       <div className="flex items-start gap-3 sm:gap-4">
                         {/* Icon with enhanced styling */}
                         <div className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                           isComplete 
-                            ? "bg-gradient-to-br from-[hsl(var(--success))] to-[hsl(var(--success))]/80 text-white shadow-lg shadow-[hsl(var(--success))]/30" 
+                            ? "bg-[#2E7D32] text-white shadow-sm shadow-[#2E7D32]/10" 
                             : isActive 
-                            ? "bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--primary))]/80 text-white shadow-lg shadow-[hsl(var(--primary))]/30 animate-pulse" 
+                            ? "bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--primary))]/80 text-white shadow-sm animate-pulse" 
                             : isError 
-                            ? "bg-gradient-to-br from-[hsl(var(--destructive))] to-[hsl(var(--destructive))]/80 text-white shadow-lg shadow-[hsl(var(--destructive))]/30" 
-                            : "bg-surface-muted border border-border text-muted-foreground"
+                            ? "bg-gradient-to-br from-[hsl(var(--destructive))] to-[hsl(var(--destructive))]/80 text-white shadow-sm" 
+                            : "bg-[#F5F5F5] border border-[#E8E8E8] text-[#6B6B6B]"
                         }`}>
                           {isComplete ? (
                             <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7" />
@@ -454,36 +453,36 @@ export default function MarketingFlowPage({ params }: Props) {
                             <PhaseIcon className="h-6 w-6 sm:h-7 sm:w-7" />
                           )}
                           {isActive && (
-                            <div className="absolute inset-0 rounded-xl bg-[hsl(var(--primary))]/20 animate-ping" />
+                            <div className="absolute inset-0 rounded-xl bg-[#E8E8E8] animate-ping" />
                           )}
                         </div>
                         
                         {/* Content */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2 flex-wrap">
-                            <h3 className="font-bold text-base sm:text-lg text-foreground break-words">
+                            <h3 className="font-bold text-base sm:text-lg text-[#1A1A1A] break-words">
                               {PHASE_LABELS[phase.name as keyof typeof PHASE_LABELS] ?? phase.name.replace(/_/g, " ")}
                             </h3>
                             {isRunning && (
-                              <Badge className="bg-gradient-to-r from-[hsl(var(--primary))]/30 to-[hsl(var(--primary))]/20 text-primary border-[hsl(var(--primary))]/40">
-                                <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                              <Badge className="bg-[#F5F5F5] text-[#1A1A1A] border-[#E8E8E8]">
+                                <SpinnerGap className="mr-1 h-3 w-3 animate-spin" />
                                 Running
                               </Badge>
                             )}
                             {isPaused && (
-                              <Badge className="bg-accent/60 text-accent-foreground border-accent-foreground/20">
+                              <Badge className="bg-[#F5F5F5] text-[#1A1A1A] border-[#E8E8E8]">
                                 <Clock className="mr-1 h-3 w-3" />
                                 Paused
                               </Badge>
                             )}
                             {isComplete && (
-                              <Badge className="bg-gradient-to-r from-[hsl(var(--success))]/30 to-[hsl(var(--success))]/20 text-[hsl(var(--success))] border-[hsl(var(--success))]/40">
+                              <Badge className="bg-[#2E7D32]/10 text-[#2E7D32] border-[#2E7D32]/20">
                                 <CheckCircle className="mr-1 h-3 w-3" />
                                 Complete
                               </Badge>
                             )}
                             {isPending && (
-                              <Badge variant="secondary" className="bg-muted text-muted-foreground border-border">
+                              <Badge variant="secondary" className="bg-muted text-[#6B6B6B] border-[#E8E8E8]">
                                 <Clock className="mr-1 h-3 w-3" />
                                 Pending
                               </Badge>
@@ -494,14 +493,14 @@ export default function MarketingFlowPage({ params }: Props) {
                           {isActive && (
                             <div className="mt-4">
                               <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium text-foreground">Processing...</span>
-                                <span className="text-sm font-bold text-primary tabular-nums">
+                                <span className="text-sm font-medium text-[#1A1A1A]">Processing...</span>
+                                <span className="text-sm font-bold text-[#1A1A1A] tabular-nums">
                                   {Math.round(phase.progress * 100)}%
                                 </span>
                               </div>
                               <Progress 
                                 value={Math.round(phase.progress * 100)} 
-                                className="h-3 [&>div]:bg-gradient-to-r [&>div]:from-[hsl(var(--primary))] [&>div]:to-[hsl(var(--radial-2))] [&>div]:shadow-lg [&>div]:shadow-[hsl(var(--primary))]/30"
+                                className="h-3 [&>div]:bg-gradient-to-r [&>div]:from-[#1A1A1A] [&>div]:to-[#333333] [&>div]:shadow-sm "
                               />
                             </div>
                           )}
@@ -509,13 +508,13 @@ export default function MarketingFlowPage({ params }: Props) {
                           {/* Minimized Progress for Non-Active */}
                           {!isActive && !isComplete && phase.progress > 0 && (
                             <div className="flex items-center gap-3 mt-3">
-                              <div className="h-2 flex-1 rounded-full bg-surface-muted border border-border overflow-hidden">
+                              <div className="h-2 flex-1 rounded-full bg-[#F5F5F5] border border-[#E8E8E8] overflow-hidden">
                                 <div 
-                                  className="h-full bg-gradient-to-r from-muted to-muted-foreground/30 transition-all"
+                                  className="h-full bg-gradient-to-r from-[#F5F5F5] to-[#E8E8E8] transition-all"
                                   style={{ width: `${Math.round(phase.progress * 100)}%` }}
                                 />
                               </div>
-                              <span className="text-xs text-muted-foreground tabular-nums font-medium">
+                              <span className="text-xs text-[#6B6B6B] tabular-nums font-medium">
                                 {Math.round(phase.progress * 100)}%
                               </span>
                             </div>
@@ -526,7 +525,7 @@ export default function MarketingFlowPage({ params }: Props) {
                       {/* Error Message */}
                       {isError && phase.errorMessage && (
                         <Alert variant="destructive" className="mt-4">
-                          <AlertCircle className="h-4 w-4" />
+                          <WarningCircle className="h-4 w-4" />
                           <AlertDescription className="text-sm">
                             {phase.errorMessage}
                           </AlertDescription>
@@ -541,20 +540,20 @@ export default function MarketingFlowPage({ params }: Props) {
 
               {/* Latest Activity - Show when expanded */}
               {leadGenJob.lastEvent && (
-                <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))]/10 via-[hsl(var(--primary))]/5 to-transparent border-2 border-[hsl(var(--primary))]/30 overflow-hidden">
+                <div className="p-4 sm:p-5 rounded-xl bg-[#F5F5F5] border-2 border-[#E8E8E8] overflow-hidden">
                   <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--radial-2))] flex items-center justify-center shadow-lg shadow-[hsl(var(--primary))]/30 flex-shrink-0">
-                      <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#1A1A1A] flex items-center justify-center shadow-sm flex-shrink-0">
+                      <Lightning className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                     </div>
                     <div className="flex-1 min-w-0 overflow-hidden">
-                      <p className="text-xs sm:text-sm font-bold text-foreground mb-2 flex items-center gap-2 flex-wrap">
+                      <p className="text-xs sm:text-sm font-bold text-[#1A1A1A] mb-2 flex items-center gap-2 flex-wrap">
                         Latest Activity
-                        <ArrowRight className="h-3 w-3 text-primary flex-shrink-0" />
+                        <ArrowRight className="h-3 w-3 text-[#1A1A1A] flex-shrink-0" />
                       </p>
-                      <p className="text-xs sm:text-sm text-foreground/90 mb-2 leading-relaxed break-all overflow-wrap-anywhere">
+                      <p className="text-xs sm:text-sm text-[#1A1A1A]/90 mb-2 leading-relaxed break-all overflow-wrap-anywhere">
                         {leadGenJob.lastEvent.message}
                       </p>
-                      <p className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+                      <p className="text-xs text-[#6B6B6B] flex items-center gap-2 flex-wrap">
                         <Clock className="h-3 w-3 flex-shrink-0" />
                         <span className="break-all">{new Date(leadGenJob.lastEvent.timestamp).toLocaleString()}</span>
                       </p>
@@ -568,7 +567,7 @@ export default function MarketingFlowPage({ params }: Props) {
 
         {/* Opportunities - Main Focus */}
         {opportunities === undefined ? (
-          <div className="card-warm-static p-6 md:p-8">
+          <div className="bg-white border border-[#E8E8E8] rounded-xl shadow-sm p-6 md:p-8">
             <Skeleton className="h-8 w-64 mb-6" />
             <div className="space-y-4">
               {[...Array(3)].map((_, i) => (
@@ -577,23 +576,23 @@ export default function MarketingFlowPage({ params }: Props) {
             </div>
           </div>
         ) : opportunities && opportunities.length > 0 ? (
-          <div className="card-warm-static p-6 md:p-8 overflow-hidden relative">
+          <div className="bg-white border border-[#E8E8E8] rounded-xl shadow-sm p-6 md:p-8 overflow-hidden relative">
             {/* Background accent */}
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[hsl(var(--success))]/10 to-transparent rounded-full blur-3xl -z-10" />
             
             <div className="flex items-start sm:items-center gap-3 sm:gap-4 mb-6">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[hsl(var(--success))] to-[hsl(var(--success))]/80 flex items-center justify-center shadow-lg shadow-[hsl(var(--success))]/30 flex-shrink-0">
-                <Target className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#2E7D32] flex items-center justify-center shadow-sm shadow-[#2E7D32]/10 flex-shrink-0">
+                <Crosshair className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h2 className="text-xl sm:text-2xl font-bold text-foreground break-words">Qualified Leads</h2>
-                <p className="text-xs sm:text-sm text-muted-foreground">{opportunities.length} lead{opportunities.length !== 1 ? 's' : ''} ready for outreach</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-[#1A1A1A] break-words">Qualified Leads</h2>
+                <p className="text-xs sm:text-sm text-[#6B6B6B]">{opportunities.length} lead{opportunities.length !== 1 ? 's' : ''} ready for outreach</p>
               </div>
               <div className="text-right flex-shrink-0">
                 <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[hsl(var(--success))] to-[hsl(var(--success))]/80 bg-clip-text text-transparent tabular-nums">
                   {opportunities.length}
                 </div>
-                <div className="text-xs text-muted-foreground mt-1 hidden sm:block">Total</div>
+                <div className="text-xs text-[#6B6B6B] mt-1 hidden sm:block">Total</div>
               </div>
             </div>
             <div className="space-y-4">
@@ -613,8 +612,8 @@ export default function MarketingFlowPage({ params }: Props) {
                   key={opp._id}
                   className={`rounded-xl overflow-hidden border-2 transition-all duration-200 relative ${
                     isReadyStatus
-                      ? "bg-gradient-to-br from-[hsl(var(--success))]/8 via-[hsl(var(--success))]/4 to-transparent border-[hsl(var(--success))]/50 hover:border-[hsl(var(--success))]/70 hover:shadow-xl hover:shadow-[hsl(var(--success))]/20"
-                      : "opp-card-gradient border-border/60 hover:border-border/80 hover:shadow-md"
+                      ? "bg-white border-[#2E7D32]/20 hover:border-[#2E7D32]/20 hover:shadow-xl hover:shadow-[hsl(var(--success))]/20"
+                      : "bg-white border-[#E8E8E8] hover:border-[#E8E8E8] hover:shadow-md"
                   }`}
                 >
                   <Button
@@ -627,10 +626,10 @@ export default function MarketingFlowPage({ params }: Props) {
                     <div className="flex items-start gap-3 sm:gap-4 w-full">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 sm:gap-3 mb-3 flex-wrap">
-                          <h3 className="font-bold text-base sm:text-lg text-foreground break-words">{opp.name}</h3>
+                          <h3 className="font-bold text-base sm:text-lg text-[#1A1A1A] break-words">{opp.name}</h3>
                           {currentPhase && currentPhase !== "generate_dossier" ? (
-                            <Badge className="bg-gradient-to-r from-[hsl(var(--primary))]/30 to-[hsl(var(--primary))]/20 text-primary border-[hsl(var(--primary))]/40">
-                              <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                            <Badge className="bg-[#F5F5F5] text-[#1A1A1A] border-[#E8E8E8]">
+                              <SpinnerGap className="mr-1 h-3 w-3 animate-spin" />
                               {AUDIT_PHASE_LABELS[currentPhase]}
                             </Badge>
                           ) : (
@@ -641,7 +640,7 @@ export default function MarketingFlowPage({ params }: Props) {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <p className="text-xs sm:text-sm text-muted-foreground mb-3 flex items-center gap-2 cursor-help">
+                                <p className="text-xs sm:text-sm text-[#6B6B6B] mb-3 flex items-center gap-2 cursor-help">
                                   <Globe className="h-4 w-4 flex-shrink-0" />
                                   <span className="font-mono truncate max-w-[200px] sm:max-w-[300px]">{opp.domain}</span>
                                 </p>
@@ -658,9 +657,9 @@ export default function MarketingFlowPage({ params }: Props) {
                               <Badge 
                                 key={signal}
                                 variant="outline"
-                                className="bg-[hsl(var(--primary))]/10 border-[hsl(var(--primary))]/30 text-[hsl(var(--primary))]"
+                                className="bg-[#F5F5F5] border-[#E8E8E8] text-[hsl(var(--primary))]"
                               >
-                                <Target className="mr-1 h-3 w-3" />
+                                <Crosshair className="mr-1 h-3 w-3" />
                                 {signal.replace(/_/g, " ")}
                               </Badge>
                             ))}
@@ -668,11 +667,11 @@ export default function MarketingFlowPage({ params }: Props) {
                         )}
                         {job && (
                           <div className="flex items-center gap-3">
-                            <Progress value={phaseProgress} className="h-2.5 flex-1 [&>div]:bg-[hsl(var(--success))]" />
+                            <Progress value={phaseProgress} className="h-2.5 flex-1 [&>div]:bg-[#2E7D32]" />
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <span className="text-xs text-muted-foreground font-semibold tabular-nums whitespace-nowrap cursor-help">
+                                  <span className="text-xs text-[#6B6B6B] font-semibold tabular-nums whitespace-nowrap cursor-help">
                                     {completedPhases}/{job.phases.length} phases
                                   </span>
                                 </TooltipTrigger>
@@ -687,7 +686,7 @@ export default function MarketingFlowPage({ params }: Props) {
                       
                       {/* Chevron toggle */}
                       <div className="flex items-center flex-shrink-0">
-                        {isExpanded ? <ChevronUp className="h-5 w-5 text-muted-foreground" /> : <ChevronDown className="h-5 w-5 text-muted-foreground" />}
+                        {isExpanded ? <CaretUp className="h-5 w-5 text-[#6B6B6B]" /> : <CaretDown className="h-5 w-5 text-[#6B6B6B]" />}
                       </div>
                     </div>
                   </Button>
@@ -719,13 +718,13 @@ export default function MarketingFlowPage({ params }: Props) {
                           }
                         }}
                         disabled={startingCallOppId === opp._id || !hasCredits}
-                        className="btn-primary font-semibold"
+                        className="bg-[#1A1A1A] text-white hover:bg-[#333333] font-semibold"
                         size="sm"
                         aria-label="Start AI call"
                       >
                         {startingCallOppId === opp._id ? (
                           <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <SpinnerGap className="mr-2 h-4 w-4 animate-spin" />
                             Starting...
                           </>
                         ) : (
@@ -742,7 +741,7 @@ export default function MarketingFlowPage({ params }: Props) {
                           setDemoCallModalOpen(true);
                         }}
                         disabled={!hasCredits}
-                        className="btn-primary font-semibold"
+                        className="bg-[#1A1A1A] text-white hover:bg-[#333333] font-semibold"
                         size="sm"
                         aria-label="Start demo call"
                       >
@@ -753,7 +752,7 @@ export default function MarketingFlowPage({ params }: Props) {
                   )}
 
                   {isExpanded && (
-                    <div className="border-t-2 border-border/40 p-5 md:p-6 space-y-5">
+                    <div className="border-t-2 border-[#E8E8E8] p-5 md:p-6 space-y-5">
                       {/* Call Controls */}
                       {(() => {
                         const oppStatusUpper = typeof opp.status === "string" ? opp.status.toUpperCase() : "";
@@ -762,18 +761,18 @@ export default function MarketingFlowPage({ params }: Props) {
 
                         if (isReady && agencyProfile) {
                           return (
-                            <div className="p-4 sm:p-5 md:p-6 lg:p-7 rounded-xl bg-gradient-to-br from-[hsl(var(--success))]/12 via-[hsl(var(--success))]/6 to-transparent border-2 border-[hsl(var(--success))]/40 shadow-lg shadow-[hsl(var(--success))]/10">
+                            <div className="p-4 sm:p-5 md:p-6 lg:p-7 rounded-xl bg-[#2E7D32]/5 border-2 border-[#2E7D32]/20 shadow-sm shadow-[#2E7D32]/10">
                               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                                 <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full min-w-0">
-                                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-[hsl(var(--success))] to-[hsl(var(--success))]/80 flex items-center justify-center shadow-xl shadow-[hsl(var(--success))]/30 flex-shrink-0">
+                                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#2E7D32] flex items-center justify-center shadow-md shadow-[#2E7D32]/10 flex-shrink-0">
                                     <Phone className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
                                   </div>
                                   <div className="flex-1 min-w-0">
-                                    <h4 className="font-bold text-foreground text-lg sm:text-xl mb-1 flex items-center gap-2 flex-wrap">
+                                    <h4 className="font-bold text-[#1A1A1A] text-lg sm:text-xl mb-1 flex items-center gap-2 flex-wrap">
                                       Ready to Call
-                                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[hsl(var(--success))] flex-shrink-0" />
+                                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-[#2E7D32] flex-shrink-0" />
                                     </h4>
-                                    <p className="text-xs sm:text-sm text-muted-foreground">All research complete • Profile ready</p>
+                                    <p className="text-xs sm:text-sm text-[#6B6B6B]">All research complete • Profile ready</p>
                                   </div>
                                 </div>
                               </div>
@@ -805,12 +804,12 @@ export default function MarketingFlowPage({ params }: Props) {
                                       }
                                     }}
                                     disabled={startingCallOppId === opp._id || !hasCredits}
-                                    className="btn-primary font-semibold px-6 py-2.5"
+                                    className="bg-[#1A1A1A] text-white hover:bg-[#333333] font-semibold px-6 py-2.5"
                                     aria-label="Start AI call"
                                   >
                                     {startingCallOppId === opp._id ? (
                                       <>
-                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        <SpinnerGap className="mr-2 h-4 w-4 animate-spin" />
                                         Starting call...
                                       </>
                                     ) : (
@@ -828,7 +827,7 @@ export default function MarketingFlowPage({ params }: Props) {
                                       setDemoCallModalOpen(true);
                                     }}
                                     disabled={!hasCredits}
-                                    className="btn-primary font-semibold px-6 py-2.5"
+                                    className="bg-[#1A1A1A] text-white hover:bg-[#333333] font-semibold px-6 py-2.5"
                                     aria-label="Start demo call with test number"
                                   >
                                     <PlayCircle className="mr-2 h-5 w-5" />
@@ -839,7 +838,7 @@ export default function MarketingFlowPage({ params }: Props) {
                                 {/* Error and Warning Messages */}
                                 {!hasCredits && (
                                   <Alert variant="destructive">
-                                    <AlertCircle className="h-4 w-4" />
+                                    <WarningCircle className="h-4 w-4" />
                                     <AlertDescription className="text-sm">
                                       Need at least 1 credit to start a call
                                     </AlertDescription>
@@ -847,7 +846,7 @@ export default function MarketingFlowPage({ params }: Props) {
                                 )}
                                 {callErrorByOpp[oppKey] && (
                                   <Alert variant="destructive">
-                                    <AlertCircle className="h-4 w-4" />
+                                    <WarningCircle className="h-4 w-4" />
                                     <AlertDescription className="text-sm">
                                       {callErrorByOpp[oppKey]}
                                     </AlertDescription>
@@ -863,16 +862,16 @@ export default function MarketingFlowPage({ params }: Props) {
 
                       {/* Fit Reason */}
                       {opp.fit_reason && (
-                        <div className="p-4 sm:p-5 md:p-6 lg:p-7 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))]/10 via-[hsl(var(--primary))]/5 to-transparent border-2 border-[hsl(var(--primary))]/30 relative overflow-hidden">
+                        <div className="p-4 sm:p-5 md:p-6 lg:p-7 rounded-xl bg-[#F5F5F5] border-2 border-[#E8E8E8] relative overflow-hidden">
                           {/* Subtle radial accent */}
                           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[hsl(var(--radial-2))]/20 to-transparent rounded-full blur-2xl -z-10" />
                           <div className="flex items-center gap-3 mb-3 sm:mb-4">
-                            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--radial-2))] flex items-center justify-center shadow-lg shadow-[hsl(var(--primary))]/30 flex-shrink-0">
-                              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#1A1A1A] flex items-center justify-center shadow-sm flex-shrink-0">
+                              <Sparkle className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                             </div>
-                            <h4 className="font-bold text-foreground text-base sm:text-lg break-words flex-1">Why This Lead Fits</h4>
+                            <h4 className="font-bold text-[#1A1A1A] text-base sm:text-lg break-words flex-1">Why This Lead Fits</h4>
                           </div>
-                          <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed break-words">
+                          <p className="text-xs sm:text-sm text-[#1A1A1A]/90 leading-relaxed break-words">
                             {opp.fit_reason}
                           </p>
                         </div>
@@ -880,17 +879,17 @@ export default function MarketingFlowPage({ params }: Props) {
 
                       {/* Dossier */}
                       {job?.dossierId && (
-                        <div className="rounded-xl bg-gradient-to-br from-surface-raised to-surface-muted border-2 border-border/50 overflow-hidden shadow-md relative">
+                        <div className="rounded-xl bg-gradient-to-br from-surface-raised to-surface-muted border-2 border-[#E8E8E8] overflow-hidden shadow-md relative">
                           {/* Header with gradient accent */}
-                          <div className="p-5 md:p-6 bg-gradient-to-r from-accent/30 to-transparent border-b-2 border-border/40 relative overflow-hidden">
+                          <div className="p-5 md:p-6 bg-gradient-to-r from-accent/30 to-transparent border-b-2 border-[#E8E8E8] relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[hsl(var(--primary))]/10 to-transparent rounded-full blur-xl -z-10" />
                               <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))]/90 to-[hsl(var(--radial-2))]/80 flex items-center justify-center shadow-lg shadow-[hsl(var(--primary))]/30 flex-shrink-0">
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))]/90 to-[hsl(var(--radial-2))]/80 flex items-center justify-center shadow-sm flex-shrink-0">
                                   <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <h4 className="font-bold text-foreground text-lg sm:text-xl break-words">Research Dossier</h4>
-                                  <p className="text-xs sm:text-sm text-muted-foreground">AI-generated insights & opportunities</p>
+                                  <h4 className="font-bold text-[#1A1A1A] text-lg sm:text-xl break-words">Research Dossier</h4>
+                                  <p className="text-xs sm:text-sm text-[#6B6B6B]">AI-generated insights & opportunities</p>
                                 </div>
                               </div>
                           </div>
@@ -899,15 +898,15 @@ export default function MarketingFlowPage({ params }: Props) {
                               <Accordion type="single" collapsible className="w-full space-y-3">
                                 {dossier.summary && (
                                   <AccordionItem value="summary" className="border-none">
-                                    <AccordionTrigger className="text-sm font-semibold hover:no-underline p-4 rounded-lg bg-surface-raised border-2 border-border/40 hover:border-[hsl(var(--primary))]/40 transition-colors [&[data-state=open]]:border-[hsl(var(--primary))]/50 [&[data-state=open]]:bg-gradient-to-r [&[data-state=open]]:from-[hsl(var(--primary))]/8 [&[data-state=open]]:to-transparent">
+                                    <AccordionTrigger className="text-sm font-semibold hover:no-underline p-4 rounded-lg bg-surface-raised border-2 border-[#E8E8E8] hover:border-[#E8E8E8] transition-colors [&[data-state=open]]:border-[#E8E8E8] [&[data-state=open]]:bg-gradient-to-r [&[data-state=open]]:from-[hsl(var(--primary))]/8 [&[data-state=open]]:to-transparent">
                                       <div className="flex items-center gap-2">
-                                        <FileText className="h-4 w-4 text-primary" />
+                                        <FileText className="h-4 w-4 text-[#1A1A1A]" />
                                         Summary
                                       </div>
                                     </AccordionTrigger>
                                     <AccordionContent className="pt-4 pb-2">
-                                      <div className="p-4 rounded-lg bg-gradient-to-br from-accent/20 to-accent/10 border border-border/30">
-                                        <p className="text-sm text-foreground leading-relaxed">{dossier.summary}</p>
+                                      <div className="p-4 rounded-lg bg-gradient-to-br from-accent/20 to-accent/10 border border-[#E8E8E8]">
+                                        <p className="text-sm text-[#1A1A1A] leading-relaxed">{dossier.summary}</p>
                                       </div>
                                     </AccordionContent>
                                   </AccordionItem>
@@ -915,11 +914,11 @@ export default function MarketingFlowPage({ params }: Props) {
 
                                 {dossier.identified_gaps.length > 0 && (
                                   <AccordionItem value="opportunities" className="border-none">
-                                    <AccordionTrigger className="text-sm font-semibold hover:no-underline p-4 rounded-lg bg-surface-raised border-2 border-border/40 hover:border-[hsl(var(--primary))]/40 transition-colors [&[data-state=open]]:border-[hsl(var(--primary))]/50 [&[data-state=open]]:bg-gradient-to-r [&[data-state=open]]:from-[hsl(var(--primary))]/8 [&[data-state=open]]:to-transparent">
+                                    <AccordionTrigger className="text-sm font-semibold hover:no-underline p-4 rounded-lg bg-surface-raised border-2 border-[#E8E8E8] hover:border-[#E8E8E8] transition-colors [&[data-state=open]]:border-[#E8E8E8] [&[data-state=open]]:bg-gradient-to-r [&[data-state=open]]:from-[hsl(var(--primary))]/8 [&[data-state=open]]:to-transparent">
                                       <div className="flex items-center gap-2">
-                                        <Target className="h-4 w-4 text-primary" />
+                                        <Crosshair className="h-4 w-4 text-[#1A1A1A]" />
                                         Identified Opportunities
-                                        <Badge className="ml-2 bg-gradient-to-r from-[hsl(var(--primary))]/30 to-[hsl(var(--primary))]/20 text-primary border-[hsl(var(--primary))]/40">
+                                        <Badge className="ml-2 bg-[#F5F5F5] text-[#1A1A1A] border-[#E8E8E8]">
                                           {dossier.identified_gaps.length}
                                         </Badge>
                                       </div>
@@ -929,14 +928,14 @@ export default function MarketingFlowPage({ params }: Props) {
                                         {dossier.identified_gaps.map((gap, idx) => (
                                           <div 
                                             key={`gap-${idx}`} 
-                                            className="flex items-start gap-3 p-3 md:p-4 rounded-lg bg-gradient-to-r from-accent/15 to-accent/5 border border-border/30 hover:border-[hsl(var(--primary))]/30 hover:bg-gradient-to-r hover:from-[hsl(var(--primary))]/10 hover:to-transparent transition-all"
+                                            className="flex items-start gap-3 p-3 md:p-4 rounded-lg bg-gradient-to-r from-accent/15 to-accent/5 border border-[#E8E8E8] hover:border-[#E8E8E8] hover:bg-gradient-to-r hover:from-[hsl(var(--primary))]/10 hover:to-transparent transition-all"
                                           >
                                             <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--primary))]/80 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                                              <Target className="h-3.5 w-3.5 text-white" />
+                                              <Crosshair className="h-3.5 w-3.5 text-white" />
                                             </div>
                                             <div className="flex flex-col gap-1.5 flex-1">
-                                              <span className="font-semibold text-sm text-foreground">{gap.key}</span>
-                                              <span className="text-sm text-foreground/80">{gap.value}</span>
+                                              <span className="font-semibold text-sm text-[#1A1A1A]">{gap.key}</span>
+                                              <span className="text-sm text-[#1A1A1A]/80">{gap.value}</span>
                                             </div>
                                           </div>
                                         ))}
@@ -947,11 +946,11 @@ export default function MarketingFlowPage({ params }: Props) {
 
                                 {dossier.talking_points.length > 0 && (
                                   <AccordionItem value="talking-points" className="border-none">
-                                    <AccordionTrigger className="text-sm font-semibold hover:no-underline p-4 rounded-lg bg-surface-raised border-2 border-border/40 hover:border-[hsl(var(--primary))]/40 transition-colors [&[data-state=open]]:border-[hsl(var(--primary))]/50 [&[data-state=open]]:bg-gradient-to-r [&[data-state=open]]:from-[hsl(var(--primary))]/8 [&[data-state=open]]:to-transparent">
+                                    <AccordionTrigger className="text-sm font-semibold hover:no-underline p-4 rounded-lg bg-surface-raised border-2 border-[#E8E8E8] hover:border-[#E8E8E8] transition-colors [&[data-state=open]]:border-[#E8E8E8] [&[data-state=open]]:bg-gradient-to-r [&[data-state=open]]:from-[hsl(var(--primary))]/8 [&[data-state=open]]:to-transparent">
                                       <div className="flex items-center gap-2">
-                                        <CheckCircle className="h-4 w-4 text-primary" />
+                                        <CheckCircle className="h-4 w-4 text-[#1A1A1A]" />
                                         Talking Points
-                                        <Badge className="ml-2 bg-gradient-to-r from-[hsl(var(--primary))]/30 to-[hsl(var(--primary))]/20 text-primary border-[hsl(var(--primary))]/40">
+                                        <Badge className="ml-2 bg-[#F5F5F5] text-[#1A1A1A] border-[#E8E8E8]">
                                           {dossier.talking_points.length}
                                         </Badge>
                                       </div>
@@ -961,12 +960,12 @@ export default function MarketingFlowPage({ params }: Props) {
                                         {dossier.talking_points.map((point, idx) => (
                                           <div 
                                             key={`tp-${idx}`} 
-                                            className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-accent/15 to-accent/5 border border-border/30 hover:border-[hsl(var(--primary))]/30 hover:bg-gradient-to-r hover:from-[hsl(var(--primary))]/10 hover:to-transparent transition-all"
+                                            className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-accent/15 to-accent/5 border border-[#E8E8E8] hover:border-[#E8E8E8] hover:bg-gradient-to-r hover:from-[hsl(var(--primary))]/10 hover:to-transparent transition-all"
                                           >
-                                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[hsl(var(--success))] to-[hsl(var(--success))]/80 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                                            <div className="w-6 h-6 rounded-full bg-[#2E7D32] flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
                                               <CheckCircle className="h-3.5 w-3.5 text-white" />
                                             </div>
-                                            <span className="text-sm text-foreground flex-1">{point.text}</span>
+                                            <span className="text-sm text-[#1A1A1A] flex-1">{point.text}</span>
                                           </div>
                                         ))}
                                       </div>
@@ -987,45 +986,45 @@ export default function MarketingFlowPage({ params }: Props) {
 
                       {/* Sources Toggle */}
                       {job && (
-                        <div className="rounded-xl bg-surface-raised border-2 border-border/50 overflow-hidden shadow-sm hover:border-border/70 transition-all">
+                        <div className="rounded-xl bg-surface-raised border-2 border-[#E8E8E8] overflow-hidden shadow-sm hover:border-[#E8E8E8] transition-all">
                           <Button
                             variant="ghost"
                             onClick={() => setViewSourcesForAuditId(
                               viewSourcesForAuditId === job._id ? null : job._id
                             )}
-                            className="w-full text-sm font-semibold text-foreground hover:bg-gradient-to-r hover:from-accent/20 hover:to-transparent transition-all flex items-center justify-between p-5 md:p-6 h-auto rounded-none"
+                            className="w-full text-sm font-semibold text-[#1A1A1A] hover:bg-gradient-to-r hover:from-accent/20 hover:to-transparent transition-all flex items-center justify-between p-5 md:p-6 h-auto rounded-none"
                             aria-expanded={viewSourcesForAuditId === job._id}
                             aria-label={viewSourcesForAuditId === job._id ? "Hide scraped sources" : "View scraped sources"}
                           >
                               <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center shadow-md flex-shrink-0">
-                                  <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
+                                  <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-[#1A1A1A]" />
                                 </div>
                                 <div className="text-left flex-1 min-w-0">
                                   <div className="font-bold text-base sm:text-lg break-words">Scraped Sources</div>
-                                  <div className="text-xs sm:text-sm text-muted-foreground font-normal">
+                                  <div className="text-xs sm:text-sm text-[#6B6B6B] font-normal">
                                     {scrapedPages ? `${scrapedPages.length} page${scrapedPages.length !== 1 ? 's' : ''} analyzed` : 'Loading...'}
                                   </div>
                                 </div>
                               </div>
                             {viewSourcesForAuditId === job._id ? 
-                              <ChevronUp className="h-5 w-5 text-muted-foreground" /> : 
-                              <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                              <CaretUp className="h-5 w-5 text-[#6B6B6B]" /> : 
+                              <CaretDown className="h-5 w-5 text-[#6B6B6B]" />
                             }
                           </Button>
 
                           {viewSourcesForAuditId === job._id && (
-                            <div className="border-t-2 border-border/40 p-5 md:p-6 bg-gradient-to-br from-surface-muted/50 to-transparent">
+                            <div className="border-t-2 border-[#E8E8E8] p-5 md:p-6 bg-gradient-to-br from-surface-muted/50 to-transparent">
                               {scrapedPages ? (
                                 scrapedPages.length > 0 ? (
                                   <div className="space-y-3 max-h-96 overflow-y-auto pr-2 hide-scrollbar">
                                     {scrapedPages.map((page, idx) => (
                                       <div
                                         key={`scrape-${idx}`}
-                                        className="group p-4 bg-surface-raised border-2 border-border/40 rounded-lg hover:border-[hsl(var(--primary))]/40 hover:bg-gradient-to-r hover:from-[hsl(var(--primary))]/8 hover:to-transparent transition-all"
+                                        className="group p-4 bg-surface-raised border-2 border-[#E8E8E8] rounded-lg hover:border-[#E8E8E8] hover:bg-gradient-to-r hover:from-[hsl(var(--primary))]/8 hover:to-transparent transition-all"
                                       >
                                         <div className="flex items-start justify-between gap-3 mb-2">
-                                          <p className="font-semibold text-sm text-foreground flex-1">
+                                          <p className="font-semibold text-sm text-[#1A1A1A] flex-1">
                                             {page.title || "Untitled Page"}
                                           </p>
                                           {page.contentUrl && (
@@ -1033,7 +1032,7 @@ export default function MarketingFlowPage({ params }: Props) {
                                               variant="ghost"
                                               size="sm"
                                               asChild
-                                              className="h-7 px-3 text-xs font-medium bg-accent/50 hover:bg-accent text-foreground transition-all opacity-0 group-hover:opacity-100"
+                                              className="h-7 px-3 text-xs font-medium bg-accent/50 hover:bg-accent text-[#1A1A1A] transition-all opacity-0 group-hover:opacity-100"
                                             >
                                               <a
                                                 href={page.contentUrl}
@@ -1041,15 +1040,15 @@ export default function MarketingFlowPage({ params }: Props) {
                                                 rel="noopener noreferrer"
                                                 aria-label="View page content"
                                               >
-                                                <ExternalLink className="h-3 w-3 mr-1" />
+                                                <ArrowUpRight className="h-3 w-3 mr-1" />
                                                 View
                                               </a>
                                             </Button>
                                           )}
                                         </div>
                                         <div className="flex items-center gap-2">
-                                          <Globe className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                                          <p className="text-xs text-muted-foreground font-mono truncate">
+                                          <Globe className="h-3 w-3 text-[#6B6B6B] flex-shrink-0" />
+                                          <p className="text-xs text-[#6B6B6B] font-mono truncate">
                                             {page.url}
                                           </p>
                                         </div>
@@ -1059,10 +1058,10 @@ export default function MarketingFlowPage({ params }: Props) {
                                 ) : (
                                   <div className="text-center py-8">
                                     <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center mx-auto mb-3">
-                                      <FileText className="h-6 w-6 text-muted-foreground" />
+                                      <FileText className="h-6 w-6 text-[#6B6B6B]" />
                                     </div>
-                                    <p className="text-sm font-medium text-foreground mb-1">No Sources Found</p>
-                                    <p className="text-xs text-muted-foreground">No pages were scraped for this opportunity</p>
+                                    <p className="text-sm font-medium text-[#1A1A1A] mb-1">No Sources Found</p>
+                                    <p className="text-xs text-[#6B6B6B]">No pages were scraped for this opportunity</p>
                                   </div>
                                 )
                               ) : (
@@ -1084,18 +1083,18 @@ export default function MarketingFlowPage({ params }: Props) {
           </div>
         </div>
         ) : (
-          <div className="card-warm-static p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
+          <div className="bg-white border border-[#E8E8E8] rounded-xl shadow-sm p-6 sm:p-8 md:p-12 text-center relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--primary))]/5 via-transparent to-[hsl(var(--radial-2))]/5 -z-10" />
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-[hsl(var(--primary))]/20 to-[hsl(var(--radial-2))]/10 flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg border-2 border-[hsl(var(--primary))]/30">
-              <Clock className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-[hsl(var(--primary))]/20 to-[hsl(var(--radial-2))]/10 flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg border-2 border-[#E8E8E8]">
+              <Clock className="h-8 w-8 sm:h-10 sm:w-10 text-[#1A1A1A]" />
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3">No Opportunities Yet</h3>
-            <p className="text-muted-foreground mb-4 sm:mb-6 text-base sm:text-lg px-4">
+            <h3 className="text-xl sm:text-2xl font-bold text-[#1A1A1A] mb-3">No Opportunities Yet</h3>
+            <p className="text-[#6B6B6B] mb-4 sm:mb-6 text-base sm:text-lg px-4">
               Opportunities will appear here as the campaign progresses.
             </p>
-            <Badge className="text-xs sm:text-sm bg-gradient-to-r from-[hsl(var(--primary))]/30 to-[hsl(var(--primary))]/20 text-primary border-[hsl(var(--primary))]/40 px-3 sm:px-4 py-1.5 sm:py-2">
-              <Activity className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+            <Badge className="text-xs sm:text-sm bg-[#F5F5F5] text-[#1A1A1A] border-[#E8E8E8] px-3 sm:px-4 py-1.5 sm:py-2">
+              <TrendUp className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
               Campaign is still discovering leads
             </Badge>
           </div>
@@ -1151,7 +1150,7 @@ function PageLoadingSkeleton() {
     <main className="min-h-full p-6 md:p-8 flex flex-col gap-6">
       <div className="max-w-6xl mx-auto w-full space-y-8">
         {/* Header Skeleton */}
-        <div className="card-warm-static p-6 md:p-8">
+        <div className="bg-white border border-[#E8E8E8] rounded-xl shadow-sm p-6 md:p-8">
           <div className="mb-8">
             <Skeleton className="h-4 w-32 mb-4" />
             <Skeleton className="h-10 w-64 mb-2" />
@@ -1171,7 +1170,7 @@ function PageLoadingSkeleton() {
         </div>
 
         {/* Progress Skeleton */}
-        <div className="card-warm-static p-6 md:p-8">
+        <div className="bg-white border border-[#E8E8E8] rounded-xl shadow-sm p-6 md:p-8">
           <Skeleton className="h-8 w-48 mb-6" />
           <Skeleton className="h-3 w-full mb-6" />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1181,7 +1180,7 @@ function PageLoadingSkeleton() {
         </div>
 
         {/* Opportunities Skeleton */}
-        <div className="card-warm-static p-6 md:p-8">
+        <div className="bg-white border border-[#E8E8E8] rounded-xl shadow-sm p-6 md:p-8">
           <Skeleton className="h-8 w-48 mb-6" />
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
@@ -1203,24 +1202,24 @@ function StatusBadge({ status, size = "normal" }: StatusBadgeProps) {
   const getStatusStyles = (status: string) => {
     switch (status?.toLowerCase()) {
       case "running":
-        return "bg-gradient-to-r from-[hsl(var(--primary))]/30 to-[hsl(var(--primary))]/20 text-primary border-[hsl(var(--primary))]/40";
+        return "bg-[#F5F5F5] text-[#1A1A1A] border-[#E8E8E8]";
       case "completed":
       case "complete":
         return "bg-gradient-to-r from-[hsl(var(--success))] to-[hsl(var(--success))]/80 text-white border-[hsl(var(--success))] font-semibold shadow-md shadow-[hsl(var(--success))]/30";
       case "paused_for_upgrade":
-        return "bg-accent/60 text-accent-foreground border-accent-foreground/20";
+        return "bg-[#F5F5F5] text-[#1A1A1A] border-[#E8E8E8]";
       case "failed":
       case "error":
-        return "bg-gradient-to-r from-[hsl(var(--destructive))]/30 to-[hsl(var(--destructive))]/20 text-destructive border-[hsl(var(--destructive))]/40";
+        return "bg-gradient-to-r from-[hsl(var(--destructive))]/30 to-[hsl(var(--destructive))]/20 text-[#C62828] border-[#C62828]/20";
       default:
-        return "bg-muted text-muted-foreground border-border";
+        return "bg-muted text-[#6B6B6B] border-[#E8E8E8]";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status?.toLowerCase()) {
       case "running":
-        return <Loader2 className="mr-1 h-3 w-3 animate-spin" />;
+        return <SpinnerGap className="mr-1 h-3 w-3 animate-spin" />;
       case "completed":
       case "complete":
         return <CheckCircle className="mr-1 h-3 w-3" />;
@@ -1228,7 +1227,7 @@ function StatusBadge({ status, size = "normal" }: StatusBadgeProps) {
         return <Clock className="mr-1 h-3 w-3" />;
       case "failed":
       case "error":
-        return <AlertCircle className="mr-1 h-3 w-3" />;
+        return <WarningCircle className="mr-1 h-3 w-3" />;
       default:
         return null;
     }
@@ -1259,11 +1258,11 @@ function OpportunityStatusBadge({ status }: OpportunityStatusBadgeProps) {
       case "COMPLETE":
         return "bg-gradient-to-r from-[hsl(var(--success))] to-[hsl(var(--success))]/80 text-white border-[hsl(var(--success))] font-semibold shadow-md shadow-[hsl(var(--success))]/30";
       case "REJECTED":
-        return "bg-gradient-to-r from-[hsl(var(--destructive))]/30 to-[hsl(var(--destructive))]/20 text-destructive border-[hsl(var(--destructive))]/40";
+        return "bg-gradient-to-r from-[hsl(var(--destructive))]/30 to-[hsl(var(--destructive))]/20 text-[#C62828] border-[#C62828]/20";
       case "PENDING":
-        return "bg-gradient-to-r from-[hsl(var(--primary))]/30 to-[hsl(var(--primary))]/20 text-primary border-[hsl(var(--primary))]/40";
+        return "bg-[#F5F5F5] text-[#1A1A1A] border-[#E8E8E8]";
       default:
-        return "bg-muted text-muted-foreground border-border";
+        return "bg-muted text-[#6B6B6B] border-[#E8E8E8]";
     }
   };
 
@@ -1275,7 +1274,7 @@ function OpportunityStatusBadge({ status }: OpportunityStatusBadgeProps) {
       case "BOOKED":
         return <CheckCircle className="mr-1 h-3 w-3" />;
       case "REJECTED":
-        return <AlertCircle className="mr-1 h-3 w-3" />;
+        return <WarningCircle className="mr-1 h-3 w-3" />;
       case "PENDING":
         return <Clock className="mr-1 h-3 w-3" />;
       default:

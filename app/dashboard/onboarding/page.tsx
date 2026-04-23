@@ -47,7 +47,7 @@ interface OnboardingState {
 
 export default function OnboardingPage() {
   return (
-    <main className="min-h-screen bg-[#0d0d12] text-[#f0f0f5]">
+    <main className="min-h-screen bg-[#0d0d12] text-[#1A1A1A]">
       <Unauthenticated>
         <RedirectToHome />
       </Unauthenticated>
@@ -183,12 +183,12 @@ function Content() {
         {/* Header Metadata */}
         <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#1e1e2c] border border-[#2a2a3c] flex items-center justify-center">
-                    <Zap size={20} className="text-[#3b82f6]" />
+                <div className="w-10 h-10 rounded-xl bg-white border border-[#E8E8E8] flex items-center justify-center">
+                    <Zap size={20} className="text-[#1A1A1A]" />
                 </div>
                 <div>
-                    <h2 className="text-[12px] font-mono font-bold text-[#3b82f6] uppercase tracking-[0.2em]">Agency Initialization</h2>
-                    <p className="text-[11px] font-mono text-[#52525e] uppercase tracking-wider">Casper Platform v2.05</p>
+                    <h2 className="text-[12px] font-mono font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">Agency Initialization</h2>
+                    <p className="text-[11px] font-mono text-[#9A9A9A] uppercase tracking-wider">Casper Platform v2.05</p>
                 </div>
             </div>
             
@@ -205,20 +205,20 @@ function Content() {
                   [ Restart Onboarding ]
                 </button>
                 <div className="text-right">
-                    <div className="text-[14px] font-mono font-bold text-[#f0f0f5]">{Math.round(progressPercentage)}%</div>
-                    <div className="text-[10px] font-mono text-[#52525e] uppercase tracking-widest">{steps[currentStepIndex]?.logic || "PENDING"}</div>
+                    <div className="text-[14px] font-mono font-bold text-[#1A1A1A]">{Math.round(progressPercentage)}%</div>
+                    <div className="text-[10px] font-mono text-[#9A9A9A] uppercase tracking-widest">{steps[currentStepIndex]?.logic || "PENDING"}</div>
                 </div>
             </div>
         </div>
 
         {/* Progress System */}
         <div className="relative mb-12">
-            <div className="absolute inset-0 bg-[#3b82f6]/5 blur-3xl rounded-full" />
-            <div className="relative h-1 bg-[#1e1e2c] rounded-full overflow-hidden border border-white/5">
+            <div className="absolute inset-0 bg-[#1A1A1A]/5 blur-3xl rounded-full" />
+            <div className="relative h-1 bg-white rounded-full overflow-hidden border border-white/5">
                 <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${progressPercentage}%` }}
-                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#3b82f6] to-[#7b61ff] shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#1A1A1A] to-[#6B6B6B] shadow-[0_0_15px_rgba(59,130,246,0.5)]"
                 />
             </div>
 
@@ -234,12 +234,12 @@ function Content() {
                             <motion.div
                                 animate={{
                                     scale: isCurrent ? 1.1 : 1,
-                                    backgroundColor: isCompleted ? "#3b82f6" : isCurrent ? "#161621" : "#1e1e2c"
+                                    backgroundColor: isCompleted ? "#1A1A1A" : isCurrent ? "#161621" : "#1e1e2c"
                                 }}
                                 className={cn(
                                     "w-4 h-4 rounded-full border-2 transition-all duration-500",
-                                    isCompleted ? "border-[#3b82f6] shadow-[0_0_10px_rgba(59,130,246,0.4)]" : 
-                                    isCurrent ? "border-[#3b82f6] bg-[#161621]" : "border-[#2a2a3c]"
+                                    isCompleted ? "border-[#1A1A1A] shadow-[0_0_10px_rgba(59,130,246,0.4)]" : 
+                                    isCurrent ? "border-[#1A1A1A] bg-[#F5F5F5]" : "border-[#E8E8E8]"
                                 )}
                             />
                             <div className="absolute top-8 select-none pointer-events-none">
@@ -249,7 +249,7 @@ function Content() {
                                 >
                                     <p className={cn(
                                         "text-[10px] font-mono font-bold tracking-[0.2em]",
-                                        isCurrent ? "text-[#3b82f6]" : "text-[#52525e]"
+                                        isCurrent ? "text-[#1A1A1A]" : "text-[#9A9A9A]"
                                     )}>
                                         {s.label}
                                     </p>
@@ -268,10 +268,10 @@ function Content() {
     <div className="flex items-center justify-center min-h-[60vh]">
       <div className="flex flex-col items-center gap-6">
         <div className="relative">
-            <Loader2 className="h-16 w-16 animate-spin text-[#3b82f6] opacity-20" />
-            <Activity className="absolute inset-0 m-auto h-8 w-8 text-[#3b82f6] animate-pulse" />
+            <Loader2 className="h-16 w-16 animate-spin text-[#1A1A1A] opacity-20" />
+            <Activity className="absolute inset-0 m-auto h-8 w-8 text-[#1A1A1A] animate-pulse" />
         </div>
-        <p className="text-[12px] font-mono font-bold text-[#52525e] uppercase tracking-[0.3em] animate-pulse">Syncing Casper Intelligence...</p>
+        <p className="text-[12px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.3em] animate-pulse">Syncing Casper Intelligence...</p>
       </div>
     </div>
   );
@@ -284,8 +284,8 @@ function Content() {
     <div className="min-h-screen py-20 px-6 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="fixed inset-0 pointer-events-none opacity-20">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#3b82f6] blur-[150px] rounded-full" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#7b61ff] blur-[150px] rounded-full" />
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#1A1A1A] blur-[150px] rounded-full" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#6B6B6B] blur-[150px] rounded-full" />
       </div>
 
       <div className="max-w-5xl mx-auto w-full relative z-10">
@@ -348,7 +348,7 @@ function Content() {
         >
             <button 
                 onClick={handleWorkflowCompleted}
-                className="group h-14 px-8 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-full font-bold flex items-center gap-3 shadow-[0_10px_30px_rgba(59,130,246,0.3)] transition-all transform hover:scale-105 active:scale-95"
+                className="group h-14 px-8 bg-[#1A1A1A] hover:bg-[#2563eb] text-white rounded-full font-bold flex items-center gap-3 shadow-[0_10px_30px_rgba(59,130,246,0.3)] transition-all transform hover:scale-105 active:scale-95"
             >
                 Verify Research Results
                 <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -358,12 +358,12 @@ function Content() {
 
       {/* Global Metadata Footer */}
   <div className="fixed bottom-6 right-8 pointer-events-none hidden md:block">
-    <div className="flex items-center gap-4 text-[10px] font-mono text-[#52525e] uppercase tracking-widest">
+    <div className="flex items-center gap-4 text-[10px] font-mono text-[#9A9A9A] uppercase tracking-widest">
         <div className="flex items-center gap-2">
-            <ShieldCheck size={12} className="text-[#22c55e]" />
+            <ShieldCheck size={12} className="text-[#2E7D32]" />
             Casper Security Verified
         </div>
-        <span className="w-1 h-1 rounded-full bg-[#2a2a3c]" />
+        <span className="w-1 h-1 rounded-full bg-[#E8E8E8]" />
         <span>Profile ID: {agencyProfile?.agencyProfileId?.slice(-8) || "PENDING"}</span>
     </div>
   </div>

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Loader2 } from "lucide-react";
+import { SpinnerGap } from "@phosphor-icons/react";
 import { CasperSidebar } from "@/components/ui/CasperSidebar";
 
 export default function DashboardLayout({
@@ -36,10 +36,10 @@ export default function DashboardLayout({
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen bg-[#1e1e2c] flex items-center justify-center">
+      <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-[#f97316]" />
-          <p className="text-sm text-[#9ca3b4]">Loading Casper...</p>
+          <SpinnerGap className="h-8 w-8 animate-spin text-[#1A1A1A]" weight="bold" />
+          <p className="text-sm text-[#6B6B6B]">Loading Casper...</p>
         </div>
       </div>
     );
@@ -56,29 +56,27 @@ export default function DashboardLayout({
 
     if (isLoading || shouldRedirect) {
       return (
-        <div className="min-h-screen bg-[#1e1e2c] flex items-center justify-center">
+        <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
           <div className="flex flex-col items-center gap-4">
-            <Loader2 className="h-12 w-12 animate-spin text-[#f97316]" />
-            <p className="text-sm text-[#9ca3b4]">Syncing Casper...</p>
+            <SpinnerGap className="h-8 w-8 animate-spin text-[#1A1A1A]" weight="bold" />
+            <p className="text-sm text-[#6B6B6B]">Loading Casper...</p>
           </div>
         </div>
       );
     }
 
     return (
-      <div className="min-h-screen bg-[#1e1e2c]">
+      <div className="min-h-screen bg-[#F5F5F5]">
         {children}
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen bg-[#1e1e2c] text-[#f0f0f5] overflow-hidden">
+    <div className="flex h-screen bg-[#F5F5F5] text-[#1A1A1A] overflow-hidden">
       <CasperSidebar />
-      <main className="flex-1 overflow-y-auto relative bg-[#1e1e2c]">
-        {/* Subtle background glow for the main content area */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#f97316]/5 blur-[120px] pointer-events-none" />
-        <div className="relative z-10 min-h-full">
+      <main className="flex-1 overflow-y-auto relative bg-[#F5F5F5]">
+        <div className="min-h-full">
           {children}
         </div>
       </main>

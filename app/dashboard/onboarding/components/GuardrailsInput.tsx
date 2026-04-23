@@ -41,14 +41,14 @@ export function GuardrailsInput({ guardrails, onGuardrailsChange }: GuardrailsIn
 
   return (
     <div className="space-y-6">
-      <div className="bg-[#161621] border border-[#2e2e40] rounded-2xl p-5 ring-1 ring-white/5">
+      <div className="bg-[#F5F5F5] border border-[#E2E2E2] rounded-2xl p-5 ">
         <div className="flex items-start gap-4">
-            <div className="p-2 bg-[#1e1e2c] rounded-xl border border-[#2a2a3c]">
-                <Shield size={16} className="text-[#3b82f6]" />
+            <div className="p-2 bg-white rounded-xl border border-[#E8E8E8]">
+                <Shield size={16} className="text-[#1A1A1A]" />
             </div>
             <div className="space-y-1">
-                <span className="text-[11px] font-mono font-bold text-[#3b82f6] uppercase tracking-[0.2em]">Logic Constraints</span>
-                <p className="text-[12px] text-[#52525e] leading-relaxed">
+                <span className="text-[11px] font-mono font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">Logic Constraints</span>
+                <p className="text-[12px] text-[#9A9A9A] leading-relaxed">
                     Define operational boundaries for the AI agent. These instructions serve as primary cognitive filters during prospect engagement.
                 </p>
             </div>
@@ -56,21 +56,21 @@ export function GuardrailsInput({ guardrails, onGuardrailsChange }: GuardrailsIn
       </div>
 
       <div className="space-y-3">
-        <Label className="text-[12px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em] px-1">Initialize_Rule</Label>
+        <Label className="text-[12px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em] px-1">Initialize_Rule</Label>
         <div className="flex gap-2">
           <Input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            className="h-12 bg-[#161621] border-[#2e2e40] rounded-2xl text-[14px] text-[#f0f0f5] placeholder:text-[#52525e] focus:border-[#3b82f6]/50 focus:ring-4 focus:ring-[#3b82f6]/10 transition-all font-mono"
+            className="h-12 bg-[#F5F5F5] border-[#E2E2E2] rounded-2xl text-[14px] text-[#1A1A1A] placeholder:text-[#9A9A9A] focus:border-[#1A1A1A]/50 focus:ring-4 focus:ring-[#1A1A1A]/10 transition-all font-mono"
             placeholder="System instruction (e.g., 'Never mention pricing before qualification')"
             maxLength={200}
           />
           <button
             onClick={handleAddGuardrail}
             disabled={!inputValue.trim()}
-            className="flex items-center gap-2 px-6 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-2xl text-[12px] font-bold uppercase tracking-widest disabled:opacity-50 transition-all shadow-lg shadow-[#3b82f6]/20"
+            className="flex items-center gap-2 px-6 bg-[#1A1A1A] hover:bg-[#2563eb] text-white rounded-2xl text-[12px] font-bold uppercase tracking-widest disabled:opacity-50 transition-all shadow-lg shadow-[#1A1A1A]/20"
           >
             <Plus size={14} />
             Commit
@@ -88,10 +88,10 @@ export function GuardrailsInput({ guardrails, onGuardrailsChange }: GuardrailsIn
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
-                    className="group flex items-center gap-3 bg-[#1e1e2c] border border-[#2a2a3c] rounded-xl px-4 py-2 hover:border-[#3b82f6]/40 transition-all ring-1 ring-white/5"
+                    className="group flex items-center gap-3 bg-white border border-[#E8E8E8] rounded-xl px-4 py-2 hover:border-[#1A1A1A]/40 transition-all "
                   >
-                    <Zap size={12} className="text-[#3b82f6] opacity-50 group-hover:opacity-100" />
-                    <span className="text-[13px] text-[#f0f0f5] font-medium max-w-xs truncate" title={guardrail}>
+                    <Zap size={12} className="text-[#1A1A1A] opacity-50 group-hover:opacity-100" />
+                    <span className="text-[13px] text-[#1A1A1A] font-medium max-w-xs truncate" title={guardrail}>
                       {guardrail}
                     </span>
                     <button
@@ -109,9 +109,9 @@ export function GuardrailsInput({ guardrails, onGuardrailsChange }: GuardrailsIn
       )}
 
       {guardrails.length === 0 && (
-        <div className="flex flex-col items-center justify-center p-8 border border-dashed border-[#2a2a3c] rounded-[32px] bg-[#161621]/30">
-          <Terminal size={20} className="text-[#52525e] mb-3 opacity-30" />
-          <p className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em] text-center max-w-[200px]">
+        <div className="flex flex-col items-center justify-center p-8 border border-dashed border-[#E8E8E8] rounded-xl bg-[#F5F5F5]/30">
+          <Terminal size={20} className="text-[#9A9A9A] mb-3 opacity-30" />
+          <p className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em] text-center max-w-[200px]">
             No constraint protocols loaded. Initializing baseline logic.
           </p>
         </div>

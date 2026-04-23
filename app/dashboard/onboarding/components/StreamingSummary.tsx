@@ -60,7 +60,7 @@ export function StreamingSummary({ onboardingFlowId, summaryThread, onContentSta
   if (!summaryPhase || summaryPhase.status === "pending") {
     return (
       <div className="space-y-4">
-        <div className="h-6 w-32 bg-[#1e1e2c] border border-[#2a2a3c] rounded-lg animate-pulse" />
+        <div className="h-6 w-32 bg-white border border-[#E8E8E8] rounded-lg animate-pulse" />
       </div>
     );
   }
@@ -69,20 +69,20 @@ export function StreamingSummary({ onboardingFlowId, summaryThread, onContentSta
     <div className="space-y-4">
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center gap-2">
-            <Cpu size={14} className="text-[#3b82f6]" />
-            <h2 className="text-[12px] font-mono font-bold text-[#3b82f6] uppercase tracking-[0.2em]">
+            <Cpu size={14} className="text-[#1A1A1A]" />
+            <h2 className="text-[12px] font-mono font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">
                 Agency Research Feed
             </h2>
         </div>
         <div className="flex items-center gap-3">
             {isSummaryActive && (
-              <Badge variant="outline" className="bg-[#3b82f6]/5 border-[#3b82f6]/20 text-[#3b82f6] text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5">
+              <Badge variant="outline" className="bg-[#1A1A1A]/5 border-[#1A1A1A]/20 text-[#1A1A1A] text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5">
                 <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
                 RESEARCHING
               </Badge>
             )}
             {isSummaryComplete && (
-              <Badge variant="outline" className="bg-[#22c55e]/5 border-[#22c55e]/30 text-[#22c55e] text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5">
+              <Badge variant="outline" className="bg-[#2E7D32]/5 border-[#2E7D32]/30 text-[#2E7D32] text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5">
                 <CheckCircle2 className="w-3 h-3 mr-1.5" />
                 COMPLETE
               </Badge>
@@ -90,29 +90,29 @@ export function StreamingSummary({ onboardingFlowId, summaryThread, onContentSta
         </div>
       </div>
 
-      <div className="bg-[#161621] border border-[#2a2a3c] rounded-[32px] p-8 ring-1 ring-white/5 relative overflow-hidden group">
+      <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-xl p-8  relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 transition-opacity">
-            <Terminal size={14} className="text-[#52525e]" />
+            <Terminal size={14} className="text-[#9A9A9A]" />
         </div>
         
         <div className="min-h-[160px] relative">
             {contentToShow ? (
               <div className="prose prose-sm max-w-none dark:prose-invert">
-                <div className="whitespace-pre-wrap text-[15px] text-[#f0f0f5] leading-relaxed font-mono">
+                <div className="whitespace-pre-wrap text-[15px] text-[#1A1A1A] leading-relaxed font-mono">
                   {contentToShow}
                   {isSummaryActive && (
                     <motion.span 
                         animate={{ opacity: [0, 1, 0] }}
                         transition={{ repeat: Infinity, duration: 0.8 }}
-                        className="inline-block w-2.5 h-5 bg-[#3b82f6] ml-2 align-middle rounded-sm shadow-[0_0_10px_rgba(59,130,246,0.5)]" 
+                        className="inline-block w-2.5 h-5 bg-[#1A1A1A] ml-2 align-middle rounded-sm shadow-[0_0_10px_rgba(59,130,246,0.5)]" 
                     />
                   )}
                 </div>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-32 space-y-4">
-                <Activity className="w-6 h-6 text-[#3b82f6] animate-pulse" />
-                <p className="text-[10px] font-mono font-bold text-[#52525e] uppercase tracking-[0.3em] animate-pulse">Connecting to research engine...</p>
+                <Activity className="w-6 h-6 text-[#1A1A1A] animate-pulse" />
+                <p className="text-[10px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.3em] animate-pulse">Connecting to research engine...</p>
               </div>
             )}
         </div>

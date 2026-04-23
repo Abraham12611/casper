@@ -48,16 +48,16 @@ function PhaseCard({ phase, index, isLast }: { phase: Phase; index: number; isLa
   const getStatusIcon = () => {
     switch (phase.status) {
       case "pending":
-        return <div className="w-2 h-2 rounded-full bg-[#2a2a3c]" />;
+        return <div className="w-2 h-2 rounded-full bg-[#E8E8E8]" />;
       case "running":
         return (
           <div className="relative">
-            <div className="w-3 h-3 rounded-full bg-[#3b82f6] animate-ping absolute inset-0" />
-            <div className="w-3 h-3 rounded-full bg-[#3b82f6] relative border border-white/20" />
+            <div className="w-3 h-3 rounded-full bg-[#1A1A1A] animate-ping absolute inset-0" />
+            <div className="w-3 h-3 rounded-full bg-[#1A1A1A] relative border border-white/20" />
           </div>
         );
       case "complete":
-        return <CheckCircle2 className="w-4 h-4 text-[#22c55e]" />;
+        return <CheckCircle2 className="w-4 h-4 text-[#2E7D32]" />;
       case "error":
         return <XCircle className="w-4 h-4 text-red-400" />;
     }
@@ -65,9 +65,9 @@ function PhaseCard({ phase, index, isLast }: { phase: Phase; index: number; isLa
 
   const getStatusColor = () => {
     switch (phase.status) {
-      case "pending": return "text-[#52525e]";
+      case "pending": return "text-[#9A9A9A]";
       case "running": return "text-white";
-      case "complete": return "text-[#22c55e]";
+      case "complete": return "text-[#2E7D32]";
       case "error": return "text-red-400";
     }
   };
@@ -87,7 +87,7 @@ function PhaseCard({ phase, index, isLast }: { phase: Phase; index: number; isLa
           <div 
             className={cn(
                 "absolute top-6 left-[7.5px] w-[1px] h-full transition-colors duration-500",
-                phase.status === "complete" ? "bg-[#22c55e]/30" : "bg-[#2a2a3c]"
+                phase.status === "complete" ? "bg-[#2E7D32]/30" : "bg-[#E8E8E8]"
             )} 
           />
       )}
@@ -108,12 +108,12 @@ function PhaseCard({ phase, index, isLast }: { phase: Phase; index: number; isLa
                     {PHASE_LABELS[phase.name]}
                 </span>
                 {phase.status === "running" && (
-                    <span className="text-[10px] font-mono font-bold text-[#3b82f6] animate-pulse">
+                    <span className="text-[10px] font-mono font-bold text-[#1A1A1A] animate-pulse">
                         [PROCESSING]
                     </span>
                 )}
             </div>
-            <div className="flex items-center gap-3 text-[11px] font-mono text-[#52525e]">
+            <div className="flex items-center gap-3 text-[11px] font-mono text-[#9A9A9A]">
                 {phase.duration && (
                     <div className="flex items-center gap-1">
                         <Activity size={12} />
@@ -124,7 +124,7 @@ function PhaseCard({ phase, index, isLast }: { phase: Phase; index: number; isLa
             </div>
         </div>
 
-        <p className="text-[12px] text-[#52525e] leading-snug">
+        <p className="text-[12px] text-[#9A9A9A] leading-snug">
             {PHASE_DESCRIPTIONS[phase.name]}
         </p>
 
@@ -136,11 +136,11 @@ function PhaseCard({ phase, index, isLast }: { phase: Phase; index: number; isLa
                     exit={{ opacity: 0, height: 0 }}
                     className="mt-3 overflow-hidden"
                 >
-                    <div className="h-1 bg-[#161621] rounded-full overflow-hidden border border-white/5">
+                    <div className="h-1 bg-[#F5F5F5] rounded-full overflow-hidden border border-white/5">
                         <motion.div 
                             initial={{ width: 0 }}
                             animate={{ width: `${percentage}%` }}
-                            className="h-full bg-[#3b82f6] shadow-[0_0_8px_rgba(59,130,246,0.3)]"
+                            className="h-full bg-[#1A1A1A] shadow-[0_0_8px_rgba(59,130,246,0.3)]"
                         />
                     </div>
                 </motion.div>

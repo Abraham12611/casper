@@ -1,989 +1,923 @@
 {
   "_meta": {
-    "version": "1.0.0",
-    "source": "UI screenshots — dark theme (support inbox) + light theme (AI notetaker)",
-    "purpose": "Cursor AI replication guide — maps every visual effect to its exact element context",
-    "themes": ["dark", "light"]
+    "source": "taskori.idea — Teams module (3 views: Department Board, Team Overview, All Tasks)",
+    "theme": "light",
+    "purpose": "Cursor AI replication guide — maps every visual treatment to its precise element context",
+    "lastUpdated": "2025-04"
   },
-
-  "DO_NOT_RULES": {
-    "gradients": [
-      "DO NOT apply status-badge colors (green/orange/blue) to card backgrounds",
-      "DO NOT apply chat bubble colors to sidebar backgrounds",
-      "DO NOT use light-theme surface colors in dark-theme components",
-      "DO NOT apply primary action blue (#2563eb) to body text — only to active nav items and links",
-      "DO NOT use timestamp gray (#6b7280) for primary content text",
-      "DO NOT apply incoming-bubble dark bg to outgoing-bubble elements — they are inverted",
-      "DO NOT use the full-white (#ffffff) card background in the dark theme — use layered darks only",
-      "DO NOT place shadows on text elements — only on container/card/panel surfaces"
-    ],
-    "colors": [
-      "DO NOT confuse border color with background color — borders are always 1–2 stops lighter than their container bg",
-      "DO NOT use status green (#22c55e) for anything other than resolved/online indicators",
-      "DO NOT use status orange (#f97316) for anything other than 'in progress' or 'pending' indicators",
-      "DO NOT apply active-sidebar blue background (#dbeafe) to the main content area — sidebar only"
-    ],
-    "layout": [
-      "DO NOT apply panel-level border-radius to inner list items — only to cards and container panels",
-      "DO NOT add box-shadows to sidebar list items — shadows belong on floating panels and message bubbles only"
-    ]
-  },
-
-  "colorTokens": {
-    "dark": {
-      "backgrounds": {
-        "navStrip":       "#0d0d13",
-        "sidebar":        "#161621",
-        "conversationList": "#1a1a26",
-        "chatPanel":      "#1e1e2c",
-        "inputArea":      "#1a1a26",
-        "hoverListItem":  "#22222e",
-        "activeListItem": "#26263a"
+  "colorPalette": {
+    "backgrounds": {
+      "appShell": "#F5F5F5",
+      "sidebar": "#FFFFFF",
+      "mainContent": "#F5F5F5",
+      "card": "#FFFFFF",
+      "tableRow": "#FFFFFF",
+      "tableHeader": "#FFFFFF",
+      "tableRowAlternate": "none",
+      "modal": "#FFFFFF",
+      "tooltip": "#1A1A1A"
+    },
+    "borders": {
+      "card": "#E8E8E8",
+      "cardSubtle": "#EFEFEF",
+      "tableCell": "#F0F0F0",
+      "input": "#E2E2E2",
+      "inputFocus": "#1A1A1A",
+      "divider": "#EBEBEB",
+      "sectionDivider": "#E5E5E5"
+    },
+    "text": {
+      "primary": "#1A1A1A",
+      "secondary": "#6B6B6B",
+      "tertiary": "#9A9A9A",
+      "placeholder": "#ADADAD",
+      "link": "#1A1A1A",
+      "linkHover": "#000000",
+      "inverse": "#FFFFFF",
+      "label": "#8A8A8A",
+      "sectionTitle": "#1A1A1A",
+      "pageTitle": "#1A1A1A",
+      "breadcrumb": "#6B6B6B"
+    },
+    "brand": {
+      "primaryButton": "#1A1A1A",
+      "primaryButtonText": "#FFFFFF",
+      "primaryButtonHover": "#000000"
+    },
+    "status": {
+      "active": {
+        "background": "#E8F5E9",
+        "text": "#2E7D32",
+        "border": "none"
       },
-      "surfaces": {
-        "incomingBubble": "#252535",
-        "outgoingBubble": "#f0f0f3",
-        "activityRow":    "#1e1e2c",
-        "divider":        "#2a2a3c"
+      "remote": {
+        "background": "#FFF3E0",
+        "text": "#E65100",
+        "border": "none"
       },
-      "text": {
-        "primary":    "#f0f0f5",
-        "secondary":  "#9ca3b4",
-        "muted":      "#6b7280",
-        "timestamp":  "#52525e",
-        "incomingBubbleText":  "#f0f0f5",
-        "outgoingBubbleText":  "#1a1a26",
-        "activityLabel": "#9ca3b4"
-      },
-      "borders": {
-        "panelDivider":  "#2a2a3c",
-        "inputBorder":   "#2e2e40",
-        "bubbleBorder":  "none"
-      },
-      "status": {
-        "resolved": {
-          "dot":  "#22c55e",
-          "text": "#22c55e"
-        },
-        "inProgress": {
-          "badgeBg":   "#f97316",
-          "badgeText": "#ffffff",
-          "dot":       "#f97316"
-        },
-        "open": {
-          "dotStroke": "#6b7280",
-          "dotFill":   "transparent"
-        },
-        "escalated": {
-          "dot": "#ef4444"
-        },
-        "online": {
-          "dot": "#3b82f6"
-        }
-      },
-      "actions": {
-        "iconDefault":  "#6b7280",
-        "iconHover":    "#9ca3af",
-        "iconActive":   "#f0f0f5",
-        "attachIcon":   "#6b7280",
-        "sendButton":   "#3b82f6"
+      "partTime": {
+        "background": "#E3F2FD",
+        "text": "#1565C0",
+        "border": "none"
       }
     },
-
-    "light": {
-      "backgrounds": {
-        "navStrip":        "#ffffff",
-        "sidebar":         "#f9fafb",
-        "sidebarSelected": "#eff6ff",
-        "contentArea":     "#ffffff",
-        "sectionLabel":    "transparent"
+    "priority": {
+      "high": {
+        "background": "#FDECEA",
+        "text": "#C62828",
+        "border": "none"
       },
-      "surfaces": {
-        "emailBlock":      "#ffffff",
-        "emailBlockBorder":"#e5e7eb",
-        "summaryBulletRow":"transparent"
+      "medium": {
+        "background": "#FFF8E1",
+        "text": "#F57F17",
+        "border": "none"
       },
-      "text": {
-        "primary":         "#111827",
-        "secondary":       "#374151",
-        "muted":           "#9ca3af",
-        "sectionLabel":    "#6b7280",
-        "activeNavItem":   "#2563eb",
-        "bodyContent":     "#374151",
-        "subheading":      "#6b7280",
-        "emailBodyText":   "#374151"
-      },
-      "borders": {
-        "panelDivider":  "#e5e7eb",
-        "emailBlock":    "#e5e7eb",
-        "sidebarItem":   "none"
-      },
-      "status": {
-        "activeNavBg":   "#eff6ff",
-        "activeNavText": "#2563eb",
-        "activeNavIcon": "#2563eb",
-        "chevron":       "#2563eb"
-      },
-      "actions": {
-        "iconDefault":   "#6b7280",
-        "iconActive":    "#2563eb",
-        "iconHover":     "#374151",
-        "emailActionIcon": "#6b7280"
+      "low": {
+        "background": "#E8F5E9",
+        "text": "#2E7D32",
+        "border": "none"
       }
+    },
+    "taskType": {
+      "feature": {
+        "background": "#F3F0FF",
+        "text": "#5E35B1",
+        "iconColor": "#7E57C2"
+      },
+      "bug": {
+        "background": "#FFF0F0",
+        "text": "#C62828",
+        "iconColor": "#E57373"
+      },
+      "review": {
+        "background": "#E8F5E9",
+        "text": "#2E7D32",
+        "iconColor": "#66BB6A"
+      },
+      "testing": {
+        "background": "#F5F5F5",
+        "text": "#424242",
+        "iconColor": "#9E9E9E"
+      }
+    },
+    "progressBar": {
+      "track": "#E8E8E8",
+      "highFill": "#F44336",
+      "mediumFill": "#FF9800",
+      "lowFill": "#4CAF50",
+      "label": "#6B6B6B"
+    },
+    "avatarStack": {
+      "border": "#FFFFFF",
+      "borderWidth": "2px"
+    },
+    "projectDot": {
+      "atlasGreen": "#22C55E",
+      "nimbusOrange": "#F97316",
+      "orionBlue": "#3B82F6",
+      "helioRed": "#EF4444"
+    },
+    "navigationIcon": {
+      "default": "#9A9A9A",
+      "active": "#1A1A1A",
+      "hover": "#4A4A4A"
+    },
+    "actionIcon": {
+      "default": "#9A9A9A",
+      "hover": "#1A1A1A"
+    },
+    "departmentTag": {
+      "background": "#F2F2F2",
+      "text": "#4A4A4A",
+      "border": "none"
+    },
+    "activeNavItem": {
+      "background": "#F2F2F2",
+      "text": "#1A1A1A",
+      "borderRadius": "8px"
     }
   },
-
   "typography": {
-    "dark": {
-      "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      "scales": {
-        "panelHeader": {
-          "fontSize": "16px",
-          "fontWeight": "600",
-          "color": "#f0f0f5",
-          "letterSpacing": "0"
-        },
-        "senderName": {
-          "fontSize": "14px",
-          "fontWeight": "500",
-          "color": "#f0f0f5"
-        },
-        "messagePreview": {
-          "fontSize": "13px",
-          "fontWeight": "400",
-          "color": "#9ca3b4",
-          "overflow": "ellipsis"
-        },
-        "timestamp": {
-          "fontSize": "11px",
-          "fontWeight": "400",
-          "color": "#52525e"
-        },
-        "chatMessage": {
-          "fontSize": "14px",
-          "fontWeight": "400",
-          "lineHeight": "1.5"
-        },
-        "sectionLabel": {
-          "fontSize": "11px",
-          "fontWeight": "600",
-          "color": "#6b7280",
-          "textTransform": "uppercase",
-          "letterSpacing": "0.06em"
-        },
-        "activityText": {
-          "fontSize": "12px",
-          "fontWeight": "400",
-          "color": "#9ca3b4"
-        },
-        "statusBadge": {
-          "fontSize": "11px",
-          "fontWeight": "600",
-          "textTransform": "uppercase",
-          "letterSpacing": "0.05em"
-        }
-      }
+    "fontFamily": {
+      "primary": "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif",
+      "mono": "'SF Mono', 'Fira Code', monospace"
     },
-
-    "light": {
-      "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      "scales": {
-        "pageTitle": {
-          "fontSize": "24px",
-          "fontWeight": "700",
-          "color": "#111827",
-          "marginBottom": "8px"
-        },
-        "summary": {
-          "fontSize": "14px",
-          "fontWeight": "400",
-          "color": "#374151",
-          "lineHeight": "1.6"
-        },
-        "sectionLabel": {
-          "fontSize": "11px",
-          "fontWeight": "600",
-          "color": "#6b7280",
-          "textTransform": "uppercase",
-          "letterSpacing": "0.06em",
-          "marginBottom": "4px"
-        },
-        "sidebarItem": {
-          "fontSize": "14px",
-          "fontWeight": "400",
-          "color": "#374151"
-        },
-        "sidebarItemActive": {
-          "fontSize": "14px",
-          "fontWeight": "500",
-          "color": "#2563eb"
-        },
-        "sidebarGroupHeader": {
-          "fontSize": "12px",
-          "fontWeight": "500",
-          "color": "#9ca3af"
-        },
-        "bulletText": {
-          "fontSize": "14px",
-          "fontWeight": "400",
-          "color": "#374151",
-          "lineHeight": "1.6"
-        },
-        "emailSubject": {
-          "fontSize": "13px",
-          "fontWeight": "500",
-          "color": "#111827"
-        },
-        "emailBody": {
-          "fontSize": "14px",
-          "fontWeight": "400",
-          "color": "#374151",
-          "lineHeight": "1.6"
-        }
+    "scale": {
+      "pageTitle": {
+        "fontSize": "32px",
+        "fontWeight": "600",
+        "lineHeight": "1.2",
+        "color": "#1A1A1A",
+        "letterSpacing": "-0.02em"
+      },
+      "sectionTitle": {
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "lineHeight": "1.3",
+        "color": "#1A1A1A"
+      },
+      "cardPersonName": {
+        "fontSize": "15px",
+        "fontWeight": "600",
+        "color": "#1A1A1A"
+      },
+      "cardMeta": {
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "color": "#9A9A9A"
+      },
+      "taskItemText": {
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "color": "#4A4A4A",
+        "lineHeight": "1.5"
+      },
+      "labelSmall": {
+        "fontSize": "11px",
+        "fontWeight": "500",
+        "color": "#8A8A8A",
+        "letterSpacing": "0.01em"
+      },
+      "navItem": {
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "color": "#6B6B6B"
+      },
+      "navItemActive": {
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "color": "#1A1A1A"
+      },
+      "sidebarGroupLabel": {
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "#8A8A8A",
+        "letterSpacing": "0.03em"
+      },
+      "breadcrumb": {
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "color": "#9A9A9A"
+      },
+      "tableColumnHeader": {
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "#9A9A9A",
+        "letterSpacing": "0.01em"
+      },
+      "tableCellText": {
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "color": "#1A1A1A"
+      },
+      "memberName": {
+        "fontSize": "15px",
+        "fontWeight": "600",
+        "color": "#1A1A1A"
+      },
+      "memberRole": {
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "color": "#6B6B6B"
+      },
+      "memberDetail": {
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "color": "#8A8A8A"
+      },
+      "memberDetailValue": {
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "#1A1A1A"
       }
     }
   },
-
-  "components": {
-
+  "spacing": {
+    "base": "4px",
+    "scale": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "12px",
+      "lg": "16px",
+      "xl": "20px",
+      "2xl": "24px",
+      "3xl": "32px",
+      "4xl": "40px"
+    },
     "layout": {
-      "dark": {
-        "threeColumnLayout": {
-          "description": "navStrip | sidebar | conversationList | chatPanel",
-          "columns": {
-            "navStrip": {
-              "width": "56px",
-              "background": "#0d0d13",
-              "borderRight": "none",
-              "padding": "12px 0"
-            },
-            "sidebar": {
-              "width": "200px",
-              "background": "#161621",
-              "borderRight": "1px solid #2a2a3c",
-              "padding": "12px 0"
-            },
-            "conversationList": {
-              "width": "260px",
-              "background": "#1a1a26",
-              "borderRight": "1px solid #2a2a3c"
-            },
-            "chatPanel": {
-              "flex": 1,
-              "background": "#1e1e2c"
-            }
-          }
-        }
-      },
-      "light": {
-        "twoColumnLayout": {
-          "description": "iconStrip | sidebar | contentArea",
-          "columns": {
-            "iconStrip": {
-              "width": "52px",
-              "background": "#f9fafb",
-              "borderRight": "1px solid #e5e7eb"
-            },
-            "sidebar": {
-              "width": "260px",
-              "background": "#f9fafb",
-              "borderRight": "1px solid #e5e7eb",
-              "padding": "12px 0"
-            },
-            "contentArea": {
-              "flex": 1,
-              "background": "#ffffff",
-              "padding": "32px 40px"
-            }
-          }
-        }
-      }
+      "sidebarWidth": "275px",
+      "mainContentPadding": "32px",
+      "cardPadding": "16px",
+      "cardGap": "16px",
+      "sectionGap": "24px",
+      "tableCellPaddingX": "16px",
+      "tableCellPaddingY": "12px"
+    }
+  },
+  "borderRadius": {
+    "card": "12px",
+    "memberCard": "12px",
+    "badge": "6px",
+    "button": "8px",
+    "input": "8px",
+    "tag": "6px",
+    "avatar": "50%",
+    "tabUnderline": "2px",
+    "progressBar": "99px",
+    "navItem": "8px",
+    "tooltip": "6px",
+    "projectDot": "4px"
+  },
+  "shadows": {
+    "card": "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)",
+    "cardHover": "0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06)",
+    "memberCard": "0 1px 3px rgba(0,0,0,0.06)",
+    "memberCardHover": "0 4px 16px rgba(0,0,0,0.10)",
+    "button": "none",
+    "buttonPrimary": "0 1px 3px rgba(0,0,0,0.20)",
+    "sidebar": "1px 0 0 #EBEBEB",
+    "input": "none",
+    "inputFocus": "0 0 0 2px rgba(26,26,26,0.15)",
+    "dropdown": "0 8px 24px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08)"
+  },
+  "elementStyling": {
+    "appShell": {
+      "background": "#F5F5F5",
+      "display": "flex",
+      "height": "100vh",
+      "DO_NOT": "Do not apply shadows or borders to the app shell itself"
     },
-
-    "navigationIcons": {
-      "dark": {
-        "container": {
-          "width": "32px",
-          "height": "32px",
-          "borderRadius": "8px",
-          "margin": "4px auto",
-          "display": "flex",
-          "alignItems": "center",
-          "justifyContent": "center"
-        },
-        "default": {
-          "iconColor": "#6b7280",
-          "iconSize": "18px",
-          "background": "transparent"
-        },
-        "hover": {
-          "background": "#22222e",
-          "iconColor": "#9ca3af",
-          "transition": "background 150ms ease, color 150ms ease"
-        },
-        "active": {
-          "background": "#26263a",
-          "iconColor": "#f0f0f5"
-        },
-        "notification": {
-          "dot": {
-            "width": "8px",
-            "height": "8px",
-            "borderRadius": "50%",
-            "background": "#3b82f6",
-            "position": "absolute",
-            "top": "4px",
-            "right": "4px",
-            "border": "2px solid #0d0d13"
-          }
-        }
-      },
-      "light": {
-        "default": {
-          "iconColor": "#6b7280",
-          "iconSize": "18px",
-          "background": "transparent"
-        },
-        "active": {
-          "iconColor": "#2563eb",
-          "background": "transparent"
-        },
-        "hover": {
-          "iconColor": "#374151"
-        }
-      }
+    "sidebar": {
+      "background": "#FFFFFF",
+      "border": "1px solid #EBEBEB",
+      "borderSide": "right only",
+      "width": "275px",
+      "padding": "16px 12px",
+      "DO_NOT": "Do not use any gradient on sidebar; it is solid white"
     },
-
+    "sidebarUserBlock": {
+      "background": "#F5F5F5",
+      "borderRadius": "10px",
+      "padding": "8px 10px",
+      "avatarSize": "32px",
+      "avatarBorderRadius": "8px",
+      "nameFont": "14px / 500 / #1A1A1A",
+      "subtitleFont": "12px / 400 / #8A8A8A"
+    },
+    "sidebarSearchInput": {
+      "background": "#F5F5F5",
+      "border": "1px solid #EBEBEB",
+      "borderRadius": "8px",
+      "padding": "6px 10px",
+      "placeholder": "#ADADAD",
+      "fontSize": "13px",
+      "shortcutBadge": {
+        "background": "none",
+        "text": "#ADADAD",
+        "fontSize": "11px"
+      },
+      "DO_NOT": "Do not apply primary button color to search; it is always a muted gray input"
+    },
     "sidebarNavItem": {
-      "dark": {
-        "container": {
-          "height": "32px",
-          "borderRadius": "6px",
-          "padding": "0 10px",
-          "display": "flex",
-          "alignItems": "center",
-          "gap": "8px",
-          "margin": "1px 8px"
-        },
-        "default": {
-          "background": "transparent",
-          "color": "#9ca3b4",
-          "fontSize": "13px",
-          "fontWeight": "400"
+      "default": {
+        "background": "transparent",
+        "text": "#6B6B6B",
+        "iconColor": "#9A9A9A",
+        "padding": "6px 10px",
+        "borderRadius": "8px"
+      },
+      "active": {
+        "background": "#F2F2F2",
+        "text": "#1A1A1A",
+        "iconColor": "#1A1A1A",
+        "fontWeight": "500"
+      },
+      "hover": {
+        "background": "#F8F8F8",
+        "text": "#1A1A1A",
+        "iconColor": "#4A4A4A"
+      },
+      "DO_NOT": "Do not use brand color (#1A1A1A button color) as nav item background; active state is #F2F2F2 not black"
+    },
+    "sidebarSectionLabel": {
+      "text": "#8A8A8A",
+      "fontSize": "12px",
+      "fontWeight": "500",
+      "letterSpacing": "0.03em",
+      "marginBottom": "4px",
+      "padding": "4px 10px"
+    },
+    "sidebarProjectItem": {
+      "dot": {
+        "width": "8px",
+        "height": "8px",
+        "borderRadius": "4px",
+        "colors": [
+          "#22C55E",
+          "#F97316",
+          "#3B82F6",
+          "#EF4444"
+        ]
+      },
+      "text": "same as navItem"
+    },
+    "mainContentArea": {
+      "background": "#F5F5F5",
+      "padding": "32px 40px",
+      "DO_NOT": "Do not apply card styling to the main content area wrapper"
+    },
+    "pageBreadcrumb": {
+      "text": "#9A9A9A",
+      "fontSize": "13px",
+      "separator": "/",
+      "marginBottom": "4px"
+    },
+    "pageTitle": {
+      "fontSize": "32px",
+      "fontWeight": "600",
+      "color": "#1A1A1A",
+      "letterSpacing": "-0.02em",
+      "marginBottom": "20px"
+    },
+    "pageHeaderActions": {
+      "gap": "8px",
+      "alignment": "flex-end"
+    },
+    "buttons": {
+      "primary": {
+        "background": "#1A1A1A",
+        "text": "#FFFFFF",
+        "fontSize": "13px",
+        "fontWeight": "500",
+        "padding": "8px 14px",
+        "borderRadius": "8px",
+        "border": "none",
+        "shadow": "0 1px 3px rgba(0,0,0,0.20)",
+        "icon": {
+          "color": "#FFFFFF",
+          "size": "14px",
+          "marginRight": "6px"
         },
         "hover": {
-          "background": "#22222e",
-          "color": "#f0f0f5",
-          "transition": "background 120ms ease"
+          "background": "#000000"
         },
         "active": {
-          "background": "#26263a",
-          "color": "#f0f0f5",
-          "fontWeight": "500"
+          "background": "#333333"
+        },
+        "DO_NOT": "Do not use gradient on primary button; it is solid #1A1A1A"
+      },
+      "secondary": {
+        "background": "#FFFFFF",
+        "text": "#1A1A1A",
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "padding": "8px 14px",
+        "borderRadius": "8px",
+        "border": "1px solid #E2E2E2",
+        "shadow": "none",
+        "icon": {
+          "color": "#6B6B6B",
+          "size": "14px",
+          "marginRight": "6px"
+        },
+        "hover": {
+          "background": "#F8F8F8",
+          "border": "1px solid #CCCCCC"
+        },
+        "DO_NOT": "Do not apply primary button dark background to secondary buttons"
+      },
+      "iconOnly": {
+        "background": "transparent",
+        "border": "none",
+        "iconColor": "#9A9A9A",
+        "padding": "6px",
+        "borderRadius": "6px",
+        "hover": {
+          "background": "#F2F2F2",
+          "iconColor": "#1A1A1A"
+        }
+      }
+    },
+    "tabs": {
+      "container": {
+        "borderBottom": "1px solid #EBEBEB",
+        "background": "transparent",
+        "gap": "4px"
+      },
+      "tab": {
+        "default": {
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "color": "#8A8A8A",
+          "padding": "8px 12px",
+          "background": "transparent",
+          "border": "none",
+          "borderBottom": "2px solid transparent"
+        },
+        "active": {
+          "color": "#1A1A1A",
+          "fontWeight": "500",
+          "borderBottom": "2px solid #1A1A1A"
+        },
+        "hover": {
+          "color": "#4A4A4A",
+          "background": "transparent"
         },
         "icon": {
           "size": "14px",
           "color": "inherit",
           "marginRight": "6px"
         },
-        "badge": {
-          "background": "transparent",
-          "color": "#6b7280",
-          "fontSize": "12px",
-          "marginLeft": "auto"
-        }
-      },
-      "light": {
-        "container": {
-          "height": "32px",
-          "borderRadius": "6px",
-          "padding": "0 10px",
-          "margin": "1px 8px"
-        },
-        "default": {
-          "background": "transparent",
-          "color": "#374151",
-          "fontSize": "14px",
-          "fontWeight": "400"
-        },
-        "hover": {
-          "background": "#f3f4f6",
-          "transition": "background 120ms ease"
-        },
-        "active": {
-          "background": "#eff6ff",
-          "color": "#2563eb",
-          "fontWeight": "500"
-        },
-        "activeChevron": {
-          "color": "#2563eb",
-          "size": "12px",
-          "marginLeft": "auto"
-        }
+        "DO_NOT": "Do not put background on active tab; indicator is underline only"
       }
     },
-
-    "conversationListItem": {
-      "dark": {
-        "container": {
-          "padding": "10px 14px",
-          "borderBottom": "1px solid #22222e",
-          "cursor": "pointer",
-          "position": "relative"
-        },
-        "default": {
-          "background": "transparent"
-        },
+    "cards": {
+      "departmentBoardCard": {
+        "background": "#FFFFFF",
+        "border": "1px solid #E8E8E8",
+        "borderRadius": "12px",
+        "shadow": "0 1px 3px rgba(0,0,0,0.06)",
+        "padding": "16px",
         "hover": {
-          "background": "#22222e"
+          "shadow": "0 4px 12px rgba(0,0,0,0.10)"
         },
-        "active": {
-          "background": "#26263a"
-        },
-        "avatar": {
-          "width": "34px",
-          "height": "34px",
-          "borderRadius": "50%",
-          "background": "#2e2e40",
-          "overflow": "hidden",
-          "position": "relative"
-        },
-        "statusDot": {
-          "width": "9px",
-          "height": "9px",
-          "borderRadius": "50%",
-          "border": "2px solid #1a1a26",
-          "position": "absolute",
-          "bottom": "0",
-          "right": "0",
-          "states": {
-            "open":       { "background": "transparent", "borderColor": "#6b7280" },
-            "resolved":   { "background": "#22c55e",     "borderColor": "#1a1a26" },
-            "inProgress": { "background": "#f97316",     "borderColor": "#1a1a26" },
-            "online":     { "background": "#3b82f6",     "borderColor": "#1a1a26" }
+        "header": {
+          "avatar": {
+            "size": "32px",
+            "borderRadius": "50%",
+            "border": "none"
+          },
+          "name": {
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "color": "#1A1A1A"
+          },
+          "statusBadge": "see statusBadge component",
+          "dateText": {
+            "fontSize": "12px",
+            "color": "#9A9A9A"
           }
         },
-        "senderName": {
-          "fontSize": "13px",
-          "fontWeight": "500",
-          "color": "#f0f0f5"
+        "tasksSection": {
+          "label": {
+            "fontSize": "13px",
+            "fontWeight": "500",
+            "color": "#1A1A1A"
+          },
+          "taskItem": {
+            "icon": {
+              "size": "14px",
+              "color": "#9A9A9A",
+              "type": "circle/clock — stroke icon, not filled"
+            },
+            "text": {
+              "fontSize": "13px",
+              "color": "#4A4A4A"
+            },
+            "truncation": "ellipsis after ~40ch, 'More' link in #9A9A9A"
+          },
+          "divider": "1px solid #F2F2F2"
         },
-        "preview": {
+        "departmentTags": "see departmentTag component",
+        "avatarStack": "see avatarStack component",
+        "assignButton": {
+          "text": "+ Assign",
+          "color": "#9A9A9A",
           "fontSize": "12px",
-          "fontWeight": "400",
-          "color": "#9ca3b4",
-          "maxLines": 1,
-          "overflow": "ellipsis"
+          "hover": {
+            "color": "#1A1A1A"
+          }
         },
-        "timestamp": {
-          "fontSize": "11px",
-          "color": "#52525e",
-          "position": "absolute",
-          "top": "12px",
-          "right": "14px"
-        }
-      }
-    },
-
-    "chatBubble": {
-      "dark": {
-        "incoming": {
-          "background": "#252535",
-          "color": "#f0f0f5",
-          "borderRadius": "4px 16px 16px 16px",
-          "padding": "10px 14px",
-          "maxWidth": "65%",
-          "fontSize": "14px",
-          "lineHeight": "1.5",
-          "alignSelf": "flex-start",
-          "boxShadow": "none"
-        },
-        "outgoing": {
-          "background": "#f0f0f3",
-          "color": "#1a1a26",
-          "borderRadius": "16px 4px 16px 16px",
-          "padding": "10px 14px",
-          "maxWidth": "65%",
-          "fontSize": "14px",
-          "lineHeight": "1.5",
-          "alignSelf": "flex-end",
-          "boxShadow": "none"
-        },
-        "timestamp": {
-          "fontSize": "11px",
-          "color": "#52525e",
-          "display": "block",
-          "marginTop": "4px",
-          "textAlign": "right"
-        },
-        "agentAvatar": {
-          "width": "28px",
-          "height": "28px",
-          "borderRadius": "50%",
-          "background": "#2563eb",
-          "position": "absolute",
-          "bottom": "0",
-          "right": "-36px"
-        }
-      }
-    },
-
-    "chatInput": {
-      "dark": {
-        "container": {
-          "background": "#1a1a26",
-          "borderTop": "1px solid #2a2a3c",
-          "padding": "10px 14px 14px"
-        },
-        "inputField": {
-          "background": "transparent",
-          "border": "none",
-          "outline": "none",
-          "color": "#f0f0f5",
-          "fontSize": "14px",
-          "placeholder": { "color": "#52525e" }
-        },
-        "toolbar": {
-          "marginTop": "8px",
-          "display": "flex",
-          "alignItems": "center",
-          "gap": "8px"
-        },
-        "attachIcon": {
-          "color": "#6b7280",
-          "size": "18px",
-          "hover": { "color": "#9ca3af" }
-        },
-        "sendButton": {
-          "width": "32px",
-          "height": "32px",
-          "borderRadius": "50%",
-          "background": "#3b82f6",
-          "color": "#ffffff",
-          "iconSize": "16px",
-          "marginLeft": "auto",
-          "hover": { "background": "#2563eb" },
-          "disabled": { "background": "#2a2a3c", "color": "#6b7280" }
-        }
-      }
-    },
-
-    "statusBadge": {
-      "dark": {
-        "inProgress": {
-          "background": "#f97316",
-          "color": "#ffffff",
-          "fontSize": "11px",
-          "fontWeight": "600",
-          "padding": "2px 8px",
-          "borderRadius": "4px",
-          "textTransform": "uppercase",
-          "letterSpacing": "0.05em",
-          "iconColor": "#ffffff",
-          "iconSize": "12px",
-          "gap": "4px"
-        },
-        "open": {
-          "background": "transparent",
-          "color": "#9ca3b4",
-          "border": "1px solid #6b7280",
-          "fontSize": "11px",
-          "fontWeight": "600",
-          "padding": "2px 8px",
-          "borderRadius": "4px",
-          "textTransform": "uppercase"
-        },
-        "resolved": {
-          "background": "transparent",
-          "color": "#22c55e",
-          "border": "1px solid #22c55e",
-          "fontSize": "11px",
-          "fontWeight": "600",
-          "padding": "2px 8px",
-          "borderRadius": "4px",
-          "textTransform": "uppercase"
-        }
-      }
-    },
-
-    "activityFeed": {
-      "dark": {
-        "container": {
-          "padding": "12px 16px",
-          "borderBottom": "1px solid #2a2a3c"
-        },
-        "row": {
-          "fontSize": "12px",
-          "color": "#9ca3b4",
-          "lineHeight": "1.5",
-          "display": "flex",
-          "alignItems": "center",
-          "gap": "6px",
-          "padding": "4px 0"
-        },
-        "agentName": {
-          "fontWeight": "500",
-          "color": "#f0f0f5"
-        },
-        "statusArrow": {
-          "color": "#6b7280",
-          "fontSize": "12px"
-        },
-        "timestamp": {
-          "marginLeft": "auto",
-          "fontSize": "11px",
-          "color": "#52525e"
-        }
-      }
-    },
-
-    "avatarInitial": {
-      "dark": {
-        "sizes": {
-          "sm": { "width": "28px", "height": "28px", "fontSize": "11px" },
-          "md": { "width": "34px", "height": "34px", "fontSize": "13px" },
-          "lg": { "width": "40px", "height": "40px", "fontSize": "15px" }
-        },
-        "shape": "border-radius: 50%",
-        "background": "#2e2e40",
-        "color": "#9ca3b4",
-        "fontWeight": "500"
+        "DO_NOT": [
+          "Do not apply gradients to card backgrounds — all cards are solid white",
+          "Do not apply card shadow to task items inside the card",
+          "Do not apply card border-radius to inner elements"
+        ]
       },
-      "light": {
-        "sizes": {
-          "sm": { "width": "24px", "height": "24px", "fontSize": "10px" },
-          "md": { "width": "32px", "height": "32px", "fontSize": "12px" }
+      "memberCard": {
+        "background": "#FFFFFF",
+        "border": "1px solid #EFEFEF",
+        "borderRadius": "12px",
+        "shadow": "0 1px 3px rgba(0,0,0,0.06)",
+        "padding": "16px",
+        "hover": {
+          "shadow": "0 4px 16px rgba(0,0,0,0.10)"
         },
-        "shape": "border-radius: 50%",
-        "background": "#dbeafe",
-        "color": "#2563eb",
-        "fontWeight": "500"
-      }
-    },
-
-    "sidebarSection": {
-      "dark": {
-        "header": {
-          "padding": "16px 12px 4px",
-          "fontSize": "11px",
-          "fontWeight": "600",
-          "color": "#6b7280",
-          "textTransform": "uppercase",
-          "letterSpacing": "0.06em",
-          "display": "flex",
-          "alignItems": "center",
-          "justifyContent": "space-between"
-        },
-        "addButton": {
-          "color": "#6b7280",
-          "size": "14px",
-          "hover": { "color": "#9ca3af" }
-        }
-      },
-      "light": {
-        "header": {
-          "padding": "16px 12px 6px",
-          "fontSize": "12px",
-          "fontWeight": "500",
-          "color": "#9ca3af",
-          "display": "block"
-        }
-      }
-    },
-
-    "notesContent": {
-      "light": {
-        "pageTitle": {
-          "fontSize": "26px",
-          "fontWeight": "700",
-          "color": "#111827",
-          "marginBottom": "8px"
-        },
-        "leadParagraph": {
-          "fontSize": "14px",
-          "fontWeight": "400",
-          "color": "#374151",
-          "lineHeight": "1.65",
-          "marginBottom": "24px"
-        },
-        "sectionLabel": {
-          "fontSize": "12px",
-          "fontWeight": "500",
-          "color": "#9ca3af",
-          "marginBottom": "12px",
-          "textTransform": "capitalize"
-        },
-        "bulletItem": {
-          "display": "flex",
-          "alignItems": "flex-start",
-          "gap": "10px",
-          "padding": "4px 0",
-          "fontSize": "14px",
-          "color": "#374151",
-          "lineHeight": "1.5"
-        },
-        "bulletDot": {
-          "width": "6px",
-          "height": "6px",
+        "avatar": {
+          "size": "48px",
           "borderRadius": "50%",
-          "background": "#d1d5db",
-          "marginTop": "7px",
-          "flexShrink": 0
-        }
-      }
-    },
-
-    "emailBlock": {
-      "light": {
-        "container": {
-          "background": "#ffffff",
-          "border": "1px solid #e5e7eb",
-          "borderRadius": "8px",
-          "overflow": "hidden",
-          "marginTop": "12px"
-        },
-        "header": {
-          "background": "#f9fafb",
-          "padding": "10px 14px",
-          "borderBottom": "1px solid #e5e7eb",
-          "display": "flex",
-          "alignItems": "center",
-          "gap": "8px"
-        },
-        "headerIcon": {
-          "width": "28px",
-          "height": "28px",
-          "borderRadius": "6px",
-          "background": "#3b82f6",
-          "color": "#ffffff",
-          "iconSize": "14px"
-        },
-        "headerLabel": {
-          "fontSize": "14px",
-          "fontWeight": "500",
-          "color": "#111827"
-        },
-        "actionIcons": {
-          "color": "#6b7280",
-          "size": "16px",
-          "marginLeft": "auto",
-          "gap": "10px",
-          "hover": { "color": "#374151" }
-        },
-        "field": {
-          "padding": "8px 14px",
-          "borderBottom": "1px solid #f3f4f6",
-          "display": "flex",
-          "gap": "12px"
-        },
-        "fieldLabel": {
-          "fontSize": "13px",
-          "color": "#9ca3af",
-          "fontWeight": "400",
-          "minWidth": "60px"
-        },
-        "fieldValue": {
-          "fontSize": "13px",
-          "color": "#374151",
-          "fontWeight": "400"
-        },
-        "body": {
-          "padding": "14px",
-          "fontSize": "14px",
-          "color": "#374151",
-          "lineHeight": "1.6"
-        },
-        "bodyHeading": {
-          "fontSize": "14px",
-          "fontWeight": "600",
-          "color": "#111827",
-          "marginBottom": "8px"
-        }
-      }
-    },
-
-    "searchBar": {
-      "dark": {
-        "container": {
-          "margin": "8px 10px 12px",
-          "background": "#22222e",
-          "border": "1px solid #2a2a3c",
-          "borderRadius": "8px",
-          "padding": "6px 10px",
-          "display": "flex",
-          "alignItems": "center",
-          "gap": "8px"
-        },
-        "icon": {
-          "color": "#6b7280",
-          "size": "14px"
-        },
-        "input": {
-          "background": "transparent",
-          "border": "none",
-          "color": "#f0f0f5",
-          "fontSize": "13px",
-          "placeholder": { "color": "#52525e" }
-        },
-        "focus": {
-          "borderColor": "#3b82f6",
-          "outline": "none"
-        }
-      }
-    },
-
-    "panelHeader": {
-      "dark": {
-        "container": {
-          "padding": "12px 14px",
-          "borderBottom": "1px solid #2a2a3c",
-          "display": "flex",
-          "alignItems": "center",
-          "gap": "8px"
-        },
-        "title": {
-          "fontSize": "14px",
-          "fontWeight": "600",
-          "color": "#f0f0f5"
-        },
-        "actionIcons": {
-          "color": "#6b7280",
-          "size": "16px",
-          "gap": "8px",
-          "marginLeft": "auto"
+          "background": "#F2F2F2",
+          "illustration": "flat line avatar style",
+          "DO_NOT": "Do not add colored background to avatar container; it is neutral gray"
         },
         "statusBadge": {
-          "position": "right",
-          "marginLeft": "auto"
-        }
-      }
-    },
-
-    "filterBar": {
-      "dark": {
-        "container": {
-          "padding": "8px 14px",
-          "borderBottom": "1px solid #2a2a3c",
-          "display": "flex",
-          "alignItems": "center",
-          "gap": "10px"
+          "position": "top-right of card",
+          "see": "statusBadge component"
         },
-        "title": {
+        "name": {
+          "fontSize": "15px",
+          "fontWeight": "600",
+          "color": "#1A1A1A",
+          "marginTop": "8px"
+        },
+        "role": {
           "fontSize": "13px",
-          "fontWeight": "500",
-          "color": "#f0f0f5"
+          "color": "#6B6B6B",
+          "fontWeight": "400"
         },
-        "iconButton": {
-          "color": "#6b7280",
-          "size": "15px",
-          "hover": { "color": "#9ca3af" }
+        "detailRow": {
+          "label": {
+            "fontSize": "11px",
+            "color": "#8A8A8A",
+            "fontWeight": "500",
+            "display": "block"
+          },
+          "value": {
+            "fontSize": "12px",
+            "color": "#1A1A1A",
+            "fontWeight": "500"
+          }
+        },
+        "contactInfo": {
+          "fontSize": "12px",
+          "color": "#6B6B6B"
+        },
+        "arrowIcon": {
+          "color": "#1A1A1A",
+          "size": "16px",
+          "position": "bottom-right"
+        },
+        "DO_NOT": [
+          "Do not apply colored backgrounds to member cards",
+          "Do not put the avatar in a colored circle — background is #F2F2F2"
+        ]
+      }
+    },
+    "statusBadge": {
+      "active": {
+        "background": "#E8F5E9",
+        "text": "#2E7D32",
+        "fontSize": "11px",
+        "fontWeight": "500",
+        "padding": "2px 8px",
+        "borderRadius": "6px",
+        "border": "none"
+      },
+      "remote": {
+        "background": "#FFF3E0",
+        "text": "#E65100",
+        "fontSize": "11px",
+        "fontWeight": "500",
+        "padding": "2px 8px",
+        "borderRadius": "6px",
+        "border": "none"
+      },
+      "partTime": {
+        "background": "#E3F2FD",
+        "text": "#1565C0",
+        "fontSize": "11px",
+        "fontWeight": "500",
+        "padding": "2px 8px",
+        "borderRadius": "6px",
+        "border": "none"
+      },
+      "DO_NOT": [
+        "Do not apply card shadows to status badges",
+        "Do not use border on status badges — they are pill background only",
+        "Do not use the same badge color for different statuses"
+      ]
+    },
+    "departmentTag": {
+      "background": "#F2F2F2",
+      "text": "#4A4A4A",
+      "fontSize": "11px",
+      "fontWeight": "400",
+      "padding": "3px 8px",
+      "borderRadius": "6px",
+      "border": "none",
+      "gap": "4px",
+      "DO_NOT": "Do not apply status badge colors to department tags — they are always neutral gray"
+    },
+    "taskTypeBadge": {
+      "feature": {
+        "background": "#F3F0FF",
+        "text": "#5E35B1",
+        "icon": "#7E57C2",
+        "fontSize": "12px",
+        "padding": "3px 8px",
+        "borderRadius": "6px"
+      },
+      "bug": {
+        "background": "#FFF0F0",
+        "text": "#C62828",
+        "icon": "#E57373",
+        "fontSize": "12px",
+        "padding": "3px 8px",
+        "borderRadius": "6px"
+      },
+      "review": {
+        "background": "#E8F5E9",
+        "text": "#2E7D32",
+        "icon": "#66BB6A",
+        "fontSize": "12px",
+        "padding": "3px 8px",
+        "borderRadius": "6px"
+      },
+      "testing": {
+        "background": "#F5F5F5",
+        "text": "#424242",
+        "icon": "#9E9E9E",
+        "fontSize": "12px",
+        "padding": "3px 8px",
+        "borderRadius": "6px"
+      },
+      "iconPlacement": "left of text, same color as text (not neutral)",
+      "DO_NOT": "Do not use the same badge color for different task types"
+    },
+    "priorityBadge": {
+      "high": {
+        "background": "#FDECEA",
+        "text": "#C62828",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "padding": "3px 8px",
+        "borderRadius": "6px"
+      },
+      "medium": {
+        "background": "#FFF8E1",
+        "text": "#F57F17",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "padding": "3px 8px",
+        "borderRadius": "6px"
+      },
+      "low": {
+        "background": "#E8F5E9",
+        "text": "#2E7D32",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "padding": "3px 8px",
+        "borderRadius": "6px"
+      },
+      "DO_NOT": [
+        "Do not apply shadow to priority badges",
+        "Do not confuse Low (green) with Active status (also green) — contexts differ"
+      ]
+    },
+    "progressBar": {
+      "container": {
+        "display": "inline-flex",
+        "alignItems": "center",
+        "gap": "6px"
+      },
+      "percentLabel": {
+        "fontSize": "12px",
+        "color": "#6B6B6B",
+        "fontWeight": "400",
+        "width": "28px"
+      },
+      "track": {
+        "background": "#E8E8E8",
+        "borderRadius": "99px",
+        "height": "4px",
+        "width": "48px"
+      },
+      "fill": {
+        "borderRadius": "99px",
+        "height": "4px",
+        "colorByPriority": {
+          "high": "#F44336",
+          "medium": "#FF9800",
+          "low": "#4CAF50"
+        },
+        "DO_NOT": "Do not use brand black (#1A1A1A) for progress bars — use semantic priority colors"
+      }
+    },
+    "avatarStack": {
+      "avatarSize": "24px",
+      "avatarBorderRadius": "50%",
+      "overlapOffset": "-8px",
+      "border": "2px solid #FFFFFF",
+      "background": "#F2F2F2",
+      "direction": "left-to-right overlap",
+      "maxVisible": 4,
+      "DO_NOT": "Do not remove the white border between stacked avatars — it defines the layering"
+    },
+    "tableView": {
+      "wrapper": {
+        "background": "#FFFFFF",
+        "border": "1px solid #E8E8E8",
+        "borderRadius": "12px",
+        "overflow": "hidden"
+      },
+      "groupHeader": {
+        "background": "transparent",
+        "padding": "16px 20px",
+        "fontSize": "14px",
+        "fontWeight": "600",
+        "color": "#1A1A1A",
+        "countBadge": {
+          "background": "#F2F2F2",
+          "text": "#6B6B6B",
+          "fontSize": "12px",
+          "padding": "2px 6px",
+          "borderRadius": "6px"
         }
+      },
+      "tableHead": {
+        "background": "#FAFAFA",
+        "borderBottom": "1px solid #F0F0F0",
+        "cellPadding": "10px 16px",
+        "text": {
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "color": "#9A9A9A"
+        }
+      },
+      "tableRow": {
+        "background": "#FFFFFF",
+        "borderBottom": "1px solid #F4F4F4",
+        "cellPadding": "12px 16px",
+        "hover": {
+          "background": "#FAFAFA"
+        }
+      },
+      "taskNameCell": {
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "color": "#1A1A1A",
+        "truncation": "ellipsis at ~45ch"
+      },
+      "timelineCell": {
+        "fontSize": "12px",
+        "color": "#6B6B6B"
+      },
+      "DO_NOT": [
+        "Do not apply card shadow to individual table rows",
+        "Do not zebra-stripe table rows — hover only",
+        "Do not round individual cells — only the table wrapper has border-radius"
+      ]
+    },
+    "searchInput": {
+      "background": "#FFFFFF",
+      "border": "1px solid #E2E2E2",
+      "borderRadius": "8px",
+      "padding": "7px 12px",
+      "fontSize": "13px",
+      "color": "#1A1A1A",
+      "placeholder": "#ADADAD",
+      "icon": {
+        "color": "#9A9A9A",
+        "size": "14px",
+        "position": "left"
+      },
+      "shortcutHint": {
+        "text": "⌘ F",
+        "color": "#ADADAD",
+        "fontSize": "11px",
+        "position": "right"
+      },
+      "focus": {
+        "border": "1px solid #1A1A1A",
+        "shadow": "0 0 0 2px rgba(26,26,26,0.10)"
+      },
+      "DO_NOT": "Do not style the search as a primary button — it is always a light bordered input"
+    },
+    "filterButton": {
+      "background": "#FFFFFF",
+      "border": "1px solid #E2E2E2",
+      "borderRadius": "8px",
+      "padding": "7px 12px",
+      "fontSize": "13px",
+      "color": "#6B6B6B",
+      "icon": {
+        "color": "#6B6B6B",
+        "size": "14px"
+      },
+      "hover": {
+        "background": "#F8F8F8"
+      }
+    },
+    "viewToggleButton": {
+      "background": "#FFFFFF",
+      "border": "1px solid #E2E2E2",
+      "borderRadius": "8px",
+      "padding": "7px 10px",
+      "icon": {
+        "color": "#6B6B6B",
+        "size": "16px"
+      },
+      "hover": {
+        "background": "#F8F8F8"
+      }
+    },
+    "inlineActionIcon": {
+      "default": {
+        "color": "#ADADAD",
+        "size": "16px"
+      },
+      "hover": {
+        "color": "#1A1A1A"
+      },
+      "DO_NOT": "Do not color inline + / chevron icons with brand black by default — they are muted until hovered"
+    },
+    "ganttCalendarStrip": {
+      "background": "#FAFAFA",
+      "dateLabelColor": "#8A8A8A",
+      "dateLabelFontSize": "12px",
+      "taskBarBackground": "#E8E8E8",
+      "taskBarActiveBackground": "#1A1A1A",
+      "taskBarBorderRadius": "6px",
+      "taskBarHeight": "28px",
+      "avatarOnBar": {
+        "size": "20px",
+        "borderRadius": "50%",
+        "border": "2px solid #FFFFFF"
       }
     }
   },
-
-  "spacing": {
-    "containerPadding": {
-      "navStrip":          "8px 0",
-      "sidebar":           "8px 0",
-      "conversationList":  "0",
-      "chatPanel":         "0",
-      "contentArea":       "32px 40px"
-    },
-    "listItemPadding": {
-      "sidebarNavItem":         "0 10px",
-      "conversationListItem":   "10px 14px",
-      "sectionHeader":          "16px 12px 4px"
-    },
-    "gaps": {
-      "avatarToContent":   "10px",
-      "iconToLabel":       "8px",
-      "itemGap":           "1px",
-      "sectionGap":        "8px"
-    }
-  },
-
-  "borderRadius": {
-    "navIcon":         "8px",
-    "sidebarItem":     "6px",
-    "chatBubble": {
-      "incoming":      "4px 16px 16px 16px",
-      "outgoing":      "16px 4px 16px 16px"
-    },
-    "statusBadge":     "4px",
-    "statusDot":       "50%",
-    "avatar":          "50%",
-    "searchBar":       "8px",
-    "emailBlock":      "8px",
-    "emailHeaderIcon": "6px",
-    "panel":           "0",
-    "floatingPanel":   "12px"
-  },
-
-  "shadows": {
-    "dark": {
-      "floatingPanel":   "0 8px 24px rgba(0, 0, 0, 0.5)",
-      "chatBubble":      "none",
-      "dropdown":        "0 4px 16px rgba(0, 0, 0, 0.4)",
-      "DO_NOT_APPLY_TO": ["list items", "sidebar items", "text elements", "icons"]
-    },
-    "light": {
-      "floatingPanel":   "0 4px 16px rgba(0, 0, 0, 0.08)",
-      "emailBlock":      "0 1px 4px rgba(0, 0, 0, 0.04)",
-      "dropdown":        "0 4px 12px rgba(0, 0, 0, 0.1)",
-      "DO_NOT_APPLY_TO": ["sidebar list items", "content text", "bullet lists"]
-    }
-  },
-
-  "transitions": {
-    "default":        "all 150ms ease",
-    "background":     "background 120ms ease",
-    "color":          "color 120ms ease",
-    "iconHover":      "color 150ms ease, opacity 150ms ease",
-    "DO_NOT_ANIMATE": ["layout shifts", "font-size", "border-radius on hover"]
-  },
-
-  "iconography": {
-    "sizes": {
-      "navStrip":     "18px",
-      "sidebarItem":  "14px",
-      "listItemMeta": "13px",
-      "actionButton": "16px",
-      "badge":        "12px"
-    },
-    "colorContext": {
-      "navStrip_inactive":   "inherit from container — #6b7280",
-      "navStrip_active":     "#f0f0f5 (dark) / #2563eb (light)",
-      "sidebarItem_inactive":"#6b7280 (both themes)",
-      "sidebarItem_active":  "#f0f0f5 (dark) / #2563eb (light)",
-      "actionIcons":         "#6b7280 (both themes)",
-      "statusIcons":         "match status color token exactly"
-    }
-  },
-
-  "implementationNotes": {
-    "darkTheme": [
-      "Use a CSS class `.dark` on the root `<html>` or `<body>` element to scope all dark tokens",
-      "Background depth increases left-to-right: navStrip (#0d0d13) → sidebar (#161621) → list (#1a1a26) → chat (#1e1e2c)",
-      "Never use pure black (#000000) — all backgrounds use very dark blue-gray, not neutral black",
-      "Outgoing chat bubbles use near-white (#f0f0f3) with dark text (#1a1a26) — invert of the panel bg",
-      "Status dots always have a 2px solid border matching their immediate container background (prevents halo on dark bg)",
-      "Font rendering: use `font-smoothing: antialiased` throughout dark theme for crisp text on dark bg"
+  "DO_NOT_RULES": {
+    "gradients": [
+      "DO NOT apply gradients anywhere — this design uses zero gradients; all surfaces are solid colors",
+      "DO NOT use purple gradients on white backgrounds — this is a neutral monochrome light UI"
     ],
-    "lightTheme": [
-      "Use CSS class `.light` or default (no class) to scope light tokens",
-      "The active sidebar item uses a dedicated blue-tinted background (#eff6ff) — not just bold text",
-      "Section group labels ('Today', 'Yesterday') are lighter gray (#9ca3af), smaller, and spaced above their items",
-      "Main content has generous horizontal padding (40px) — not flush to the panel edge",
-      "Email compose block is contained with a border + subtle border-radius — it reads as an embedded card, not a raw form",
-      "Bullet dots (#d1d5db) are intentionally muted — they are structural, not decorative"
+    "colorMisplacement": [
+      "DO NOT use primary button color (#1A1A1A) as text color on cards — primary text is #1A1A1A but only as font color, not background",
+      "DO NOT apply status badge colors (green, orange, blue) to department tags — department tags are always #F2F2F2",
+      "DO NOT apply progress bar fill colors (red/orange/green) to text elements",
+      "DO NOT put card shadows on badges, tags, or text elements",
+      "DO NOT apply table wrapper border-radius to individual table rows or cells"
     ],
-    "shared": [
-      "Avatar fallbacks use initials with theme-appropriate bg/text contrast",
-      "Timestamps are always the most muted color in both themes — they should recede visually",
-      "ALL-CAPS labels (section headers, status badges) use letter-spacing: 0.05–0.06em",
-      "List item hover states must be subtle — never match the active state color",
-      "Dividers use a single `border-bottom` line, never a full `<hr>` with margin on both sides"
+    "typography": [
+      "DO NOT use bold (700+) weight for body text or task descriptions — max body weight is 500",
+      "DO NOT use Inter, Roboto, or generic sans-serif — use SF Pro system stack"
+    ],
+    "layout": [
+      "DO NOT add padding to the app shell background — padding belongs to mainContentArea",
+      "DO NOT add a shadow between sidebar and content — use a right border only (1px solid #EBEBEB)",
+      "DO NOT make sidebar background any color other than #FFFFFF"
+    ],
+    "icons": [
+      "DO NOT fill task item icons (circle/clock) with color — they are stroked, in #9A9A9A",
+      "DO NOT use colored icon backgrounds anywhere — icons sit directly on their parent surface",
+      "DO NOT make navigation icons active-state colored brand blue — active state is #1A1A1A (black)"
     ]
+  },
+  "componentPatterns": {
+    "cardGrid": {
+      "columns": "3",
+      "columnGap": "16px",
+      "rowGap": "16px",
+      "responsive": "2 columns below 900px, 1 column below 600px"
+    },
+    "memberCardGrid": {
+      "columns": "4",
+      "columnGap": "16px",
+      "rowGap": "16px"
+    },
+    "sectionSpacing": {
+      "betweenSections": "32px",
+      "labelToContent": "12px"
+    }
   }
 }

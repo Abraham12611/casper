@@ -111,13 +111,13 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
         className="space-y-2 text-center mb-12"
       >
         <div className="flex items-center justify-center gap-2 mb-4">
-            <Rocket className="text-[#3b82f6]" size={24} />
-            <h1 className="text-[14px] font-mono font-bold text-[#3b82f6] uppercase tracking-[0.4em]">Agency Setup</h1>
+            <Rocket className="text-[#1A1A1A]" size={24} />
+            <h1 className="text-[14px] font-mono font-bold text-[#1A1A1A] uppercase tracking-[0.4em]">Agency Setup</h1>
         </div>
-        <h2 className="text-[42px] font-bold text-[#f0f0f5] tracking-tight leading-none mb-4">
+        <h2 className="text-[42px] font-bold text-[#1A1A1A] tracking-tight leading-none mb-4">
             Launch Your AI Growth Engine
         </h2>
-        <p className="text-[#9ca3b4] text-[17px] max-w-xl mx-auto leading-relaxed">
+        <p className="text-[#6B6B6B] text-[17px] max-w-xl mx-auto leading-relaxed">
             Set up your agency in under 3 minutes and start closing qualified leads automatically.
         </p>
       </motion.div>
@@ -125,7 +125,7 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
       {/* Mode Selection Grid */}
       <div className="space-y-4">
         <div className="flex items-center justify-between px-2">
-            <span className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-widest">How do you want to start?</span>
+            <span className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-widest">How do you want to start?</span>
         </div>
         
         <RadioGroup value={mode} onValueChange={handleModeChange} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -133,16 +133,16 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
             <label 
                 htmlFor="automated"
                 className={cn(
-                    "relative group cursor-pointer transition-all duration-500 rounded-[32px] p-8 border overflow-hidden",
+                    "relative group cursor-pointer transition-all duration-500 rounded-xl p-8 border overflow-hidden",
                     mode === "automated" 
-                        ? "bg-[#1e1e2c] border-[#3b82f6] shadow-[0_20px_50px_rgba(59,130,246,0.15)] ring-1 ring-[#3b82f6]" 
-                        : "bg-[#161621] border-[#2a2a3c] hover:border-[#3b82f6]/40 hover:bg-[#1a1a26]"
+                        ? "bg-white border-[#1A1A1A] shadow-[0_20px_50px_rgba(59,130,246,0.15)] ring-1 ring-[#1A1A1A]" 
+                        : "bg-[#F5F5F5] border-[#E8E8E8] hover:border-[#1A1A1A]/40 hover:bg-[#1a1a26]"
                 )}
             >
                 {mode === "automated" && (
                     <motion.div 
                         layoutId="activeGlow"
-                        className="absolute inset-0 bg-gradient-to-br from-[#3b82f6]/5 to-transparent pointer-events-none" 
+                        className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A]/5 to-transparent pointer-events-none" 
                     />
                 )}
                 
@@ -150,7 +150,7 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
                     <div className="flex items-center justify-between mb-6">
                         <div className={cn(
                             "w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-500",
-                            mode === "automated" ? "bg-[#3b82f6] text-white" : "bg-[#26263a] text-[#52525e]"
+                            mode === "automated" ? "bg-[#1A1A1A] text-white" : "bg-[#F5F5F5] text-[#9A9A9A]"
                         )}>
                             <Cpu size={24} />
                         </div>
@@ -159,14 +159,14 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
                             id="automated" 
                             className="sr-only"
                         />
-                        {mode === "automated" && <CheckCircle2 className="text-[#3b82f6]" size={20} />}
+                        {mode === "automated" && <CheckCircle2 className="text-[#1A1A1A]" size={20} />}
                     </div>
                     
                     <h3 className={cn(
                         "text-[18px] font-bold mb-2 transition-colors duration-500",
-                        mode === "automated" ? "text-white" : "text-[#9ca3b4]"
+                        mode === "automated" ? "text-white" : "text-[#6B6B6B]"
                     )}>Automated Scan</h3>
-                    <p className="text-[13px] text-[#52525e] leading-relaxed group-hover:text-[#9ca3b4] transition-colors">
+                    <p className="text-[13px] text-[#9A9A9A] leading-relaxed group-hover:text-[#6B6B6B] transition-colors">
                         Paste your agency's URL and we'll automatically identify your niche, case studies, and winning claims.
                     </p>
                 </div>
@@ -176,17 +176,17 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
             <label 
                 htmlFor="manual"
                 className={cn(
-                    "relative group cursor-pointer transition-all duration-500 rounded-[32px] p-8 border overflow-hidden",
+                    "relative group cursor-pointer transition-all duration-500 rounded-xl p-8 border overflow-hidden",
                     mode === "manual" 
-                        ? "bg-[#1e1e2c] border-[#7b61ff] shadow-[0_20px_50px_rgba(123,97,255,0.15)] ring-1 ring-[#7b61ff]" 
-                        : "bg-[#161621] border-[#2a2a3c] hover:border-[#7b61ff]/40 hover:bg-[#1a1a26]"
+                        ? "bg-white border-[#6B6B6B] shadow-[0_20px_50px_rgba(123,97,255,0.15)] ring-1 ring-[#6B6B6B]" 
+                        : "bg-[#F5F5F5] border-[#E8E8E8] hover:border-[#6B6B6B]/40 hover:bg-[#1a1a26]"
                 )}
             >
                 <div className="relative flex flex-col h-full">
                     <div className="flex items-center justify-between mb-6">
                         <div className={cn(
                             "w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-500",
-                            mode === "manual" ? "bg-[#7b61ff] text-white" : "bg-[#26263a] text-[#52525e]"
+                            mode === "manual" ? "bg-[#6B6B6B] text-white" : "bg-[#F5F5F5] text-[#9A9A9A]"
                         )}>
                             <Terminal size={24} />
                         </div>
@@ -195,14 +195,14 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
                             id="manual" 
                             className="sr-only"
                         />
-                        {mode === "manual" && <CheckCircle2 className="text-[#7b61ff]" size={20} />}
+                        {mode === "manual" && <CheckCircle2 className="text-[#6B6B6B]" size={20} />}
                     </div>
                     
                     <h3 className={cn(
                         "text-[18px] font-bold mb-2 transition-colors duration-500",
-                        mode === "manual" ? "text-white" : "text-[#9ca3b4]"
+                        mode === "manual" ? "text-white" : "text-[#6B6B6B]"
                     )}>Manual Override</h3>
-                    <p className="text-[13px] text-[#52525e] leading-relaxed group-hover:text-[#9ca3b4] transition-colors">
+                    <p className="text-[13px] text-[#9A9A9A] leading-relaxed group-hover:text-[#6B6B6B] transition-colors">
                         Define operational guardrails and identity markers from scratch using our command suite.
                     </p>
                 </div>
@@ -229,13 +229,13 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
         onSubmit={handleSubmit}
         className="space-y-8"
       >
-        <div className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px] p-8 space-y-8 shadow-2xl ring-1 ring-white/5 relative overflow-hidden">
+        <div className="bg-white border border-[#E8E8E8] rounded-xl p-8 space-y-8 shadow-2xl  relative overflow-hidden">
             <div className="absolute top-0 right-0 p-8">
                 <button
                   type="button"
                   onClick={handleDemoPath}
                   disabled={loading}
-                  className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#52525e] hover:text-[#3b82f6] uppercase tracking-widest transition-colors group"
+                  className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#9A9A9A] hover:text-[#1A1A1A] uppercase tracking-widest transition-colors group"
                 >
                   <Sparkles size={14} className="group-hover:animate-pulse" />
                   Apply Demo Signature
@@ -244,7 +244,7 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
 
             <div className="space-y-6 pt-4">
                 <div className="space-y-4">
-                    <label className="flex items-center gap-2 text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em]">
+                    <label className="flex items-center gap-2 text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em]">
                         <Activity size={14} />
                         Entity Name
                     </label>
@@ -256,12 +256,12 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
                       placeholder="ENTER LEGAL DESIGNATION..."
                       disabled={loading}
                       required
-                      className="w-full h-16 bg-[#161621] border border-[#2e2e40] rounded-2xl px-6 text-[#f0f0f5] font-bold text-[18px] placeholder:text-[#2a2a3c] focus:border-[#3b82f6] focus:ring-4 focus:ring-[#3b82f6]/10 outline-none transition-all"
+                      className="w-full h-16 bg-[#F5F5F5] border border-[#E2E2E2] rounded-2xl px-6 text-[#1A1A1A] font-bold text-[18px] placeholder:text-[#E8E8E8] focus:border-[#1A1A1A] focus:ring-4 focus:ring-[#1A1A1A]/10 outline-none transition-all"
                     />
                 </div>
 
                 <div className={cn("space-y-4 transition-all duration-500", mode === "manual" ? "opacity-30 grayscale pointer-events-none scale-[0.98]" : "opacity-100")}>
-                    <label className="flex items-center gap-2 text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em]">
+                    <label className="flex items-center gap-2 text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em]">
                         <Globe size={14} />
                         Operation Target URL
                     </label>
@@ -274,17 +274,17 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
                           placeholder="HTTPS://SOURCE-ENDPOINT.COM"
                           disabled={loading || mode === "manual"}
                           required={mode === "automated"}
-                          className="w-full h-16 bg-[#161621] border border-[#2e2e40] rounded-2xl px-6 text-[#f0f0f5] font-mono text-[16px] placeholder:text-[#2a2a3c] focus:border-[#3b82f6] focus:ring-4 focus:ring-[#3b82f6]/10 outline-none transition-all"
+                          className="w-full h-16 bg-[#F5F5F5] border border-[#E2E2E2] rounded-2xl px-6 text-[#1A1A1A] font-mono text-[16px] placeholder:text-[#E8E8E8] focus:border-[#1A1A1A] focus:ring-4 focus:ring-[#1A1A1A]/10 outline-none transition-all"
                         />
                         <div className="absolute right-4 top-1/2 -translate-y-1/2">
                              <TooltipProvider>
                                 <Tooltip>
                                   <TooltipTrigger asChild>
-                                    <div className="p-2 text-[#52525e] cursor-help">
+                                    <div className="p-2 text-[#9A9A9A] cursor-help">
                                         <Info size={18} />
                                     </div>
                                   </TooltipTrigger>
-                                  <TooltipContent className="bg-[#1e1e2c] border-[#2a2a3c] text-white">
+                                  <TooltipContent className="bg-white border-[#E8E8E8] text-white">
                                     <p className="text-[12px]">Casper will crawl this endpoint to extract operational context.</p>
                                   </TooltipContent>
                                 </Tooltip>
@@ -301,8 +301,8 @@ export function InitialSetupForm({ onStarted }: InitialSetupFormProps) {
             type="submit"
             disabled={loading || !companyName.trim() || (mode === "automated" && !sourceUrl.trim())}
             className={cn(
-                "w-full h-20 rounded-[32px] flex items-center justify-center gap-4 text-[18px] font-bold uppercase tracking-widest transition-all shadow-2xl",
-                loading ? "bg-[#1e1e2c] text-[#52525e]" : "bg-[#3b82f6] text-white hover:bg-[#2563eb] shadow-[#3b82f6]/20"
+                "w-full h-20 rounded-xl flex items-center justify-center gap-4 text-[18px] font-bold uppercase tracking-widest transition-all shadow-2xl",
+                loading ? "bg-white text-[#9A9A9A]" : "bg-[#1A1A1A] text-white hover:bg-[#2563eb] shadow-[#1A1A1A]/20"
             )}
         >
             {loading ? (

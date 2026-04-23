@@ -131,17 +131,17 @@ export function Step4FinalConfigurationForm({
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[40px] p-8 md:p-12 mb-10 shadow-2xl ring-1 ring-white/5 text-center relative overflow-hidden"
+        className="bg-white border border-[#E8E8E8] rounded-[40px] p-8 md:p-12 mb-10 shadow-2xl  text-center relative overflow-hidden"
       >
-        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#3b82f6] to-transparent opacity-50" />
+        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#1A1A1A] to-transparent opacity-50" />
         <div className="flex items-center justify-center gap-2 mb-4">
-            <Cpu size={16} className="text-[#3b82f6]" />
-            <span className="text-[12px] font-mono font-bold text-[#3b82f6] uppercase tracking-[0.2em]">Operational Deployment Suite</span>
+            <Cpu size={16} className="text-[#1A1A1A]" />
+            <span className="text-[12px] font-mono font-bold text-[#1A1A1A] uppercase tracking-[0.2em]">Operational Deployment Suite</span>
         </div>
-        <h1 className="text-[32px] md:text-[42px] font-bold text-[#f0f0f5] tracking-tight mb-4">
+        <h1 className="text-[32px] md:text-[42px] font-bold text-[#1A1A1A] tracking-tight mb-4">
           Final Calibration
         </h1>
-        <p className="text-[#9ca3b4] text-[16px] md:text-[18px] max-w-2xl mx-auto">
+        <p className="text-[#6B6B6B] text-[16px] md:text-[18px] max-w-2xl mx-auto">
           Configure the agent&apos;s linguistic profile, strategic target nodes, and operational window for real-time engagement.
         </p>
       </motion.div>
@@ -157,26 +157,26 @@ export function Step4FinalConfigurationForm({
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Tone Selection */}
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px] p-8 ring-1 ring-white/5">
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="bg-white border border-[#E8E8E8] rounded-xl p-8 ">
           <div className="flex items-center gap-3 mb-8">
-            <div className="p-2.5 bg-[#161621] border border-[#2a2a3c] rounded-2xl">
-              <MessageSquare className="h-5 w-5 text-[#3b82f6]" />
+            <div className="p-2.5 bg-[#F5F5F5] border border-[#E8E8E8] rounded-2xl">
+              <MessageSquare className="h-5 w-5 text-[#1A1A1A]" />
             </div>
             <div>
-              <h2 className="text-[18px] font-bold text-[#f0f0f5]">Linguistic Profile</h2>
-              <p className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-widest">Verbal Synthesis Modulation</p>
+              <h2 className="text-[18px] font-bold text-[#1A1A1A]">Linguistic Profile</h2>
+              <p className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-widest">Verbal Synthesis Modulation</p>
             </div>
           </div>
           
           <div className="space-y-4">
-            <Label className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em] px-1">Tone_Select</Label>
+            <Label className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em] px-1">Tone_Select</Label>
             <Select value={tone} onValueChange={setTone}>
-              <SelectTrigger className="h-14 bg-[#161621] border-[#2e2e40] rounded-2xl text-[14px] text-[#f0f0f5] focus:ring-[#3b82f6]/10 font-mono transition-all">
+              <SelectTrigger className="h-14 bg-[#F5F5F5] border-[#E2E2E2] rounded-2xl text-[14px] text-[#1A1A1A] focus:ring-[#1A1A1A]/10 font-mono transition-all">
                 <SelectValue placeholder="Select modulation..." />
               </SelectTrigger>
-              <SelectContent className="bg-[#1e1e2c] border-[#2a2a3c] text-white rounded-2xl overflow-hidden ring-1 ring-white/10">
+              <SelectContent className="bg-white border-[#E8E8E8] text-white rounded-2xl overflow-hidden ring-1 ring-white/10">
                 {TONE_OPTIONS.map(option => (
-                  <SelectItem key={option} value={option} className="px-6 py-3 cursor-pointer hover:bg-[#3b82f6] transition-colors focus:bg-[#3b82f6] uppercase text-[12px] font-mono font-bold tracking-widest">
+                  <SelectItem key={option} value={option} className="px-6 py-3 cursor-pointer hover:bg-[#1A1A1A] transition-colors focus:bg-[#1A1A1A] uppercase text-[12px] font-mono font-bold tracking-widest">
                     {option}
                   </SelectItem>
                 ))}
@@ -186,27 +186,27 @@ export function Step4FinalConfigurationForm({
         </motion.div>
 
         {/* Target Market Configuration */}
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px] p-8 ring-1 ring-white/5">
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-white border border-[#E8E8E8] rounded-xl p-8 ">
           <div className="flex items-center gap-3 mb-8">
-            <div className="p-2.5 bg-[#161621] border border-[#2a2a3c] rounded-2xl">
-              <Target className="h-5 w-5 text-[#3b82f6]" />
+            <div className="p-2.5 bg-[#F5F5F5] border border-[#E8E8E8] rounded-2xl">
+              <Target className="h-5 w-5 text-[#1A1A1A]" />
             </div>
             <div>
-              <h2 className="text-[18px] font-bold text-[#f0f0f5]">Strategic Focus</h2>
-              <p className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-widest">Network Topology Targeting</p>
+              <h2 className="text-[18px] font-bold text-[#1A1A1A]">Strategic Focus</h2>
+              <p className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-widest">Network Topology Targeting</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <Label className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em] px-1">Your Industry Niche</Label>
+              <Label className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em] px-1">Your Industry Niche</Label>
               <Select value={targetVertical} onValueChange={setTargetVertical} required>
-                <SelectTrigger className="h-14 bg-[#161621] border-[#2e2e40] rounded-2xl text-[14px] text-[#f0f0f5] focus:ring-[#3b82f6]/10 font-mono transition-all">
+                <SelectTrigger className="h-14 bg-[#F5F5F5] border-[#E2E2E2] rounded-2xl text-[14px] text-[#1A1A1A] focus:ring-[#1A1A1A]/10 font-mono transition-all">
                   <SelectValue placeholder="Industry node..." />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1e1e2c] border-[#2a2a3c] text-white rounded-2xl overflow-hidden ring-1 ring-white/10">
+                <SelectContent className="bg-white border-[#E8E8E8] text-white rounded-2xl overflow-hidden ring-1 ring-white/10">
                   {TARGET_VERTICALS.map(vertical => (
-                    <SelectItem key={vertical} value={vertical} className="px-6 py-3 cursor-pointer hover:bg-[#3b82f6] transition-colors focus:bg-[#3b82f6] text-[12px] font-mono font-bold tracking-widest">
+                    <SelectItem key={vertical} value={vertical} className="px-6 py-3 cursor-pointer hover:bg-[#1A1A1A] transition-colors focus:bg-[#1A1A1A] text-[12px] font-mono font-bold tracking-widest">
                         {vertical.toUpperCase()}
                     </SelectItem>
                   ))}
@@ -215,15 +215,15 @@ export function Step4FinalConfigurationForm({
             </div>
 
             <div className="space-y-4">
-              <Label className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em] px-1">Where Your Clients Are</Label>
+              <Label className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em] px-1">Where Your Clients Are</Label>
               <div className="relative group">
-                <Globe className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#52525e] group-focus-within:text-[#3b82f6] transition-colors" />
+                <Globe className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9A9A9A] group-focus-within:text-[#1A1A1A] transition-colors" />
                 <Input
                   type="text"
                   value={targetGeography}
                   onChange={(e) => setTargetGeography(e.target.value)}
                   placeholder="Node location (e.g., GLOBAL)"
-                  className="pl-12 h-14 bg-[#161621] border-[#2e2e40] rounded-2xl text-[14px] text-[#f0f0f5] placeholder:text-[#52525e] focus:border-[#3b82f6]/50 transition-all font-mono"
+                  className="pl-12 h-14 bg-[#F5F5F5] border-[#E2E2E2] rounded-2xl text-[14px] text-[#1A1A1A] placeholder:text-[#9A9A9A] focus:border-[#1A1A1A]/50 transition-all font-mono"
                   required
                 />
               </div>
@@ -232,18 +232,18 @@ export function Step4FinalConfigurationForm({
         </motion.div>
 
         {/* Lead Qualification Criteria */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px] p-8 ring-1 ring-white/5">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white border border-[#E8E8E8] rounded-xl p-8 ">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-[#161621] border border-[#2a2a3c] rounded-2xl">
-                <CheckCircle2 className="h-5 w-5 text-[#3b82f6]" />
+              <div className="p-2.5 bg-[#F5F5F5] border border-[#E8E8E8] rounded-2xl">
+                <CheckCircle2 className="h-5 w-5 text-[#1A1A1A]" />
               </div>
               <div>
-                <h2 className="text-[18px] font-bold text-[#f0f0f5]">Qualified Lead Criteria</h2>
-                <p className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-widest">What your ideal client looks like</p>
+                <h2 className="text-[18px] font-bold text-[#1A1A1A]">Qualified Lead Criteria</h2>
+                <p className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-widest">What your ideal client looks like</p>
               </div>
             </div>
-            <Badge className="bg-[#3b82f6]/20 text-[#3b82f6] border border-[#3b82f6]/30 text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1">
+            <Badge className="bg-[#1A1A1A]/20 text-[#1A1A1A] border border-[#1A1A1A]/30 text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1">
               {leadQualificationCriteria.length}_CRITERIA_ACTIVE
             </Badge>
           </div>
@@ -253,20 +253,20 @@ export function Step4FinalConfigurationForm({
               <label 
                 key={option.value} 
                 className={cn(
-                    "group flex items-start gap-4 p-5 bg-[#161621]/40 border rounded-2xl cursor-pointer transition-all ring-1 ring-white/5",
+                    "group flex items-start gap-4 p-5 bg-[#F5F5F5]/40 border rounded-2xl cursor-pointer transition-all ",
                     leadQualificationCriteria.includes(option.value) 
-                        ? "border-[#3b82f6]/50 bg-[#3b82f6]/5" 
-                        : "border-[#2e2e40] hover:border-[#3b82f6]/30"
+                        ? "border-[#1A1A1A]/50 bg-[#1A1A1A]/5" 
+                        : "border-[#E2E2E2] hover:border-[#1A1A1A]/30"
                 )}
               >
                 <Checkbox
                   checked={leadQualificationCriteria.includes(option.value)}
                   onCheckedChange={() => handleQualificationCriteriaToggle(option.value)}
-                  className="mt-0.5 border-[#2e2e40] data-[state=checked]:bg-[#3b82f6] data-[state=checked]:border-[#3b82f6]"
+                  className="mt-0.5 border-[#E2E2E2] data-[state=checked]:bg-[#1A1A1A] data-[state=checked]:border-[#1A1A1A]"
                 />
                 <div className="space-y-1">
-                    <span className="text-[13px] text-[#f0f0f5] font-bold group-hover:text-white transition-colors">{option.label}</span>
-                    <p className="text-[10px] font-mono text-[#52525e] uppercase tracking-widest">Qualification_Check_0{LEAD_QUALIFICATION_OPTIONS.indexOf(option) + 1}</p>
+                    <span className="text-[13px] text-[#1A1A1A] font-bold group-hover:text-white transition-colors">{option.label}</span>
+                    <p className="text-[10px] font-mono text-[#9A9A9A] uppercase tracking-widest">Qualification_Check_0{LEAD_QUALIFICATION_OPTIONS.indexOf(option) + 1}</p>
                 </div>
               </label>
             ))}
@@ -274,27 +274,27 @@ export function Step4FinalConfigurationForm({
         </motion.div>
 
         {/* Timezone and Availability */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-[#1e1e2c] border border-[#2a2a3c] rounded-[32px] p-8 ring-1 ring-white/5">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border border-[#E8E8E8] rounded-xl p-8 ">
           <div className="flex items-center gap-3 mb-8">
-            <div className="p-2.5 bg-[#161621] border border-[#2a2a3c] rounded-2xl">
-              <Clock className="h-5 w-5 text-[#3b82f6]" />
+            <div className="p-2.5 bg-[#F5F5F5] border border-[#E8E8E8] rounded-2xl">
+              <Clock className="h-5 w-5 text-[#1A1A1A]" />
             </div>
             <div>
-              <h2 className="text-[18px] font-bold text-[#f0f0f5]">Sales Call Hours</h2>
-              <p className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-widest">When you can take meetings</p>
+              <h2 className="text-[18px] font-bold text-[#1A1A1A]">Sales Call Hours</h2>
+              <p className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-widest">When you can take meetings</p>
             </div>
           </div>
           
           <div className="space-y-10">
             <div className="space-y-4">
-              <Label className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em] px-1">Temporal_Zone</Label>
+              <Label className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em] px-1">Temporal_Zone</Label>
               <Select value={timeZone} onValueChange={setTimeZone}>
-                <SelectTrigger className="h-14 bg-[#161621] border-[#2e2e40] rounded-2xl text-[14px] text-[#f0f0f5] font-mono transition-all">
+                <SelectTrigger className="h-14 bg-[#F5F5F5] border-[#E2E2E2] rounded-2xl text-[14px] text-[#1A1A1A] font-mono transition-all">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1e1e2c] border-[#2a2a3c] text-white rounded-2xl overflow-hidden ring-1 ring-white/10 max-h-[300px]">
+                <SelectContent className="bg-white border-[#E8E8E8] text-white rounded-2xl overflow-hidden ring-1 ring-white/10 max-h-[300px]">
                   {NA_TIMEZONES.map(tz => (
-                    <SelectItem key={tz} value={tz} className="px-6 py-3 cursor-pointer hover:bg-[#3b82f6] transition-colors focus:bg-[#3b82f6] text-[12px] font-mono">
+                    <SelectItem key={tz} value={tz} className="px-6 py-3 cursor-pointer hover:bg-[#1A1A1A] transition-colors focus:bg-[#1A1A1A] text-[12px] font-mono">
                         {tz.toUpperCase()}
                     </SelectItem>
                   ))}
@@ -302,25 +302,25 @@ export function Step4FinalConfigurationForm({
               </Select>
             </div>
 
-            <Separator className="bg-[#2a2a3c]" />
+            <Separator className="bg-[#E8E8E8]" />
 
             <div className="space-y-6">
               <div className="flex items-center justify-between px-1">
-                <Label className="text-[11px] font-mono font-bold text-[#52525e] uppercase tracking-[0.2em]">Weekly Slots</Label>
-                <Badge variant="outline" className="border-[#3b82f6]/30 text-[#3b82f6] font-mono text-[10px] font-bold">
+                <Label className="text-[11px] font-mono font-bold text-[#9A9A9A] uppercase tracking-[0.2em]">Weekly Slots</Label>
+                <Badge variant="outline" className="border-[#1A1A1A]/30 text-[#1A1A1A] font-mono text-[10px] font-bold">
                   {availabilitySlots.length}_NODES
                 </Badge>
               </div>
               
-              <div className="p-8 border border-dashed border-[#2a2a3c] rounded-[32px] bg-[#161621]/30 space-y-6">
+              <div className="p-8 border border-dashed border-[#E8E8E8] rounded-xl bg-[#F5F5F5]/30 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <div className="space-y-2">
-                    <Label className="text-[10px] font-mono font-bold text-[#52525e] uppercase tracking-widest px-1">Day</Label>
+                    <Label className="text-[10px] font-mono font-bold text-[#9A9A9A] uppercase tracking-widest px-1">Day</Label>
                     <Select value={availabilityDay} onValueChange={setAvailabilityDay}>
-                      <SelectTrigger className="h-12 bg-[#1a1a26] border-[#2e2e40] rounded-xl text-[12px] font-mono text-white">
+                      <SelectTrigger className="h-12 bg-[#1a1a26] border-[#E2E2E2] rounded-xl text-[12px] font-mono text-white">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#1e1e2c] border-[#2a2a3c] text-white rounded-xl">
+                      <SelectContent className="bg-white border-[#E8E8E8] text-white rounded-xl">
                         {DAYS.map(day => (
                           <SelectItem key={day} value={day} className="font-mono text-[11px]">{day.toUpperCase()}</SelectItem>
                         ))}
@@ -329,22 +329,22 @@ export function Step4FinalConfigurationForm({
                   </div>
                   
                   <div className="space-y-2">
-                    <Label className="text-[10px] font-mono font-bold text-[#52525e] uppercase tracking-widest px-1">Start Time</Label>
+                    <Label className="text-[10px] font-mono font-bold text-[#9A9A9A] uppercase tracking-widest px-1">Start Time</Label>
                     <Input
                       type="time"
                       value={availabilityStart}
                       onChange={(e) => setAvailabilityStart(e.target.value)}
-                      className="h-12 bg-[#1a1a26] border-[#2e2e40] rounded-xl text-[12px] font-mono text-white focus:border-[#3b82f6]/40 transition-all p-4"
+                      className="h-12 bg-[#1a1a26] border-[#E2E2E2] rounded-xl text-[12px] font-mono text-white focus:border-[#1A1A1A]/40 transition-all p-4"
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <Label className="text-[10px] font-mono font-bold text-[#52525e] uppercase tracking-widest px-1">End Time</Label>
+                    <Label className="text-[10px] font-mono font-bold text-[#9A9A9A] uppercase tracking-widest px-1">End Time</Label>
                     <Input
                       type="time"
                       value={availabilityEnd}
                       onChange={(e) => setAvailabilityEnd(e.target.value)}
-                      className="h-12 bg-[#1a1a26] border-[#2e2e40] rounded-xl text-[12px] font-mono text-white focus:border-[#3b82f6]/40 transition-all p-4"
+                      className="h-12 bg-[#1a1a26] border-[#E2E2E2] rounded-xl text-[12px] font-mono text-white focus:border-[#1A1A1A]/40 transition-all p-4"
                     />
                   </div>
                 </div>
@@ -352,7 +352,7 @@ export function Step4FinalConfigurationForm({
                 <Button
                   type="button"
                   onClick={handleAddAvailabilitySlot}
-                  className="w-full h-12 bg-transparent border border-[#2a2a3c] hover:bg-[#1e1e2c] hover:border-[#3b82f6] text-[11px] font-mono font-bold text-[#9ca3b4] hover:text-white uppercase tracking-widest transition-all rounded-xl gap-2"
+                  className="w-full h-12 bg-transparent border border-[#E8E8E8] hover:bg-white hover:border-[#1A1A1A] text-[11px] font-mono font-bold text-[#6B6B6B] hover:text-white uppercase tracking-widest transition-all rounded-xl gap-2"
                 >
                   <Plus size={14} />
                   Register_Time_Node
@@ -368,10 +368,10 @@ export function Step4FinalConfigurationForm({
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.9 }}
-                          className="group flex items-center gap-3 bg-[#1e1e2c] border border-[#2a2a3c] rounded-xl px-4 py-2 hover:border-[#3b82f6]/30 transition-all ring-1 ring-white/5"
+                          className="group flex items-center gap-3 bg-white border border-[#E8E8E8] rounded-xl px-4 py-2 hover:border-[#1A1A1A]/30 transition-all "
                         >
-                          <Activity size={12} className="text-[#3b82f6] opacity-50" />
-                          <span className="text-[12px] font-mono font-bold text-[#f0f0f5] uppercase tracking-tight">{slot}</span>
+                          <Activity size={12} className="text-[#1A1A1A] opacity-50" />
+                          <span className="text-[12px] font-mono font-bold text-[#1A1A1A] uppercase tracking-tight">{slot}</span>
                           <AlertDialog open={deleteTarget?.type === 'slot' && deleteTarget?.value === slot} onOpenChange={(open) => !open && setDeleteTarget(null)}>
                             <AlertDialogTrigger asChild>
                               <Button
@@ -384,15 +384,15 @@ export function Step4FinalConfigurationForm({
                                 <Trash2 size={12} />
                               </Button>
                             </AlertDialogTrigger>
-                            <AlertDialogContent className="bg-[#1e1e2c] border-[#2a2a3c] rounded-[32px] p-8">
+                            <AlertDialogContent className="bg-white border-[#E8E8E8] rounded-xl p-8">
                               <AlertDialogHeader>
                                 <AlertDialogTitle className="text-[24px] font-bold text-white">Purge Time Node?</AlertDialogTitle>
-                                <AlertDialogDescription className="text-[#9ca3b4]">
+                                <AlertDialogDescription className="text-[#6B6B6B]">
                                   Remove the window &quot;{slot}&quot; from operational availability.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter className="mt-8">
-                                <AlertDialogCancel className="bg-transparent border-[#2a2a3c] text-white rounded-2xl">Abort</AlertDialogCancel>
+                                <AlertDialogCancel className="bg-transparent border-[#E8E8E8] text-white rounded-2xl">Abort</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => handleRemoveAvailabilitySlot(slot)} className="bg-red-500 hover:bg-red-600 text-white rounded-2xl border-none">Purge</AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -402,7 +402,7 @@ export function Step4FinalConfigurationForm({
                   </AnimatePresence>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center p-6 text-[#52525e]">
+                <div className="flex flex-col items-center justify-center p-6 text-[#9A9A9A]">
                     <Clock size={24} className="mb-2 opacity-20" />
                     <p className="text-[11px] font-mono uppercase tracking-[0.2em] animate-pulse">Waiting for schedule cluster...</p>
                 </div>
@@ -417,11 +417,11 @@ export function Step4FinalConfigurationForm({
             animate={{ opacity: 1, y: 0 }}
             className="fixed bottom-10 left-1/2 -translate-x-1/2 w-full max-w-2xl px-6 z-50"
         >
-            <div className="bg-[#1e1e2c]/80 backdrop-blur-xl border border-white/10 rounded-full p-3 shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5">
+            <div className="bg-white/80 backdrop-blur-xl border border-white/10 rounded-full p-3 shadow-[0_20px_50px_rgba(0,0,0,0.5)] ">
                 <Button
                     type="submit"
                     disabled={loading || !isFormValid}
-                    className="w-full h-16 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-full text-[16px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-[#3b82f6]/30 group relative overflow-hidden transition-all"
+                    className="w-full h-16 bg-[#1A1A1A] hover:bg-[#2563eb] text-white rounded-full text-[16px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-[#1A1A1A]/30 group relative overflow-hidden transition-all"
                 >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                     {loading ? (

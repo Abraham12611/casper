@@ -16,7 +16,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, AlertCircle, Phone, Mail, PhoneCall } from "lucide-react";
+import { SpinnerGap, WarningCircle, Phone, Envelope, PhoneCall } from "@phosphor-icons/react";
 
 type DemoCallModalProps = {
   open: boolean;
@@ -33,13 +33,13 @@ export default function DemoCallModal({
   opportunityId,
   agencyId,
   casperCreditsBalance,
-  userEmail,
+  userEEnvelope,
 }: DemoCallModalProps) {
   const router = useRouter();
   const startDemoCall = useAction(api.call.calls.startDemoCall);
 
   const [phoneNumber, setPhoneNumber] = useState("+1");
-  const [email, setEmail] = useState(userEmail);
+  const [eEnvelope, setEmail] = useState(userEmail);
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -68,7 +68,7 @@ export default function DemoCallModal({
         opportunityId,
         agencyId,
         overridePhone: cleanedPhone,
-        overrideEmail: email,
+        overrideEmail: eEnvelope,
       });
 
       // Navigate to call detail page
@@ -88,26 +88,26 @@ export default function DemoCallModal({
       <DialogContent className="sm:max-w-[540px]" variant="glass" showCloseButton={true}>
         <DialogHeader className="space-y-3 pb-2">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-lg bg-gradient-to-br from-[hsl(var(--primary)/0.25)] to-[hsl(var(--primary)/0.15)] border border-[hsl(var(--primary)/0.4)] backdrop-blur-sm">
-              <PhoneCall className="h-5 w-5 text-primary" />
+            <div className="p-2.5 rounded-lg bg-gradient-to-br bg-[#F5F5F5] border border-[#E8E8E8] backdrop-blur-sm">
+              <PhoneCall className="h-5 w-5 text-[#1A1A1A]" />
             </div>
-            <DialogTitle className="text-2xl font-bold text-foreground">Start Demo Call</DialogTitle>
+            <DialogTitle className="text-2xl font-bold text-[#1A1A1A]">Start Demo Call</DialogTitle>
           </div>
-          <DialogDescription className="text-base text-muted-foreground">
+          <DialogDescription className="text-base text-[#6B6B6B]">
             Test the AI calling system with your own contact information
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-5 py-3">
           {/* Info Alert */}
-          <div className="rounded-lg border border-[hsl(var(--primary)/0.3)] bg-gradient-to-br from-[hsl(var(--primary)/0.12)] to-[hsl(var(--primary)/0.06)] backdrop-blur-sm p-4 shadow-md">
-            <p className="text-sm text-foreground/90 leading-relaxed">
+          <div className="rounded-lg border border-[#E8E8E8] bg-gradient-to-br bg-[#F5F5F5] backdrop-blur-sm p-4 shadow-md">
+            <p className="text-sm text-[#1A1A1A]/90 leading-relaxed">
               This will start a real call to your number with the same AI assistant that would
-              call prospects. <span className="font-semibold text-foreground">1 Casper Credit</span> will be charged
+              call prospects. <span className="font-semibold text-[#1A1A1A]">1 Casper Credit</span> will be charged
               per minute.
               <br />
               <br />
-              <span className="font-semibold text-foreground">Note:</span> The business owner will NOT be contacted or notified in any way. 
+              <span className="font-semibold text-[#1A1A1A]">Note:</span> The business owner will NOT be contacted or notified in any way. 
               This is a private demo for testing only.
             </p>
           </div>
@@ -118,7 +118,7 @@ export default function DemoCallModal({
               Your Phone Number
             </Label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B6B6B] pointer-events-none" />
               <input
                 id="phone"
                 type="tel"
@@ -155,12 +155,12 @@ export default function DemoCallModal({
                 className="input-field"
               />
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-xs text-[#6B6B6B] leading-relaxed">
               Auto-formatted for US/Canada. For other countries, start with country code.
             </p>
             {phoneNumber && !isPhoneValid && (
-              <div className="flex items-center gap-1.5 text-destructive">
-                <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
+              <div className="flex items-center gap-1.5 text-[#C62828]">
+                <WarningCircle className="h-3.5 w-3.5 flex-shrink-0" />
                 <p className="text-xs font-medium">
                   Invalid format. Example: +1 (202) 555-1234
                 </p>
@@ -174,7 +174,7 @@ export default function DemoCallModal({
               Your Email
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+              <Envelope className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B6B6B] pointer-events-none" />
               <input
                 id="email"
                 type="email"
@@ -185,13 +185,13 @@ export default function DemoCallModal({
                 className="input-field"
               />
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              If a meeting is booked, you&apos;ll receive <span className="font-semibold text-foreground">both</span> the prospect confirmation 
+            <p className="text-xs text-[#6B6B6B] leading-relaxed">
+              If a meeting is booked, you&apos;ll receive <span className="font-semibold text-[#1A1A1A]">both</span> the prospect confirmation 
               and agency summary emails here (for testing purposes)
             </p>
             {email && !isEmailValid && (
-              <div className="flex items-center gap-1.5 text-destructive">
-                <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
+              <div className="flex items-center gap-1.5 text-[#C62828]">
+                <WarningCircle className="h-3.5 w-3.5 flex-shrink-0" />
                 <p className="text-xs font-medium">
                   Invalid email format
                 </p>
@@ -201,9 +201,9 @@ export default function DemoCallModal({
 
           {/* Credits Warning */}
           {!hasCredits && (
-            <Alert variant="destructive" className="border-[hsl(var(--destructive)/0.4)] bg-gradient-to-br from-[hsl(var(--destructive)/0.15)] to-[hsl(var(--destructive)/0.08)] backdrop-blur-sm shadow-md">
-              <AlertCircle className="h-4 w-4 text-destructive flex-shrink-0" />
-              <AlertDescription className="text-sm font-medium text-destructive">
+            <Alert variant="destructive" className="border-[#C62828]/20 bg-gradient-to-br bg-[#C62828]/5 backdrop-blur-sm shadow-md">
+              <WarningCircle className="h-4 w-4 text-[#C62828] flex-shrink-0" />
+              <AlertDescription className="text-sm font-medium text-[#C62828]">
                 You need at least 1 Casper credit to start a demo call
               </AlertDescription>
             </Alert>
@@ -211,32 +211,32 @@ export default function DemoCallModal({
 
           {/* Error Display */}
           {error && (
-            <Alert variant="destructive" className="border-[hsl(var(--destructive)/0.4)] bg-gradient-to-br from-[hsl(var(--destructive)/0.15)] to-[hsl(var(--destructive)/0.08)] backdrop-blur-sm shadow-md">
-              <AlertCircle className="h-4 w-4 text-destructive flex-shrink-0" />
-              <AlertDescription className="text-sm font-medium text-destructive">
+            <Alert variant="destructive" className="border-[#C62828]/20 bg-gradient-to-br bg-[#C62828]/5 backdrop-blur-sm shadow-md">
+              <WarningCircle className="h-4 w-4 text-[#C62828] flex-shrink-0" />
+              <AlertDescription className="text-sm font-medium text-[#C62828]">
                 {error}
               </AlertDescription>
             </Alert>
           )}
         </div>
 
-        <DialogFooter className="gap-3 pt-3 border-t border-[hsl(var(--border)/0.4)]">
+        <DialogFooter className="gap-3 pt-3 border-t border-[#E8E8E8]">
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isStarting}
-            className="rounded-lg px-5 py-2.5 text-sm font-semibold border border-[hsl(var(--border)/0.6)] bg-[hsl(var(--surface-muted))] text-foreground hover:bg-[hsl(var(--surface-raised))] hover:border-[hsl(var(--border))] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-lg px-5 py-2.5 text-sm font-semibold border border-[#E8E8E8] bg-[#F5F5F5] text-[#1A1A1A] hover:bg-[#E8E8E8] hover:border-[#1A1A1A] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Cancel
           </Button>
           <Button
             onClick={handleStartDemoCall}
             disabled={!canSubmit}
-            className="btn-primary px-5 py-2.5"
+            className="bg-[#1A1A1A] text-white hover:bg-[#333333] px-5 py-2.5"
           >
             {isStarting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <SpinnerGap className="mr-2 h-4 w-4 animate-spin" />
                 Starting Call...
               </>
             ) : (

@@ -127,31 +127,38 @@ function getAgentTools(agencyId: string) {
       name: "end_call",
       description:
         "End the call when the user says goodbye, indicates they are not interested, or all questions have been answered.",
+      params: {
+        systemToolType: "end_call" as const,
+      },
     },
     {
       type: "webhook" as const,
       name: "check_availability",
       description:
         "Checks available meeting times. Call this whenever the customer asks about availability, when we are free, or wants to schedule a discovery call.",
-      url: `${convexSiteUrl || ""}/api/elevenlabs-tools/check-availability?agencyId=${agencyId}`,
-      method: "POST",
+      apiSchema: {
+        url: `${convexSiteUrl || ""}/api/elevenlabs-tools/check-availability?agencyId=${agencyId}`,
+        method: "POST" as const,
+      },
     },
     {
       type: "webhook" as const,
       name: "book_meeting",
       description:
         "Books a meeting for a specific date and time slot. You must ask and confirm the slot with the user first, then pass the chosen slot's ISO timestamp (e.g. 2026-05-26T14:30:00.000Z) to this tool.",
-      url: `${convexSiteUrl || ""}/api/elevenlabs-tools/book-meeting?conversation_id={system__conversation_id}`,
-      method: "POST",
-      request_body_schema: {
-        type: "object",
-        properties: {
-          slot_iso: {
-            type: "string",
-            description: "The exact ISO timestamp of the chosen slot to book (e.g., '2026-05-28T10:00:00.000Z')",
+      apiSchema: {
+        url: `${convexSiteUrl || ""}/api/elevenlabs-tools/book-meeting?conversation_id={system__conversation_id}`,
+        method: "POST" as const,
+        requestBodySchema: {
+          type: "object" as const,
+          properties: {
+            slot_iso: {
+              type: "string" as const,
+              description: "The exact ISO timestamp of the chosen slot to book (e.g., '2026-05-28T10:00:00.000Z')",
+            },
           },
+          required: ["slot_iso"],
         },
-        required: ["slot_iso"],
       },
     },
   ] as any;

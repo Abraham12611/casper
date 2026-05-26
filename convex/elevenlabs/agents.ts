@@ -198,30 +198,51 @@ export const provisionAgentForTenant = internalAction({
       });
 
       const systemPrompt = buildSystemPrompt(agency);
+      let agentId = process.env.ELEVENLABS_DEFAULT_AGENT_ID || "agent_1501ksj0r4fkfkrb5zk74mbmdggb";
+      let isDefaultAgent = false;
 
-      // Create the ElevenLabs agent
-      const agent = await elevenlabs.conversationalAi.agents.create({
-        name: `Casper — ${agency.companyName}`,
-        tags: ["casper", "production"],
-        conversationConfig: {
-          tts: {
-            voiceId: "JBFqnCBsd6RMkjVDRZzb", // Default: George (can be changed per-agency later)
-            modelId: "eleven_flash_v2_5",
-          },
-          agent: {
-            firstMessage: `Hi there, this is Casper calling on behalf of ${agency.companyName}. Do you have just a quick minute?`,
-            prompt: {
-              prompt: systemPrompt,
-              llm: "gpt-4o-mini",
-              temperature: 0.5,
-              maxTokens: 300,
-              tools: getAgentTools(agencyId),
+      // If agency doesn't already have an agent ID, try to create one
+      if (!agency.elevenlabsAgentId) {
+        try {
+          console.log(`[EL Agents] Attempting to create a new agent for agency ${agencyId}...`);
+          const agent = await elevenlabs.conversationalAi.agents.create({
+            name: `Casper — ${agency.companyName}`,
+            tags: ["casper", "production"],
+            conversationConfig: {
+              tts: {
+                voiceId: "JBFqnCBsd6RMkjVDRZzb", // Default: George (can be changed per-agency later)
+                modelId: "eleven_flash_v2_5",
+              },
+              agent: {
+                firstMessage: `Hi there, this is Casper calling on behalf of ${agency.companyName}. Do you have just a quick minute?`,
+                prompt: {
+                  prompt: systemPrompt,
+                  llm: "gpt-4o-mini",
+                  temperature: 0.5,
+                  maxTokens: 300,
+                  tools: getAgentTools(agencyId),
+                },
+              },
             },
-          },
-        },
-      });
+          });
+          agentId = agent.agentId;
+          console.log(`[EL Agents] Agent created dynamically: ${agentId}`);
+        } catch (createErr) {
+          console.warn(
+            `[EL Agents] Failed to create dynamic agent (possibly hit free-tier limit). ` +
+            `Falling back to pre-created agent ID: ${agentId}`,
+            createErr
+          );
+          isDefaultAgent = true;
+        }
+      } else {
+        agentId = agency.elevenlabsAgentId;
+        if (agentId === "agent_1501ksj0r4fkfkrb5zk74mbmdggb" || agentId === process.env.ELEVENLABS_DEFAULT_AGENT_ID) {
+          isDefaultAgent = true;
+        }
+      }
 
-      console.log(`[EL Agents] Agent created: ${agent.agentId} for agency ${agencyId}`);
+      console.log(`[EL Agents] Using agent ${agentId} for agency ${agencyId}`);
 
       // Upload knowledge base document — agency summary + claims as text
       const kbText = [
@@ -250,12 +271,19 @@ export const provisionAgentForTenant = internalAction({
 
       console.log(`[EL Agents] KB doc created: ${kbDoc.id}`);
 
-      // Attach KB doc to the agent
-      await elevenlabs.conversationalAi.agents.update(agent.agentId, {
+      // Attach KB doc to the agent and update its prompt + tools configuration
+      await elevenlabs.conversationalAi.agents.update(agentId, {
+        name: `Casper — ${agency.companyName}`,
         conversationConfig: {
+          tts: {
+            voiceId: isDefaultAgent ? "cjVigY5qzO86Huf0OWal" : "JBFqnCBsd6RMkjVDRZzb",
+            modelId: isDefaultAgent ? "eleven_v3_conversational" : "eleven_flash_v2_5",
+          },
           agent: {
+            firstMessage: `Hi there, this is Casper calling on behalf of ${agency.companyName}. Do you have just a quick minute?`,
             prompt: {
               prompt: systemPrompt,
+              llm: isDefaultAgent ? "gemini-2.5-flash" : "gpt-4o-mini",
               knowledgeBase: [
                 {
                   type: "text",
@@ -269,11 +297,10 @@ export const provisionAgentForTenant = internalAction({
         },
       });
 
-
       // Save agent ID and KB IDs to DB
       await ctx.runMutation(internal.elevenlabs.agentMutations.saveAgentDetails, {
         agencyId,
-        elevenlabsAgentId: agent.agentId,
+        elevenlabsAgentId: agentId,
         elevenlabsKnowledgeBaseIds: [kbDoc.id],
         status: "ready",
       });

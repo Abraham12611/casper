@@ -40,6 +40,14 @@ export default defineSchema({
     coreOffer: v.optional(v.string()),
     leadQualificationCriteria: v.optional(v.array(v.string())),
     reviewedAt: v.optional(v.number()),
+    // ElevenLabs per-tenant agent fields
+    elevenlabsAgentId: v.optional(v.string()),
+    elevenlabsKnowledgeBaseIds: v.optional(v.array(v.string())),
+    elevenlabsAgentStatus: v.optional(v.union(
+      v.literal("pending"),
+      v.literal("ready"),
+      v.literal("error"),
+    )),
   }).index("by_userId", ["userId"]),
 
   // Client opportunities - leads found via Google Places
@@ -324,10 +332,15 @@ export default defineSchema({
       reasoning: v.string(),
       rejectionDetected: v.boolean(),
     })),
+
+    // Telephony provider tracking (dual-provider: vapi | elevenlabs)
+    provider: v.optional(v.union(v.literal("vapi"), v.literal("elevenlabs"))),
+    elevenlabsConversationId: v.optional(v.string()),
   })
     .index("by_opportunity", ["opportunityId"]) 
     .index("by_agency", ["agencyId"]) 
-    .index("by_vapi_call_id", ["vapiCallId"]),
+    .index("by_vapi_call_id", ["vapiCallId"])
+    .index("by_el_conversation_id", ["elevenlabsConversationId"]),
 
   // Meeting records (Phase 1)
   meetings: defineTable({

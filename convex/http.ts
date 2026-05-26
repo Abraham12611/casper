@@ -304,12 +304,212 @@ const vapiWebhook = httpAction(async (ctx, req) => {
   return new Response("ok", { status: 200 });
 });
 
+// Verify ElevenLabs webhook signature
+async function verifyElevenLabsSignature(body: ArrayBuffer, signatureHeader: string | null): Promise<boolean> {
+  try {
+    const secret = process.env.ELEVENLABS_WEBHOOK_SECRET;
+    if (!secret) {
+      console.warn("[EL Webhook] ELEVENLABS_WEBHOOK_SECRET is not set. Bypassing signature verification.");
+      return true; // Bypass if not configured, friendly for local testing/hackathon
+    }
+    if (!signatureHeader) return false;
+
+    const parts = signatureHeader.split(",");
+    const tPart = parts.find((p) => p.startsWith("t="));
+    const vPart = parts.find((p) => p.startsWith("v0="));
+    if (!tPart || !vPart) return false;
+
+    const timestamp = tPart.substring(2);
+    const signature = vPart.substring(3);
+
+    const textEncoder = new TextEncoder();
+    const bodyText = new TextDecoder().decode(body);
+    const message = `${timestamp}.${bodyText}`;
+
+    const key = await crypto.subtle.importKey(
+      "raw",
+      textEncoder.encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"],
+    );
+    const mac = await crypto.subtle.sign("HMAC", key, textEncoder.encode(message));
+    const digestHex = Array.from(new Uint8Array(mac))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    return signature.trim() === digestHex;
+  } catch (error) {
+    console.error("[EL Webhook] Signature verification failed:", error);
+    return false;
+  }
+}
+
+const elevenlabsWebhook = httpAction(async (ctx, req) => {
+  const bodyBytes = await req.arrayBuffer();
+  const signature = req.headers.get("ElevenLabs-Signature");
+  const ok = await verifyElevenLabsSignature(bodyBytes, signature);
+  if (!ok) return new Response("unauthorized", { status: 401 });
+
+  let payload: any;
+  try {
+    payload = JSON.parse(new TextDecoder().decode(bodyBytes));
+  } catch {
+    return new Response("bad request", { status: 400 });
+  }
+
+  const type = payload?.type;
+  if (!type) {
+    console.warn("[EL Webhook] Missing event type");
+    return new Response("ok", { status: 200 });
+  }
+
+  console.log("[EL Webhook] Incoming event type:", type);
+
+  try {
+    if (type === "post_call_transcription") {
+      const data = payload.data;
+      const conversationId = data?.conversation_id;
+      if (!conversationId) {
+        console.warn("[EL Webhook] Missing conversation ID in post-call data");
+        return new Response("ok", { status: 200 });
+      }
+
+      const transcript = data?.transcript ?? [];
+      const duration = data?.metadata?.call_duration_secs ?? 0;
+
+      // Normalize transcript: agent/user -> assistant/user
+      const normalizedTranscript = transcript.map((m: any) => ({
+        role: m.role === "agent" ? "assistant" : "user",
+        text: m.message ?? m.text ?? "",
+        timestamp: m.time_in_call_secs
+          ? Date.now() - (duration - m.time_in_call_secs) * 1000
+          : Date.now(),
+        source: "elevenlabs",
+      }));
+
+      await ctx.runMutation(internal.elevenlabs.webhook.finalizeReport, {
+        elevenlabsConversationId: conversationId,
+        summary: data?.analysis?.transcript_summary ?? "",
+        recordingUrl: data?.metadata?.audio_url ?? "",
+        endedReason: data?.status ?? "completed",
+        billingSeconds: duration,
+        transcript: normalizedTranscript,
+      });
+    }
+  } catch (err) {
+    console.error("[EL Webhook] Error processing event:", err);
+  }
+
+  return new Response("ok", { status: 200 });
+});
+
+const checkAvailabilityTool = httpAction(async (ctx, req) => {
+  try {
+    const url = new URL(req.url);
+    const agencyIdString = url.searchParams.get("agencyId");
+    if (!agencyIdString) {
+      return new Response(JSON.stringify({ error: "Missing agencyId" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const availabilityData = await ctx.runQuery(
+      internal.call.availability.getAvailableSlots,
+      { agencyId: agencyIdString as any }
+    );
+
+    const recommendedSlots = availabilityData.slots.slice(0, 4);
+    const slotsText = recommendedSlots.map((s) => s.label).join(", ");
+
+    return new Response(
+      JSON.stringify({
+        available_slots: slotsText || "No slots available this week",
+        slots: recommendedSlots,
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  } catch (err) {
+    console.error("[EL Tool] Check availability failed:", err);
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+});
+
+const bookMeetingTool = httpAction(async (ctx, req) => {
+  try {
+    const url = new URL(req.url);
+    const conversationId = url.searchParams.get("conversation_id");
+    if (!conversationId) {
+      return new Response(JSON.stringify({ error: "Missing conversation_id" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const payload = await req.json();
+    const slotIso = payload.slot_iso;
+    if (!slotIso) {
+      return new Response(JSON.stringify({ error: "Missing slot_iso parameter" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Look up call record by ElevenLabs conversation ID
+    const callId = await ctx.runMutation(
+      internal.elevenlabs.agentMutations.getCallByElConversationId,
+      { elevenlabsConversationId: conversationId }
+    );
+
+    if (!callId) {
+      return new Response(JSON.stringify({ error: "Call record not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Book the slot
+    await ctx.runMutation(internal.call.meetings.finalizeBooking, {
+      callId,
+      isoTimestamp: slotIso,
+    });
+
+    return new Response(
+      JSON.stringify({
+        status: "success",
+        message: `Meeting has been successfully scheduled for ${slotIso}.`,
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  } catch (err) {
+    console.error("[EL Tool] Book meeting failed:", err);
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+});
+
 const http = httpRouter();
 
 // authComponent.registerRoutes removed for Clerk
 
 http.route({ path: "/api/vapi-webhook", method: "POST", handler: vapiWebhook });
+http.route({ path: "/api/elevenlabs-webhook", method: "POST", handler: elevenlabsWebhook });
+http.route({ path: "/api/elevenlabs-tools/check-availability", method: "POST", handler: checkAvailabilityTool });
+http.route({ path: "/api/elevenlabs-tools/book-meeting", method: "POST", handler: bookMeetingTool });
 
 export default http;
+
 
 

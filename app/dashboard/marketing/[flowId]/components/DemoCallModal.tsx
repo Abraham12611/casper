@@ -33,18 +33,18 @@ export default function DemoCallModal({
   opportunityId,
   agencyId,
   casperCreditsBalance,
-  userEEnvelope,
+  userEmail,
 }: DemoCallModalProps) {
   const router = useRouter();
   const startDemoCall = useAction(api.call.calls.startDemoCall);
 
   const [phoneNumber, setPhoneNumber] = useState("+1");
-  const [eEnvelope, setEmail] = useState(userEmail);
+  const [email, setEmail] = useState(userEmail);
+  const [provider, setProvider] = useState<"vapi" | "elevenlabs">("elevenlabs");
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Validation - allow formatted or unformatted phone numbers
-  const phoneRegex = /^\+[1-9][\d\s()\-]{1,18}$/; // Require + at the start, allow formatting chars
+  const phoneRegex = /^\+[1-9][\d\s()\-]{1,18}$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isPhoneValid = phoneRegex.test(phoneNumber);
   const isEmailValid = emailRegex.test(email);
@@ -68,7 +68,8 @@ export default function DemoCallModal({
         opportunityId,
         agencyId,
         overridePhone: cleanedPhone,
-        overrideEmail: eEnvelope,
+        overrideEmail: email,
+        provider,
       });
 
       // Navigate to call detail page
@@ -110,6 +111,37 @@ export default function DemoCallModal({
               <span className="font-semibold text-[#1A1A1A]">Note:</span> The business owner will NOT be contacted or notified in any way. 
               This is a private demo for testing only.
             </p>
+          </div>
+
+          {/* Telephony Provider Selector */}
+          <div className="space-y-2.5">
+            <Label className="input-label">Telephony Provider</Label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setProvider("elevenlabs")}
+                className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 text-center transition-all cursor-pointer ${
+                  provider === "elevenlabs"
+                    ? "border-[#1A1A1A] bg-[#F5F5F5] font-semibold text-[#1A1A1A]"
+                    : "border-[#E8E8E8] hover:border-[#1A1A1A] text-[#6B6B6B]"
+                }`}
+              >
+                <span className="text-sm">ElevenLabs AI</span>
+                <span className="text-[10px] opacity-75 mt-0.5 font-normal">Cinematic ~75ms latency</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setProvider("vapi")}
+                className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 text-center transition-all cursor-pointer ${
+                  provider === "vapi"
+                    ? "border-[#1A1A1A] bg-[#F5F5F5] font-semibold text-[#1A1A1A]"
+                    : "border-[#E8E8E8] hover:border-[#1A1A1A] text-[#6B6B6B]"
+                }`}
+              >
+                <span className="text-sm">Vapi AI</span>
+                <span className="text-[10px] opacity-75 mt-0.5 font-normal">Standard legacy provider</span>
+              </button>
+            </div>
           </div>
 
           {/* Phone Number Input */}
@@ -175,7 +207,7 @@ export default function DemoCallModal({
             </Label>
             <div className="relative">
               <Envelope className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B6B6B] pointer-events-none" />
-              <input
+            <input
                 id="email"
                 type="email"
                 placeholder="you@example.com"

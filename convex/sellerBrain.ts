@@ -300,6 +300,15 @@ export const finalizeOnboarding = internalMutation({
       availability: args.availability,
       leadQualificationCriteria: args.leadQualificationCriteria,
     });
+
+    // Provision (or re-provision) the ElevenLabs agent for this tenant
+    // Runs async — does not block onboarding completion
+    await ctx.scheduler.runAfter(
+      0,
+      internal.elevenlabs.agents.provisionAgentForTenant,
+      { agencyId: existing._id }
+    );
+
     return null;
   },
 });
@@ -367,6 +376,16 @@ export const updateAgencyProfile = mutation({
     if (typeof args.availability !== "undefined") updates.availability = args.availability;
     
     await ctx.db.patch(existing._id, updates);
+
+    // Sync the ElevenLabs agent if one has been provisioned
+    if (existing.elevenlabsAgentId) {
+      await ctx.scheduler.runAfter(
+        0,
+        internal.elevenlabs.agents.updateAgentForTenant,
+        { agencyId: existing._id }
+      );
+    }
+
     return null;
   },
 });

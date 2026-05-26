@@ -29,7 +29,6 @@ import {
   CalendarBlank,
   MagnifyingGlass,
   Funnel,
-  FileSearch,
   ClockCounterClockwise,
   Terminal,
   ChartLineUp,
@@ -283,7 +282,7 @@ function EmailTransmissionRow({ email, delay, onClick }: { email: EmailListItem,
         >
             <div className="flex items-center gap-6 min-w-0">
                 <div className="w-12 h-12 rounded-xl bg-[#F5F5F5] border border-[#EFEFEF] flex items-center justify-center text-[#9A9A9A] group-hover:bg-[#1A1A1A]/5 group-hover:text-[#1A1A1A] transition-colors shrink-0">
-                    {email.type === "prospect_confirmation" ? <Lightning size={20} /> : <FileSearch size={20} />}
+                    {email.type === "prospect_confirmation" ? <Lightning size={20} /> : <EnvelopeSimple size={20} />}
                 </div>
                 <div className="min-w-0 space-y-1">
                     <div className="flex items-center gap-3">

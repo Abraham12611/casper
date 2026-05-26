@@ -45,6 +45,15 @@ export const getForCurrentUser = query({
       coreOffer: v.optional(v.string()),
       leadQualificationCriteria: v.optional(v.array(v.string())),
       reviewedAt: v.optional(v.number()),
+      elevenlabsAgentId: v.optional(v.string()),
+      elevenlabsKnowledgeBaseIds: v.optional(v.array(v.string())),
+      elevenlabsAgentStatus: v.optional(
+        v.union(
+          v.literal("pending"),
+          v.literal("ready"),
+          v.literal("error"),
+        )
+      ),
     }),
   ),
   handler: async (ctx) => {
@@ -76,6 +85,9 @@ export const getForCurrentUser = query({
       coreOffer: existing.coreOffer ?? undefined,
       leadQualificationCriteria: existing.leadQualificationCriteria ?? undefined,
       reviewedAt: existing.reviewedAt ?? undefined,
+      elevenlabsAgentId: existing.elevenlabsAgentId ?? undefined,
+      elevenlabsKnowledgeBaseIds: existing.elevenlabsKnowledgeBaseIds ?? undefined,
+      elevenlabsAgentStatus: existing.elevenlabsAgentStatus ?? undefined,
     };
   },
 });
@@ -113,6 +125,15 @@ export const getByUserId = internalQuery({
       coreOffer: v.optional(v.string()),
       leadQualificationCriteria: v.optional(v.array(v.string())),
       reviewedAt: v.optional(v.number()),
+      elevenlabsAgentId: v.optional(v.string()),
+      elevenlabsKnowledgeBaseIds: v.optional(v.array(v.string())),
+      elevenlabsAgentStatus: v.optional(
+        v.union(
+          v.literal("pending"),
+          v.literal("ready"),
+          v.literal("error"),
+        )
+      ),
     }),
   ),
   handler: async (ctx, args) => {
@@ -141,6 +162,9 @@ export const getByUserId = internalQuery({
       coreOffer: existing.coreOffer ?? undefined,
       leadQualificationCriteria: existing.leadQualificationCriteria ?? undefined,
       reviewedAt: existing.reviewedAt ?? undefined,
+      elevenlabsAgentId: existing.elevenlabsAgentId ?? undefined,
+      elevenlabsKnowledgeBaseIds: existing.elevenlabsKnowledgeBaseIds ?? undefined,
+      elevenlabsAgentStatus: existing.elevenlabsAgentStatus ?? undefined,
     };
   },
 });

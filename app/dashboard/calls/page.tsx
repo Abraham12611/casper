@@ -173,7 +173,7 @@ export default function CallsPage() {
 }
 
 function SignalCard({ call, delay, formatDuration }: { call: Doc<"calls">, delay: number, formatDuration: any }) {
-  const status = call.currentStatus || call.status;
+  const status = call.currentStatus || call.status || "unknown";
   const isRunning = status === "in-progress";
   const duration = formatDuration(call.billingSeconds ? call.billingSeconds * 1000 : call.duration);
 

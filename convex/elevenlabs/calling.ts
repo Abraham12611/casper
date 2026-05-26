@@ -30,16 +30,31 @@ export const startOutboundCall = internalAction({
     if (!fromNumberId) throw new Error("ELEVENLABS_TWILIO_PHONE_NUMBER_ID is not set");
 
     // Load agency to get the pre-provisioned agent ID
-    const agency = await ctx.runQuery(
+    let agency = await ctx.runQuery(
       internal.leadGen.queries.getAgencyProfileInternal,
       { agencyId: args.agencyId }
     );
     if (!agency) throw new Error(`Agency ${args.agencyId} not found`);
+    
     if (!agency.elevenlabsAgentId) {
-      throw new Error(
-        `Agency ${args.agencyId} does not have an ElevenLabs agent provisioned. ` +
-        `Complete onboarding first.`
+      console.log(`[EL Calling] Agency ${args.agencyId} does not have an ElevenLabs agent ID. Provisioning on-the-fly...`);
+      // Provision the agent synchronously
+      await ctx.runAction(internal.elevenlabs.agents.provisionAgentForTenant, {
+        agencyId: args.agencyId,
+      });
+
+      // Reload agency profile
+      agency = await ctx.runQuery(
+        internal.leadGen.queries.getAgencyProfileInternal,
+        { agencyId: args.agencyId }
       );
+      
+      if (!agency || !agency.elevenlabsAgentId) {
+        throw new Error(
+          `Agency ${args.agencyId} does not have an ElevenLabs agent provisioned and on-the-fly provisioning failed. ` +
+          `Please check that ELEVENLABS_API_KEY is properly set in your Convex settings.`
+        );
+      }
     }
 
     console.log(

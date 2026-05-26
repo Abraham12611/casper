@@ -445,7 +445,7 @@ const checkAvailabilityTool = httpAction(async (ctx, req) => {
 const bookMeetingTool = httpAction(async (ctx, req) => {
   try {
     const url = new URL(req.url);
-    const conversationId = url.searchParams.get("conversation_id");
+    const conversationId = req.headers.get("x-conversation-id") || url.searchParams.get("conversation_id");
     if (!conversationId) {
       return new Response(JSON.stringify({ error: "Missing conversation_id" }), {
         status: 400,

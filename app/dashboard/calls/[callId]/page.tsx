@@ -305,7 +305,10 @@ function CallWorkspaceContent({ params }: Props) {
                                             </span>
                                         )}
                                     </div>
-                                    <p className="text-[14px] leading-relaxed text-[#1A1A1A]">
+                                    <p className={cn(
+                                        "text-[14px] leading-relaxed",
+                                        fragment.role === "assistant" ? "text-white" : "text-[#1A1A1A]"
+                                    )}>
                                         {fragment.text}
                                     </p>
                                 </motion.div>

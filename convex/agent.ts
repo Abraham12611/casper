@@ -12,9 +12,9 @@ const openrouter = createOpenRouter({
 
 console.log("[agent] OpenRouter key present:", !!process.env.OPENROUTER_API_KEY);
 
-// Model: google/gemma-3-4b-it:free — higher free-tier RPM vs GLM/GPT-OSS
-// Swap to "meta-llama/llama-3.2-3b-instruct:free" if Gemma is unavailable.
-const MODEL = "google/gemma-3-4b-it:free";
+// Model: moonshotai/kimi-k2.5 — paid reasoning-enabled LLM for high-accuracy analysis.
+// Fallback to environment variable config if customized.
+const MODEL = process.env.OPENROUTER_MODEL || "moonshotai/kimi-k2.5";
 
 // smart agent (kept for legacy call sites)
 export const casperAgent: any = new Agent(components.agent, {

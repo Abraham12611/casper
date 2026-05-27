@@ -145,29 +145,6 @@ function getAgentTools(agencyId: string) {
         },
       },
     },
-    {
-      type: "webhook" as const,
-      name: "book_meeting",
-      description:
-        "Books a meeting for a specific date and time slot. You must ask and confirm the slot with the user first, then pass the chosen slot's ISO timestamp (e.g. 2026-05-26T14:30:00.000Z) to this tool.",
-      apiSchema: {
-        url: `${convexSiteUrl || ""}/api/elevenlabs-tools/book-meeting`,
-        method: "POST" as const,
-        requestHeaders: {
-          "x-conversation-id": "{{system__conversation_id}}",
-        },
-        requestBodySchema: {
-          type: "object" as const,
-          properties: {
-            slot_iso: {
-              type: "string" as const,
-              description: "The exact ISO timestamp of the chosen slot to book (e.g., '2026-05-28T10:00:00.000Z')",
-            },
-          },
-          required: ["slot_iso"],
-        },
-      },
-    },
   ] as any;
 }
 

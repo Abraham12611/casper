@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useMutation } from "convex/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useCustomer } from "autumn-js/react";
@@ -47,7 +47,7 @@ type TranscriptFragment = {
   source?: string; 
 };
 
-function ElevenLabsWidget({ agentId, variables }: { agentId: string, variables: any }) {
+const ElevenLabsWidget = memo(({ agentId, variables }: { agentId: string, variables: any }) => {
   useEffect(() => {
     const existingScript = document.querySelector('script[src*="convai-widget-embed"]');
     if (!existingScript) {
@@ -69,7 +69,10 @@ function ElevenLabsWidget({ agentId, variables }: { agentId: string, variables: 
       }}
     />
   );
-}
+}, (prevProps, nextProps) => {
+  // Only re-render if the agentId actually changes. This prevents re-mounting during live transcript/clock ticks!
+  return prevProps.agentId === nextProps.agentId;
+});
 
 export default function CallWorkspacePage({ params }: Props) {
   const { customer } = useCustomer();

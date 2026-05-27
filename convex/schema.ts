@@ -333,8 +333,8 @@ export default defineSchema({
       rejectionDetected: v.boolean(),
     })),
 
-    // Telephony provider tracking (dual-provider: vapi | elevenlabs)
-    provider: v.optional(v.union(v.literal("vapi"), v.literal("elevenlabs"))),
+    // Telephony provider tracking (dual-provider: vapi | elevenlabs | web)
+    provider: v.optional(v.union(v.literal("vapi"), v.literal("elevenlabs"), v.literal("web"))),
     elevenlabsConversationId: v.optional(v.string()),
   })
     .index("by_opportunity", ["opportunityId"]) 

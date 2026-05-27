@@ -70,7 +70,7 @@ export const processCallTranscript = internalAction({
     // Build AI prompt for meeting booking analysis
     const availableSlotsText = availabilityData.slots
       .slice(0, 10) // Limit to first 10 slots to keep prompt manageable
-      .map(slot => `"${slot.iso}" (${slot.label})`)
+      .map((slot: any) => `"${slot.iso}" (${slot.label})`)
       .join(', ');
 
     const prompt = `Analyze this sales call transcript to determine if a meeting was booked and detect any rejections.

@@ -40,13 +40,13 @@ export default function DemoCallModal({
 
   const [phoneNumber, setPhoneNumber] = useState("+1");
   const [email, setEmail] = useState(userEmail);
-  const [provider, setProvider] = useState<"vapi" | "elevenlabs">("elevenlabs");
+  const [provider, setProvider] = useState<"vapi" | "elevenlabs" | "web">("elevenlabs");
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const phoneRegex = /^\+[1-9][\d\s()\-]{1,18}$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isPhoneValid = phoneRegex.test(phoneNumber);
+  const isPhoneValid = provider === "web" || phoneRegex.test(phoneNumber);
   const isEmailValid = emailRegex.test(email);
   const hasCredits = casperCreditsBalance >= 1;
   const canSubmit = isPhoneValid && isEmailValid && hasCredits && !isStarting;
@@ -58,10 +58,13 @@ export default function DemoCallModal({
     setError(null);
 
     try {
-      // Strip formatting and ensure phone number has country code
-      let cleanedPhone = phoneNumber.replace(/[^\d+]/g, '');
-      if (!cleanedPhone.startsWith('+')) {
-        cleanedPhone = `+${cleanedPhone}`;
+      // Strip formatting and ensure phone number has country code (skip for web)
+      let cleanedPhone = "Browser Web Call";
+      if (provider !== "web") {
+        cleanedPhone = phoneNumber.replace(/[^\d+]/g, '');
+        if (!cleanedPhone.startsWith('+')) {
+          cleanedPhone = `+${cleanedPhone}`;
+        }
       }
       
       const result = await startDemoCall({
@@ -116,7 +119,7 @@ export default function DemoCallModal({
           {/* Telephony Provider Selector */}
           <div className="space-y-2.5">
             <Label className="input-label">Telephony Provider</Label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <button
                 type="button"
                 onClick={() => setProvider("elevenlabs")}
@@ -126,8 +129,20 @@ export default function DemoCallModal({
                     : "border-[#E8E8E8] hover:border-[#1A1A1A] text-[#6B6B6B]"
                 }`}
               >
-                <span className="text-sm">ElevenLabs AI</span>
-                <span className="text-[10px] opacity-75 mt-0.5 font-normal">Cinematic ~75ms latency</span>
+                <span className="text-[13px]">ElevenLabs (Phone)</span>
+                <span className="text-[9px] opacity-75 mt-0.5 font-normal">Cinematic ~75ms latency</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setProvider("web")}
+                className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 text-center transition-all cursor-pointer ${
+                  provider === "web"
+                    ? "border-[#1A1A1A] bg-[#F5F5F5] font-semibold text-[#1A1A1A]"
+                    : "border-[#E8E8E8] hover:border-[#1A1A1A] text-[#6B6B6B]"
+                }`}
+              >
+                <span className="text-[13px]">Browser Web Call</span>
+                <span className="text-[9px] opacity-75 mt-0.5 font-normal">Free in-browser mic test</span>
               </button>
               <button
                 type="button"
@@ -138,67 +153,69 @@ export default function DemoCallModal({
                     : "border-[#E8E8E8] hover:border-[#1A1A1A] text-[#6B6B6B]"
                 }`}
               >
-                <span className="text-sm">Vapi AI</span>
-                <span className="text-[10px] opacity-75 mt-0.5 font-normal">Standard legacy provider</span>
+                <span className="text-[13px]">Vapi AI (Phone)</span>
+                <span className="text-[9px] opacity-75 mt-0.5 font-normal">Standard legacy provider</span>
               </button>
             </div>
           </div>
 
-          {/* Phone Number Input */}
-          <div className="space-y-2.5">
-            <Label htmlFor="phone" className="input-label">
-              Your Phone Number
-            </Label>
-            <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B6B6B] pointer-events-none" />
-              <input
-                id="phone"
-                type="tel"
-                placeholder="+1 (202) 555-1234"
-                value={phoneNumber}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  // Remove all non-digit characters except + at the start
-                  const digitsOnly = value.replace(/[^\d+]/g, '');
-                  
-                  // Auto-prepend + if user starts typing without it
-                  let cleaned = digitsOnly;
-                  if (cleaned && !cleaned.startsWith('+')) {
-                    cleaned = '+' + cleaned.replace(/\+/g, ''); // Remove any other + signs
-                  }
-                  
-                  // Format for US/Canada numbers (+1)
-                  if (cleaned.startsWith('+1') && cleaned.length > 2) {
-                    const countryCode = '+1';
-                    const rest = cleaned.slice(2);
+          {/* Phone Number Input - only if not web call */}
+          {provider !== "web" && (
+            <div className="space-y-2.5">
+              <Label htmlFor="phone" className="input-label">
+                Your Phone Number
+              </Label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B6B6B] pointer-events-none" />
+                <input
+                  id="phone"
+                  type="tel"
+                  placeholder="+1 (202) 555-1234"
+                  value={phoneNumber}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    // Remove all non-digit characters except + at the start
+                    const digitsOnly = value.replace(/[^\d+]/g, '');
                     
-                    if (rest.length <= 3) {
-                      cleaned = `${countryCode} (${rest}`;
-                    } else if (rest.length <= 6) {
-                      cleaned = `${countryCode} (${rest.slice(0, 3)}) ${rest.slice(3)}`;
-                    } else {
-                      cleaned = `${countryCode} (${rest.slice(0, 3)}) ${rest.slice(3, 6)}-${rest.slice(6, 10)}`;
+                    // Auto-prepend + if user starts typing without it
+                    let cleaned = digitsOnly;
+                    if (cleaned && !cleaned.startsWith('+')) {
+                      cleaned = '+' + cleaned.replace(/\+/g, ''); // Remove any other + signs
                     }
-                  }
-                  
-                  setPhoneNumber(cleaned);
-                }}
-                style={{ paddingLeft: '2.5rem' }}
-                className="input-field"
-              />
-            </div>
-            <p className="text-xs text-[#6B6B6B] leading-relaxed">
-              Auto-formatted for US/Canada. For other countries, start with country code.
-            </p>
-            {phoneNumber && !isPhoneValid && (
-              <div className="flex items-center gap-1.5 text-[#C62828]">
-                <WarningCircle className="h-3.5 w-3.5 flex-shrink-0" />
-                <p className="text-xs font-medium">
-                  Invalid format. Example: +1 (202) 555-1234
-                </p>
+                    
+                    // Format for US/Canada numbers (+1)
+                    if (cleaned.startsWith('+1') && cleaned.length > 2) {
+                      const countryCode = '+1';
+                      const rest = cleaned.slice(2);
+                      
+                      if (rest.length <= 3) {
+                        cleaned = `${countryCode} (${rest}`;
+                      } else if (rest.length <= 6) {
+                        cleaned = `${countryCode} (${rest.slice(0, 3)}) ${rest.slice(3)}`;
+                      } else {
+                        cleaned = `${countryCode} (${rest.slice(0, 3)}) ${rest.slice(3, 6)}-${rest.slice(6, 10)}`;
+                      }
+                    }
+                    
+                    setPhoneNumber(cleaned);
+                  }}
+                  style={{ paddingLeft: '2.5rem' }}
+                  className="input-field"
+                />
               </div>
-            )}
-          </div>
+              <p className="text-xs text-[#6B6B6B] leading-relaxed">
+                Auto-formatted for US/Canada. For other countries, start with country code.
+              </p>
+              {phoneNumber && !isPhoneValid && (
+                <div className="flex items-center gap-1.5 text-[#C62828]">
+                  <WarningCircle className="h-3.5 w-3.5 flex-shrink-0" />
+                  <p className="text-xs font-medium">
+                    Invalid format. Example: +1 (202) 555-1234
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Email Input */}
           <div className="space-y-2.5">

@@ -421,7 +421,7 @@ const checkAvailabilityTool = httpAction(async (ctx, req) => {
     );
 
     const recommendedSlots = availabilityData.slots.slice(0, 4);
-    const slotsText = recommendedSlots.map((s) => s.label).join(", ");
+    const slotsText = recommendedSlots.map((s: any) => s.label).join(", ");
 
     return new Response(
       JSON.stringify({

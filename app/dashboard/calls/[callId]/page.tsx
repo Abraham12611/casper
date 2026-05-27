@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { useState, useEffect, useRef } from "react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -47,12 +47,39 @@ type TranscriptFragment = {
   source?: string; 
 };
 
+function ElevenLabsWidget({ agentId, variables }: { agentId: string, variables: any }) {
+  useEffect(() => {
+    const existingScript = document.querySelector('script[src*="convai-widget-embed"]');
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.src = "https://unpkg.com/@elevenlabs/convai-widget-embed";
+      script.async = true;
+      script.type = "text/javascript";
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  const serializedVars = JSON.stringify(variables);
+
+  return (
+    <div 
+      className="w-full flex justify-center py-6"
+      dangerouslySetInnerHTML={{
+        __html: `<elevenlabs-convai agent-id="${agentId}" dynamic-variables='${serializedVars.replace(/'/g, "&apos;")}'></elevenlabs-convai>`
+      }}
+    />
+  );
+}
+
 export default function CallWorkspacePage({ params }: Props) {
   const { customer } = useCustomer();
   const [nowTs, setNowTs] = useState<number>(Date.now());
   const [listenModalOpen, setListenModalOpen] = useState(false);
   const [callId, setCallId] = useState<Id<"calls"> | null>(null);
   const transcriptRef = useRef<HTMLDivElement | null>(null);
+
+  const appendTranscriptFragment = useMutation(api.elevenlabs.agentMutations.appendWebCallTranscriptFragment);
+  const completeWebCall = useMutation(api.elevenlabs.agentMutations.completeWebCall);
 
   useEffect(() => {
     params.then(({ callId: callIdString }) => {
@@ -71,6 +98,68 @@ export default function CallWorkspacePage({ params }: Props) {
   );
 
   const casperCreditsBalance = customer?.features?.atlas_credits?.balance ?? 0;
+
+  useEffect(() => {
+    if (!callId) return;
+
+    const handleWidgetMessage = (event: any) => {
+      console.log("[EL Web Call Custom Event Received]:", event);
+      const detail = event.detail;
+      if (detail) {
+        if (detail.type === "user_transcript" && detail.text) {
+          appendTranscriptFragment({
+            callId,
+            role: "user",
+            text: detail.text,
+          });
+        } else if (detail.type === "agent_response" && detail.text) {
+          appendTranscriptFragment({
+            callId,
+            role: "assistant",
+            text: detail.text,
+          });
+        }
+      }
+    };
+
+    const handleIframeMessage = (e: MessageEvent) => {
+      try {
+        const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+        if (data) {
+          console.log("[EL Web Call postMessage Received]:", data);
+          if (data.type === "user_transcript" && data.text) {
+            appendTranscriptFragment({
+              callId,
+              role: "user",
+              text: data.text,
+            });
+          } else if (data.type === "agent_response" && data.text) {
+            appendTranscriptFragment({
+              callId,
+              role: "assistant",
+              text: data.text,
+            });
+          } else if (data.type === "conversation_ended") {
+            const elapsed = Math.max(1, Math.floor((Date.now() - (call?.startedAt ?? Date.now())) / 1000));
+            completeWebCall({
+              callId,
+              durationSeconds: elapsed,
+            });
+          }
+        }
+      } catch (err) {}
+    };
+
+    window.addEventListener("elevenlabs-convai:message", handleWidgetMessage);
+    window.addEventListener("message", handleIframeMessage);
+    document.addEventListener("elevenlabs-convai:message", handleWidgetMessage);
+
+    return () => {
+      window.removeEventListener("elevenlabs-convai:message", handleWidgetMessage);
+      window.removeEventListener("message", handleIframeMessage);
+      document.removeEventListener("elevenlabs-convai:message", handleWidgetMessage);
+    };
+  }, [callId, call?.startedAt]);
 
   useEffect(() => {
     if (!call) return;
@@ -378,6 +467,89 @@ export default function CallWorkspacePage({ params }: Props) {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Dynamic Left Web Call Drawer Overlay */}
+      <AnimatePresence>
+        {call.provider === "web" && status === "in-progress" && (
+          <motion.div
+            initial={{ x: "-100%", opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: "-100%", opacity: 0 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            style={{ backdropFilter: "blur(24px)", backgroundColor: "rgba(10, 10, 20, 0.95)" }}
+            className="fixed top-0 left-0 h-full w-[420px] border-r border-[#2C2C3E] shadow-2xl z-50 p-8 flex flex-col justify-between overflow-y-auto"
+          >
+            {/* Drawer Header */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#E53935] animate-pulse" />
+                  <span className="text-[11px] font-mono font-bold text-white uppercase tracking-[0.2em]">Active Web Call</span>
+                </div>
+                <div className="px-2.5 py-0.5 rounded bg-[#2C2C3E] text-[10px] text-[#A0A0B0] font-mono uppercase">
+                  Browser Test
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-white tracking-tight">
+                  Casper Voice Agent
+                </h2>
+                <p className="text-[14px] text-[#A0A0B0] leading-relaxed">
+                  Speak clearly into your microphone. The agent is analyzing your responses in real-time.
+                </p>
+              </div>
+
+              <Separator className="bg-[#2C2C3E]" />
+
+              {/* Injected HTML web component widget */}
+              <div className="bg-[#10101C]/80 border border-[#2C2C3E] rounded-2xl p-4 flex flex-col items-center justify-center min-h-[220px]">
+                {call.assistantId ? (
+                  <ElevenLabsWidget 
+                    agentId={call.assistantId} 
+                    variables={{
+                      agency_name: opportunity?.name ? opportunity.name : "Lumina Search",
+                      agency_summary: opportunity?.fit_reason ? opportunity.fit_reason : "A professional services company",
+                      agency_core_offer: opportunity?.fit_reason ? opportunity.fit_reason : "Professional marketing services",
+                      caller_name: opportunity?.name ?? "there",
+                      company_name: opportunity?.name ?? "your company",
+                      fit_reason: opportunity?.fit_reason ?? "online presence opportunities",
+                      available_slots: "Tue 10:00-12:00",
+                      available_slots_short: "Tue 10:00",
+                    }}
+                  />
+                ) : (
+                  <div className="text-center py-6 text-[#6B6B6B]">
+                    <CircleDashed size={24} className="animate-spin mx-auto mb-2 text-[#A0A0B0]" />
+                    <p className="text-xs font-mono uppercase text-[#A0A0B0]">Initializing Agent...</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Drawer Footer / End Call Button */}
+            <div className="space-y-4 pt-6">
+              <div className="p-4 bg-[#10101C]/50 border border-[#2C2C3E] rounded-xl flex items-center gap-3">
+                <Mic2 className="h-5 w-5 text-white animate-pulse" />
+                <span className="text-xs text-[#A0A0B0]">Microphone actively streaming to ElevenLabs.</span>
+              </div>
+              <Button
+                onClick={async () => {
+                  const elapsedSeconds = Math.max(1, Math.floor((Date.now() - (call.startedAt ?? Date.now())) / 1000));
+                  await completeWebCall({
+                    callId: callId!,
+                    durationSeconds: elapsedSeconds,
+                  });
+                }}
+                className="w-full bg-[#E53935] hover:bg-[#D32F2F] text-white font-bold h-12 rounded-xl transition-all"
+              >
+                <Phone className="mr-2 h-5 w-5 rotate-[135deg]" />
+                End Web Call
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

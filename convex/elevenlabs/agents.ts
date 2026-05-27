@@ -258,13 +258,13 @@ export const provisionAgentForTenant = internalAction({
         agency.coreOffer ?? "Not specified.",
         ``,
         `## Approved Claims`,
-        ...(agency.approvedClaims ?? []).map((c) => `- ${c.text} (source: ${c.source_url})`),
+        ...(agency.approvedClaims ?? []).map((c: any) => `- ${c.text} (source: ${c.source_url})`),
         ``,
         `## Lead Qualification Criteria`,
-        ...(agency.leadQualificationCriteria ?? []).map((q) => `- ${q}`),
+        ...(agency.leadQualificationCriteria ?? []).map((q: any) => `- ${q}`),
         ``,
         `## Guardrails`,
-        ...(agency.guardrails ?? []).map((g) => `- ${g}`),
+        ...(agency.guardrails ?? []).map((g: any) => `- ${g}`),
       ].join("\n");
 
       const kbDoc = await elevenlabs.conversationalAi.knowledgeBase.documents.createFromText({
@@ -371,13 +371,13 @@ export const updateAgentForTenant = internalAction({
         agency.coreOffer ?? "Not specified.",
         ``,
         `## Approved Claims`,
-        ...(agency.approvedClaims ?? []).map((c) => `- ${c.text} (source: ${c.source_url})`),
+        ...(agency.approvedClaims ?? []).map((c: any) => `- ${c.text} (source: ${c.source_url})`),
         ``,
         `## Lead Qualification Criteria`,
-        ...(agency.leadQualificationCriteria ?? []).map((q) => `- ${q}`),
+        ...(agency.leadQualificationCriteria ?? []).map((q: any) => `- ${q}`),
         ``,
         `## Guardrails`,
-        ...(agency.guardrails ?? []).map((g) => `- ${g}`),
+        ...(agency.guardrails ?? []).map((g: any) => `- ${g}`),
       ].join("\n");
 
       const kbDoc = await elevenlabs.conversationalAi.knowledgeBase.documents.createFromText({

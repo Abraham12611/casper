@@ -1,6 +1,6 @@
 import { internalMutation, internalQuery, query, action } from ".././_generated/server";
 import { v } from "convex/values";
-import { internal } from ".././_generated/api";
+import { api, internal } from ".././_generated/api";
 import type { Doc, Id } from ".././_generated/dataModel";
 import { authComponent } from "../auth";
 
@@ -248,8 +248,8 @@ export const startCall = action({
         callerName: opportunity.name,
         companyName: opportunity.name,
         fitReason: opportunity.fit_reason,
-        availableSlots: recommendedSlots.map(s => s.label).join(", "),
-        availableSlotsShort: recommendedSlots.slice(0, 2).map(s => s.label).join(" or "),
+        availableSlots: recommendedSlots.map((s: any) => s.label).join(", "),
+        availableSlotsShort: recommendedSlots.slice(0, 2).map((s: any) => s.label).join(" or "),
       });
 
       return { callId, vapiCallId: "pending" };
@@ -339,14 +339,16 @@ export const startDemoCall = action({
     agencyId: v.id("agency_profile"),
     overridePhone: v.string(),
     overrideEmail: v.string(),
-    provider: v.optional(v.union(v.literal("vapi"), v.literal("elevenlabs"))),
+    provider: v.optional(v.union(v.literal("vapi"), v.literal("elevenlabs"), v.literal("web"))),
   },
-  returns: v.object({ callId: v.id("calls"), vapiCallId: v.string() }),
+  returns: v.object({ callId: v.id("calls"), vapiCallId: v.string(), elAgentId: v.optional(v.string()) }),
   handler: async (ctx, { opportunityId, agencyId, overridePhone, overrideEmail, provider = "elevenlabs" }) => {
     // Validate inputs
-    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-    if (!phoneRegex.test(overridePhone)) {
-      throw new Error("Invalid phone number format. Use E.164 format (e.g., +12025551234)");
+    if (provider !== "web") {
+      const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+      if (!phoneRegex.test(overridePhone)) {
+        throw new Error("Invalid phone number format. Use E.164 format (e.g., +12025551234)");
+      }
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(overrideEmail)) {
@@ -399,6 +401,66 @@ export const startDemoCall = action({
     // Prepare future meetings snapshot for context
     const futureMeetings = availabilityData.slots.slice(0, 10).map((slot: { iso: string }) => ({ iso: slot.iso }));
 
+    if (provider === "web") {
+      // Ensure the agency has an ElevenLabs agent provisioned on-the-fly
+      let elevenlabsAgentId: string | undefined = agency.elevenlabsAgentId;
+      if (!elevenlabsAgentId) {
+        console.log(`[EL Web Call] Agency ${agencyId} does not have an ElevenLabs agent ID. Provisioning on-the-fly...`);
+        await ctx.runAction(internal.elevenlabs.agents.provisionAgentForTenant, {
+          agencyId,
+        });
+
+        // Reload agency profile
+        const reloadedAgency: any = await ctx.runQuery(
+          internal.leadGen.queries.getAgencyProfileInternal,
+          { agencyId }
+        );
+        elevenlabsAgentId = reloadedAgency?.elevenlabsAgentId ?? "agent_1501ksj0r4fkfkrb5zk74mbmdggb";
+      }
+
+      // Create DB call row (initiated) with demo overrides
+      const callId: Id<"calls"> = await ctx.runMutation(internal.call.calls._createInitiatedCall, {
+        opportunityId,
+        agencyId,
+        dialedNumber: "Browser Web Call", 
+        assistantSnapshot: {}, 
+        startedByUserId: authUser?._id as string | undefined,
+        startedByEmail: overrideEmail, 
+        isDemo: true, 
+        demoOverrides: {
+          phone: "Browser Web Call",
+          email: overrideEmail,
+        },
+        provider: "web",
+        assistantId: elevenlabsAgentId,
+        metadata: {
+          billingCustomerId: customerId,
+          aiCallPreflight: {
+            requiredMinutes: 1,
+            balance: preflight.balance,
+            checkedAt: Date.now(),
+          },
+        },
+      });
+
+      // Patch call record with availability metadata
+      await ctx.runMutation(internal.call.calls._patchCallMetadata, {
+        callId,
+        metadata: {
+          offeredSlotsISO: recommendedSlots.map((slot: { iso: string }) => slot.iso),
+          agencyAvailabilityWindows: availabilityData.availabilityWindows,
+          futureMeetings: futureMeetings,
+        },
+      });
+
+      // Transition the Web Call to in-progress instantly
+      await ctx.runMutation(api.elevenlabs.agentMutations.transitionWebCallToInProgress, {
+        callId,
+      });
+
+      return { callId, vapiCallId: "web", elAgentId: elevenlabsAgentId };
+    }
+
     if (provider === "elevenlabs") {
       // Create DB call row (initiated) with demo overrides
       const callId: Id<"calls"> = await ctx.runMutation(internal.call.calls._createInitiatedCall, {
@@ -442,8 +504,8 @@ export const startDemoCall = action({
         callerName: opportunity.name,
         companyName: opportunity.name,
         fitReason: opportunity.fit_reason,
-        availableSlots: recommendedSlots.map(s => s.label).join(", "),
-        availableSlotsShort: recommendedSlots.slice(0, 2).map(s => s.label).join(" or "),
+        availableSlots: recommendedSlots.map((s: any) => s.label).join(", "),
+        availableSlotsShort: recommendedSlots.slice(0, 2).map((s: any) => s.label).join(" or "),
       });
 
       return { callId, vapiCallId: "pending" };
@@ -547,6 +609,7 @@ export const _createInitiatedCall = internalMutation({
       email: v.string(),
     })),
     provider: v.optional(v.string()),
+    assistantId: v.optional(v.string()),
   },
   returns: v.id("calls"),
   handler: async (ctx, args) => {
@@ -564,7 +627,8 @@ export const _createInitiatedCall = internalMutation({
       metadata: args.metadata,
       isDemo: args.isDemo,
       demoOverrides: args.demoOverrides,
-      provider: (args.provider as "vapi" | "elevenlabs" | undefined) ?? "vapi",
+      provider: (args.provider as "vapi" | "elevenlabs" | "web" | undefined) ?? "vapi",
+      assistantId: args.assistantId,
     });
   },
 });

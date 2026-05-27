@@ -1,4 +1,4 @@
-import { internalMutation } from "../_generated/server";
+import { internalMutation, mutation } from "../_generated/server";
 import { v } from "convex/values";
 
 /**
@@ -77,5 +77,88 @@ export const getCallByElConversationId = internalMutation({
       )
       .first();
     return call?._id ?? null;
+  },
+});
+
+/**
+ * Transition a Web Call to in-progress when initiated.
+ */
+export const transitionWebCallToInProgress = mutation({
+  args: {
+    callId: v.id("calls"),
+  },
+  returns: v.null(),
+  handler: async (ctx, { callId }) => {
+    const call = await ctx.db.get(callId);
+    if (!call) throw new Error(`Call ${callId} not found`);
+    await ctx.db.patch(callId, {
+      currentStatus: "in-progress",
+      startedAt: Date.now(),
+    });
+    return null;
+  },
+});
+
+/**
+ * Append a transcript fragment during an active web call.
+ */
+export const appendWebCallTranscriptFragment = mutation({
+  args: {
+    callId: v.id("calls"),
+    role: v.string(), // "user" or "assistant"
+    text: v.string(),
+  },
+  returns: v.null(),
+  handler: async (ctx, { callId, role, text }) => {
+    const call = await ctx.db.get(callId);
+    if (!call) throw new Error(`Call ${callId} not found`);
+
+    const existingTranscript = call.transcript ?? [];
+    
+    // Check if this text matches the last entry to prevent duplicate appends from browser rendering loops
+    if (existingTranscript.length > 0) {
+      const lastEntry = existingTranscript[existingTranscript.length - 1];
+      if (lastEntry.role === role && lastEntry.text === text) {
+        return null;
+      }
+    }
+
+    const updatedTranscript = [
+      ...existingTranscript,
+      {
+        role,
+        text,
+        timestamp: Date.now(),
+        source: "web",
+      },
+    ];
+
+    await ctx.db.patch(callId, {
+      transcript: updatedTranscript,
+    });
+    return null;
+  },
+});
+
+/**
+ * Complete a web call and record the duration.
+ */
+export const completeWebCall = mutation({
+  args: {
+    callId: v.id("calls"),
+    durationSeconds: v.number(),
+  },
+  returns: v.null(),
+  handler: async (ctx, { callId, durationSeconds }) => {
+    const call = await ctx.db.get(callId);
+    if (!call) throw new Error(`Call ${callId} not found`);
+
+    await ctx.db.patch(callId, {
+      currentStatus: "completed",
+      status: "completed",
+      duration: durationSeconds * 1000,
+      billingSeconds: durationSeconds,
+    });
+    return null;
   },
 });

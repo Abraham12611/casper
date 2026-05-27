@@ -19,6 +19,7 @@
     "@convex-dev/resend": "^0.1.13",
     "@convex-dev/workflow": "^0.2.6",
     "@elevenlabs/elevenlabs-js": "^2.49.1",
+    "@elevenlabs/react": "^1.6.3",
     "@googlemaps/places": "^2.1.0",
     "@gsap/react": "^2.1.2",
     "@mendable/firecrawl-js": "^4.3.5",

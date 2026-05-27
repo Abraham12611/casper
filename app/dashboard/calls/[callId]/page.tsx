@@ -35,6 +35,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { ConversationProvider, useConversation } from "@elevenlabs/react";
 
 type Props = {
   params: Promise<{ callId: string }>;
@@ -47,34 +48,15 @@ type TranscriptFragment = {
   source?: string; 
 };
 
-const ElevenLabsWidget = memo(({ agentId, variables }: { agentId: string, variables: any }) => {
-  useEffect(() => {
-    const existingScript = document.querySelector('script[src*="convai-widget-embed"]');
-    if (!existingScript) {
-      const script = document.createElement("script");
-      script.src = "https://unpkg.com/@elevenlabs/convai-widget-embed";
-      script.async = true;
-      script.type = "text/javascript";
-      document.body.appendChild(script);
-    }
-  }, []);
-
-  const serializedVars = JSON.stringify(variables);
-
+export default function CallWorkspacePage(props: Props) {
   return (
-    <div 
-      className="w-full flex justify-center py-6"
-      dangerouslySetInnerHTML={{
-        __html: `<elevenlabs-convai agent-id="${agentId}" dynamic-variables='${serializedVars.replace(/'/g, "&apos;")}'></elevenlabs-convai>`
-      }}
-    />
+    <ConversationProvider>
+      <CallWorkspaceContent {...props} />
+    </ConversationProvider>
   );
-}, (prevProps, nextProps) => {
-  // Only re-render if the agentId actually changes. This prevents re-mounting during live transcript/clock ticks!
-  return prevProps.agentId === nextProps.agentId;
-});
+}
 
-export default function CallWorkspacePage({ params }: Props) {
+function CallWorkspaceContent({ params }: Props) {
   const { customer } = useCustomer();
   const [nowTs, setNowTs] = useState<number>(Date.now());
   const [listenModalOpen, setListenModalOpen] = useState(false);
@@ -102,67 +84,28 @@ export default function CallWorkspacePage({ params }: Props) {
 
   const casperCreditsBalance = customer?.features?.atlas_credits?.balance ?? 0;
 
-  useEffect(() => {
-    if (!callId) return;
-
-    const handleWidgetMessage = (event: any) => {
-      console.log("[EL Web Call Custom Event Received]:", event);
-      const detail = event.detail;
-      if (detail) {
-        if (detail.type === "user_transcript" && detail.text) {
-          appendTranscriptFragment({
-            callId,
-            role: "user",
-            text: detail.text,
-          });
-        } else if (detail.type === "agent_response" && detail.text) {
-          appendTranscriptFragment({
-            callId,
-            role: "assistant",
-            text: detail.text,
-          });
-        }
+  // ElevenLabs SDK Conversation Hook Setup
+  const conversation = useConversation({
+    onConnect: ({ conversationId }) => {
+      console.log("[EL Web SDK Connected] Session ID:", conversationId);
+    },
+    onDisconnect: () => {
+      console.log("[EL Web SDK Disconnected]");
+    },
+    onMessage: ({ message, source }) => {
+      console.log("[EL Web SDK Live Sync]:", source, message);
+      if (message && callId) {
+        appendTranscriptFragment({
+          callId,
+          role: source === "user" ? "user" : "assistant",
+          text: message,
+        });
       }
-    };
-
-    const handleIframeMessage = (e: MessageEvent) => {
-      try {
-        const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
-        if (data) {
-          console.log("[EL Web Call postMessage Received]:", data);
-          if (data.type === "user_transcript" && data.text) {
-            appendTranscriptFragment({
-              callId,
-              role: "user",
-              text: data.text,
-            });
-          } else if (data.type === "agent_response" && data.text) {
-            appendTranscriptFragment({
-              callId,
-              role: "assistant",
-              text: data.text,
-            });
-          } else if (data.type === "conversation_ended") {
-            const elapsed = Math.max(1, Math.floor((Date.now() - (call?.startedAt ?? Date.now())) / 1000));
-            completeWebCall({
-              callId,
-              durationSeconds: elapsed,
-            });
-          }
-        }
-      } catch (err) {}
-    };
-
-    window.addEventListener("elevenlabs-convai:message", handleWidgetMessage);
-    window.addEventListener("message", handleIframeMessage);
-    document.addEventListener("elevenlabs-convai:message", handleWidgetMessage);
-
-    return () => {
-      window.removeEventListener("elevenlabs-convai:message", handleWidgetMessage);
-      window.removeEventListener("message", handleIframeMessage);
-      document.removeEventListener("elevenlabs-convai:message", handleWidgetMessage);
-    };
-  }, [callId, call?.startedAt]);
+    },
+    onError: (err) => {
+      console.error("[EL Web SDK Error]:", err);
+    }
+  });
 
   useEffect(() => {
     if (!call) return;
@@ -505,50 +448,143 @@ export default function CallWorkspacePage({ params }: Props) {
 
               <Separator className="bg-[#2C2C3E]" />
 
-              {/* Injected HTML web component widget */}
-              <div className="bg-[#10101C]/80 border border-[#2C2C3E] rounded-2xl p-4 flex flex-col items-center justify-center min-h-[220px]">
-                {call.assistantId ? (
-                  <ElevenLabsWidget 
-                    agentId={call.assistantId} 
-                    variables={{
-                      agency_name: opportunity?.name ? opportunity.name : "Lumina Search",
-                      agency_summary: opportunity?.fit_reason ? opportunity.fit_reason : "A professional services company",
-                      agency_core_offer: opportunity?.fit_reason ? opportunity.fit_reason : "Professional marketing services",
-                      caller_name: opportunity?.name ?? "there",
-                      company_name: opportunity?.name ?? "your company",
-                      fit_reason: opportunity?.fit_reason ?? "online presence opportunities",
-                      available_slots: "Tue 10:00-12:00",
-                      available_slots_short: "Tue 10:00",
+              {/* Custom Glow Pulse Visualizer Orb */}
+              <div className="flex flex-col items-center justify-center space-y-6 w-full py-8">
+                {conversation.status === "connected" && (
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.12, 1],
+                      boxShadow: [
+                        "0 0 20px rgba(123, 97, 255, 0.4)",
+                        "0 0 45px rgba(123, 97, 255, 0.8)",
+                        "0 0 20px rgba(123, 97, 255, 0.4)"
+                      ]
                     }}
-                  />
-                ) : (
-                  <div className="text-center py-6 text-[#6B6B6B]">
-                    <CircleDashed size={24} className="animate-spin mx-auto mb-2 text-[#A0A0B0]" />
-                    <p className="text-xs font-mono uppercase text-[#A0A0B0]">Initializing Agent...</p>
+                    transition={{
+                      repeat: Infinity,
+                      duration: 2,
+                      ease: "easeInOut"
+                    }}
+                    style={{
+                      background: "radial-gradient(circle, #7B61FF 0%, #10101C 100%)",
+                    }}
+                    className="w-32 h-32 rounded-full flex items-center justify-center border border-[#7B61FF]/50 shadow-2xl relative cursor-pointer"
+                  >
+                    <div className="w-16 h-16 rounded-full bg-[#0D0D14] flex items-center justify-center border border-[#7B61FF]/60 shadow-inner">
+                      <Mic2 className="h-6 w-6 text-white animate-pulse" />
+                    </div>
+                    
+                    {/* Dynamic Soundwave Rings */}
+                    <span className="absolute w-36 h-36 rounded-full border border-[#7B61FF]/20 animate-ping" />
+                  </motion.div>
+                )}
+
+                {conversation.status === "connecting" && (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                    className="w-32 h-32 rounded-full flex items-center justify-center border-2 border-dashed border-[#C9A84C]/50 relative"
+                  >
+                    <div className="w-20 h-20 rounded-full bg-[#0D0D14] flex items-center justify-center border border-[#C9A84C]/40">
+                      <CircleDashed size={32} className="animate-spin text-[#C9A84C]" />
+                    </div>
+                  </motion.div>
+                )}
+
+                {(conversation.status === "disconnected" || !conversation.status) && (
+                  <div className="w-32 h-32 rounded-full flex items-center justify-center border border-[#2C2C3E] bg-[#10101C]/40 shadow-inner relative">
+                    <div className="w-20 h-20 rounded-full bg-[#0D0D14] flex items-center justify-center border border-[#2C2C3E]">
+                      <Mic2 className="h-6 w-6 text-[#6B6B6B]" />
+                    </div>
                   </div>
                 )}
+
+                {/* Connection Status Text */}
+                <div className="text-center space-y-1.5">
+                  {conversation.status === "connected" && (
+                    <>
+                      <div className="text-sm font-semibold text-[#7B61FF] uppercase tracking-wider font-mono">Connected to Agent</div>
+                      <div className="text-xs text-[#A0A0B0] font-mono animate-pulse">Microphone actively streaming...</div>
+                    </>
+                  )}
+                  {conversation.status === "connecting" && (
+                    <>
+                      <div className="text-sm font-semibold text-[#C9A84C] uppercase tracking-wider font-mono">Securing WebRTC link...</div>
+                      <div className="text-xs text-[#A0A0B0]">Requesting system resources</div>
+                    </>
+                  )}
+                  {(conversation.status === "disconnected" || !conversation.status) && (
+                    <>
+                      <div className="text-sm font-semibold text-[#A0A0B0] uppercase tracking-wider font-mono">Call Connection Idle</div>
+                      <div className="text-xs text-[#6B6B6B]">Click below to start browser test</div>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Drawer Footer / End Call Button */}
+            {/* Drawer Footer / Start or End Button */}
             <div className="space-y-4 pt-6">
               <div className="p-4 bg-[#10101C]/50 border border-[#2C2C3E] rounded-xl flex items-center gap-3">
                 <Mic2 className="h-5 w-5 text-white animate-pulse" />
                 <span className="text-xs text-[#A0A0B0]">Microphone actively streaming to ElevenLabs.</span>
               </div>
-              <Button
-                onClick={async () => {
-                  const elapsedSeconds = Math.max(1, Math.floor((Date.now() - (call.startedAt ?? Date.now())) / 1000));
-                  await completeWebCall({
-                    callId: callId!,
-                    durationSeconds: elapsedSeconds,
-                  });
-                }}
-                className="w-full bg-[#E53935] hover:bg-[#D32F2F] text-white font-bold h-12 rounded-xl transition-all"
-              >
-                <Phone className="mr-2 h-5 w-5 rotate-[135deg]" />
-                End Web Call
-              </Button>
+              
+              {conversation.status === "connected" ? (
+                <Button
+                  onClick={async () => {
+                    await conversation.endSession();
+                    const elapsedSeconds = Math.max(1, Math.floor((Date.now() - (call.startedAt ?? Date.now())) / 1000));
+                    await completeWebCall({
+                      callId: callId!,
+                      durationSeconds: elapsedSeconds,
+                    });
+                  }}
+                  className="w-full bg-[#E53935] hover:bg-[#D32F2F] text-white font-bold h-12 rounded-xl transition-all shadow-lg hover:shadow-[#E53935]/20 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Phone className="h-5 w-5 rotate-[135deg]" />
+                  End Web Call
+                </Button>
+              ) : (
+                <Button
+                  disabled={conversation.status === "connecting"}
+                  onClick={async () => {
+                    try {
+                      // Request mic access first explicitly
+                      await navigator.mediaDevices.getUserMedia({ audio: true });
+                      
+                      await conversation.startSession({
+                        agentId: call.assistantId!,
+                        dynamicVariables: {
+                          agency_name: opportunity?.name ? opportunity.name : "Lumina Search",
+                          agency_summary: opportunity?.fit_reason ? opportunity.fit_reason : "A professional services company",
+                          agency_core_offer: opportunity?.fit_reason ? opportunity.fit_reason : "Professional marketing services",
+                          caller_name: opportunity?.name ?? "there",
+                          company_name: opportunity?.name ?? "your company",
+                          fit_reason: opportunity?.fit_reason ?? "online presence opportunities",
+                          available_slots: "Tue 10:00-12:00",
+                          available_slots_short: "Tue 10:00",
+                        }
+                      });
+                    } catch (err) {
+                      console.error("Microphone or session connection failed:", err);
+                    }
+                  }}
+                  className="w-full bg-[#7B61FF] hover:bg-[#684DF4] text-white font-bold h-12 rounded-xl transition-all shadow-lg hover:shadow-[#7B61FF]/20 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  {conversation.status === "connecting" ? (
+                    <>
+                      <CircleDashed size={20} className="animate-spin text-white" />
+                      Connecting...
+                    </>
+                  ) : (
+                    <>
+                      <Phone className="h-5 w-5" />
+                      Start Web Call
+                    </>
+                  )}
+                </Button>
+              )}
             </div>
           </motion.div>
         )}

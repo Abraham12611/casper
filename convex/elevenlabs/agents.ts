@@ -214,7 +214,7 @@ export const provisionAgentForTenant = internalAction({
             conversationConfig: {
               tts: {
                 voiceId: "JBFqnCBsd6RMkjVDRZzb", // Default: George (can be changed per-agency later)
-                modelId: "eleven_flash_v2_5",
+                modelId: "eleven_flash_v2",
               },
               agent: {
                 firstMessage: `Hi there, this is Casper calling on behalf of ${agency.companyName}. Do you have just a quick minute?`,

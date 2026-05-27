@@ -29,6 +29,14 @@ export const startOutboundCall = internalAction({
     if (!apiKey) throw new Error("ELEVENLABS_API_KEY is not set");
     if (!fromNumberId) throw new Error("ELEVENLABS_TWILIO_PHONE_NUMBER_ID is not set");
 
+    if (fromNumberId.startsWith("sk_") || fromNumberId.startsWith("SK")) {
+      throw new Error(
+        `Invalid ELEVENLABS_TWILIO_PHONE_NUMBER_ID value starting with "${fromNumberId.slice(0, 4)}". ` +
+        `This environment variable must be set to your ElevenLabs Phone Number ID (which starts with 'PhN' and can be found under the 'Phone Numbers' tab in the ElevenLabs dashboard), ` +
+        `NOT your Twilio Secret/API key starting with 'sk_' or 'SK'.`
+      );
+    }
+
     // Load agency to get the pre-provisioned agent ID
     let agency = await ctx.runQuery(
       internal.leadGen.queries.getAgencyProfileInternal,

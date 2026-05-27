@@ -109,11 +109,25 @@ export const startOutboundCall = internalAction({
       );
     }
 
-    const data = (await response.json()) as { conversation_id?: string; callSid?: string };
+    const responseText = await response.text();
+    console.log(`[EL Calling] Raw API Response: ${responseText}`);
+
+    let data: { success?: boolean; message?: string; conversation_id?: string; callSid?: string } = {};
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseErr) {
+      console.error("[EL Calling] Failed to parse response JSON:", parseErr);
+    }
+
+    if (data.success === false) {
+      throw new Error(
+        `ElevenLabs outbound call failed: ${data.message ?? "Unknown error from ElevenLabs API"}`
+      );
+    }
 
     console.log(
-      `[EL Calling] Call initiated. Conversation ID: ${data.conversation_id}, ` +
-      `CallSid: ${data.callSid}`
+      `[EL Calling] Call initiated successfully. Conversation ID: ${data.conversation_id ?? "null"}, ` +
+      `CallSid: ${data.callSid ?? "null"}`
     );
 
     // Attach EL conversation ID to the call record

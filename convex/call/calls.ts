@@ -843,4 +843,18 @@ export const _patchCallMetadata = internalMutation({
   },
 });
 
+export const saveCallSummary = internalMutation({
+  args: {
+    callId: v.id("calls"),
+    summary: v.string(),
+  },
+  returns: v.null(),
+  handler: async (ctx, { callId, summary }) => {
+    const call = await ctx.db.get(callId);
+    if (!call) return null;
+    await ctx.db.patch(callId, { summary });
+    return null;
+  },
+});
+
 

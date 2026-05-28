@@ -89,10 +89,10 @@ export const finalizeReport = internalMutation({
       });
     }
 
-    // Schedule post-call analysis
+    // Schedule post-call analysis immediately
     try {
-      console.log(`[EL Webhook] Scheduling transcript analysis for call ${record._id}`);
-      await ctx.scheduler.runAfter(5000, internal.call.ai.processCallTranscript, {
+      console.log(`[EL Webhook] Scheduling immediate transcript analysis for call ${record._id}`);
+      await ctx.scheduler.runAfter(0, internal.call.ai.processCallTranscript, {
         callId: record._id,
       });
     } catch (analysisError) {

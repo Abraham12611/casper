@@ -1,6 +1,6 @@
 "use node";
 
-import { internalAction } from "../_generated/server";
+import { internalAction, action } from "../_generated/server";
 import { internal } from "../_generated/api";
 import { v } from "convex/values";
 import type { Doc } from "../_generated/dataModel";
@@ -426,6 +426,28 @@ export const deleteAgentForTenant = internalAction({
       console.log(`[EL Agents] Agent ${elevenlabsAgentId} deleted`);
     } catch (error) {
       console.error(`[EL Agents] Failed to delete agent ${elevenlabsAgentId}:`, error);
+    }
+    return null;
+  },
+});
+
+/**
+ * Update and force-synchronize all active provisioned ElevenLabs agents' configurations
+ * on the ElevenLabs server (e.g. to ensure book_meeting tool is removed).
+ */
+export const updateAllTenantAgents = action({
+  args: {},
+  returns: v.null(),
+  handler: async (ctx) => {
+    const agencies = await ctx.runQuery(internal.elevenlabs.agentMutations.getAllAgenciesWithAgents);
+    console.log(`[EL Agents] Found ${agencies.length} agencies to re-provision...`);
+    for (const agency of agencies) {
+      try {
+        console.log(`[EL Agents] Re-provisioning agent for ${agency.companyName} (${agency.elevenlabsAgentId})...`);
+        await ctx.runAction(internal.elevenlabs.agents.updateAgentForTenant, { agencyId: agency._id });
+      } catch (err) {
+        console.error(`[EL Agents] Failed to update agent for ${agency.companyName}:`, err);
+      }
     }
     return null;
   },

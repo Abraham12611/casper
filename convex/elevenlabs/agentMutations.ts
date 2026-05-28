@@ -1,5 +1,6 @@
-import { internalMutation, mutation } from "../_generated/server";
+import { internalMutation, mutation, internalQuery } from "../_generated/server";
 import { v } from "convex/values";
+import { internal } from "../_generated/api";
 
 /**
  * Save ElevenLabs agent details to the agency_profile record.
@@ -159,6 +160,41 @@ export const completeWebCall = mutation({
       duration: durationSeconds * 1000,
       billingSeconds: durationSeconds,
     });
+
+    // Schedule post-call transcript analysis immediately (Kimi k2.5)
+    try {
+      console.log(`[Web Call Complete] Scheduling immediate transcript analysis for call ${callId}`);
+      await ctx.scheduler.runAfter(0, internal.call.ai.processCallTranscript, {
+        callId,
+      });
+    } catch (analysisError) {
+      console.error("[Web Call Complete] Failed to schedule transcript analysis:", analysisError);
+    }
+
     return null;
+  },
+});
+
+/**
+ * Retrieve all agency profiles that have a provisioned ElevenLabs agent.
+ */
+export const getAllAgenciesWithAgents = internalQuery({
+  args: {},
+  returns: v.array(
+    v.object({
+      _id: v.id("agency_profile"),
+      elevenlabsAgentId: v.string(),
+      companyName: v.string(),
+    })
+  ),
+  handler: async (ctx) => {
+    const agencies = await ctx.db.query("agency_profile").collect();
+    return agencies
+      .filter((a) => !!a.elevenlabsAgentId)
+      .map((a) => ({
+        _id: a._id,
+        elevenlabsAgentId: a.elevenlabsAgentId!,
+        companyName: a.companyName,
+      }));
   },
 });

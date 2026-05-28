@@ -69,8 +69,7 @@ export const finalizeReport = internalMutation({
         ? Math.max(0, Math.round(args.billingSeconds))
         : undefined;
 
-    await ctx.db.patch(record._id, {
-      summary: args.summary,
+    const patchData: Record<string, any> = {
       recordingUrl: args.recordingUrl,
       endedReason: args.endedReason,
       billingSeconds: safeBillingSeconds,
@@ -78,7 +77,11 @@ export const finalizeReport = internalMutation({
       currentStatus: "completed",
       transcript: args.transcript,
       lastWebhookAt: Date.now(),
-    });
+    };
+    if (args.summary && (!record.summary || record.summary === "")) {
+      patchData.summary = args.summary;
+    }
+    await ctx.db.patch(record._id, patchData);
 
     console.log(`[EL Webhook] Call finalized for record ${record._id}`);
 

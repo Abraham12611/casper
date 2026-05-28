@@ -726,15 +726,18 @@ export const finalizeReport = internalMutation({
       typeof args.billingSeconds === "number" && Number.isFinite(args.billingSeconds)
         ? Math.max(0, Math.round(args.billingSeconds))
         : undefined;
-    await ctx.db.patch(record._id, {
-      summary: args.summary,
+    const patchData: Record<string, any> = {
       recordingUrl: args.recordingUrl,
       endedReason: args.endedReason,
       billingSeconds: safeBillingSeconds,
       status: "completed",
       currentStatus: "completed",
       lastWebhookAt: Date.now(),
-    });
+    };
+    if (args.summary && (!record.summary || record.summary === "")) {
+      patchData.summary = args.summary;
+    }
+    await ctx.db.patch(record._id, patchData);
 
     if (typeof safeBillingSeconds === "number" && safeBillingSeconds > 0) {
       await ctx.scheduler.runAfter(0, internal.call.billing.meterAiCallUsage, {

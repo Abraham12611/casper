@@ -354,6 +354,21 @@ function CallWorkspaceContent({ params }: Props) {
                             </div>
                         )}
                     </div>
+                ) : (status === "completed" || isInProgress) ? (
+                    <div className="py-8 text-center space-y-4 flex flex-col items-center justify-center">
+                        <div className="relative w-12 h-12 flex items-center justify-center">
+                            <span className="absolute w-12 h-12 rounded-full border-2 border-[#7B61FF]/20 animate-ping" />
+                            <span className="w-8 h-8 rounded-full border-2 border-t-[#7B61FF] border-[#7B61FF]/10 animate-spin" />
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[12px] font-mono font-bold text-[#7B61FF] uppercase tracking-widest animate-pulse">
+                                Casper Decrypting Transcript...
+                            </p>
+                            <p className="text-[11px] text-[#9A9A9A]">
+                                Analyzing verbal markers and extracting booking details
+                            </p>
+                        </div>
+                    </div>
                 ) : (
                     <div className="py-8 text-center text-[#9A9A9A] space-y-3">
                         <Mic2 size={32} className="mx-auto opacity-20" />

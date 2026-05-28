@@ -14,6 +14,21 @@ type BookingAnalysis = {
   summary: string | undefined;
 };
 
+function cleanJsonString(input: string): string {
+  let cleaned = input.trim();
+  // Strip starting ```json or ```
+  if (cleaned.startsWith("```json")) {
+    cleaned = cleaned.substring(7);
+  } else if (cleaned.startsWith("```")) {
+    cleaned = cleaned.substring(3);
+  }
+  // Strip ending ```
+  if (cleaned.endsWith("```")) {
+    cleaned = cleaned.substring(0, cleaned.length - 3);
+  }
+  return cleaned.trim();
+}
+
 export const processCallTranscript = internalAction({
   args: {
     callId: v.id("calls"),
@@ -134,7 +149,8 @@ VALIDATION RULES:
       // Parse JSON response defensively
       let analysis: BookingAnalysis;
       try {
-        const parsed = JSON.parse(response.text || "{}");
+        const cleanedText = cleanJsonString(response.text || "{}");
+        const parsed = JSON.parse(cleanedText);
         analysis = {
           meetingBooked: Boolean(parsed.meetingBooked),
           slotIso: typeof parsed.slotIso === "string" ? parsed.slotIso : undefined,

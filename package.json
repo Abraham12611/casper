@@ -12,7 +12,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/openai": "2.0.101",
+    "@ai-sdk/openai": "^2.0.101",
     "@ai-sdk/provider-utils": "^3.0.22",
     "@clerk/nextjs": "^7.0.6",
     "@convex-dev/agent": "^0.2.8",

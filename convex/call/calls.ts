@@ -857,4 +857,16 @@ export const saveCallSummary = internalMutation({
   },
 });
 
+export const getLastCall = query({
+  args: {},
+  returns: v.any(),
+  handler: async (ctx) => {
+    const last = await ctx.db
+      .query("calls")
+      .order("desc")
+      .first();
+    return last;
+  },
+});
+
 

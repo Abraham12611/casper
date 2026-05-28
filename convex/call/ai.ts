@@ -1,7 +1,7 @@
 import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
 import { internal, components } from "../_generated/api";
-import { casperAgentFast } from "../agent";
+// casperAgentFast import removed
 import type { Doc } from "../_generated/dataModel";
 import { createThread } from "@convex-dev/agent";
 
@@ -112,18 +112,22 @@ VALIDATION RULES:
     try {
       console.log(`[AI Analysis] Sending transcript to AI for analysis (${transcriptText.length} chars)`);
       
-      // Create a proper Convex thread and use it (don't fabricate thread ids)
-      const threadId = await createThread(ctx, components.agent, {
-        userId: agency.userId,
-        title: `Call analysis for ${opportunity.name}`,
-        summary: `Post-call booking detection for call ${String(callId)}`,
+      console.log(`[AI Analysis] Running standard generateText via Kimi k2.5 on OpenRouter...`);
+      const { generateText } = require("ai");
+      const { createOpenAI } = require("@ai-sdk/openai");
+
+      const openrouter = createOpenAI({
+        baseURL: "https://openrouter.ai/api/v1",
+        apiKey: process.env.OPENROUTER_API_KEY || "missing-key",
+        compatibility: "compatible",
       });
 
-      const response = await casperAgentFast.generateText(
-        ctx,
-        { threadId },
-        { prompt }
-      );
+      const MODEL = process.env.OPENROUTER_MODEL || "moonshotai/kimi-k2.5";
+
+      const response = await generateText({
+        model: openrouter(MODEL),
+        prompt: prompt,
+      });
 
       console.log(`[AI Analysis] AI response received: ${response.text?.substring(0, 200)}...`);
 
